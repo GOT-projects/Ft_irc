@@ -1,0 +1,22 @@
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Compilation
+*.o
+*.out
+*.dSYM
+
+ircserv
+
+# Extern dir - tests
+.DS_Store
+.vscode/
+.idea/
+.ccls
+_*/
+_*
+*.gch
+*.swp
