@@ -2,6 +2,12 @@
 
 using namespace irc;
 
+/**
+ * @brief Construct a new Server:: Server object
+ * 
+ * @param port the number of the port
+ * @param pwd the password of the server
+ */
 Server::Server(const std::string& port, const std::string& pwd)
 {
 	int	tmp = std::stoi(port.c_str());
@@ -13,10 +19,21 @@ Server::Server(const std::string& port, const std::string& pwd)
 	_sockServ = 0;
 }
 
+/**
+ * @brief Destroy the Server:: Server object
+ * 
+ */
 Server::~Server() {}
 
+/**
+ * @brief Create and open the port of the server
+ * 
+ * Connection between the server and the clients
+ * 
+ */
 void	Server::connect() {
 	// Create socket
+
 	_sockServ = socket(AF_INET, SOCK_STREAM, 0);
 	if (_sockServ < 0)
 		throw std::runtime_error("error create socket server");
@@ -33,14 +50,27 @@ void	Server::connect() {
 		throw std::runtime_error(strerror(errno));
 	if (DEBUG)
 		std::cout << "Server open on port " << _port << std::endl;
+		fd_set	read;
+		fd_set	write;
+		FD_ZERO(&read);
+		FD_ZERO(&write);
+		FD_SET(_sockServ, &read);
 	while (true)
 	{
+		std::cout << (_clients.empty() ? _sockServ : (_clients.end())->first) + 1 << std::endl;
+		int activity = select(, &read, NULL, NULL, NULL);
+		std::cout << activity << std::endl;
+		std::cout << "foo" << std::endl;
+		if (activity < 0)
+			throw std::runtime_error(strerror(errno));
 		int client = accept(_sockServ, NULL, NULL);
-		if (client >= 0)
+		if (client >= 0) {
 			if (DEBUG)
 				std::cout << "Connection new client" << std::endl;
-		
+			_clients.insert(pair_type(client, client));
+			for (map_iterator it = _clients.begin(); it != _clients.end(); it++)
+				std::cout << it->first << " " << it->second << std::endl;
+			std::cout << std::endl;
+		}
 	}
-	
-
 }

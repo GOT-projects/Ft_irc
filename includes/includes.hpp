@@ -6,7 +6,7 @@
 /*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 00:48:53 by aartiges jm       #+#    #+#             */
-/*   Updated: 2022/10/06 02:16:38 by aartiges jm      ###   ########lyon.fr   */
+/*   Updated: 2022/10/06 02:56:15 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <exception>
 #include <stdexcept>
+#include <map>
 //#include <algorithm>
 
 // Réseau
