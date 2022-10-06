@@ -62,34 +62,40 @@ void	Server::connect() {
 	while (true)
 	{
 		readySocket = currentSocket;
-		if (select(max_fd, &readySocket, NULL, NULL, NULL) < 0)
+		if (select(max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
 			throw std::runtime_error(strerror(errno));
-		std::cout << max_fd <<std::endl;
-		for (int i = 0; i < max_fd; i++) {
+		for (int i = 0; i <= max_fd; i++) {
 			if (FD_ISSET(i, &readySocket)) {
 				if (i == _sockServ) {
 					// new
-					int newSocket = accept(_sockServ, NULL, NULL);
+					socklen_t	lenS;
+					int newSocket = accept(_sockServ, (struct sockaddr*)&_sockAddr, &lenS);
 					if (newSocket >= 0) {
 						if (DEBUG)
 							std::cout << "fd: " << newSocket << " Connection new client" << std::endl;
 					}
 					else
 						throw std::runtime_error(strerror(errno)); // TODO rm
-					if (i >= max_fd)
-						max_fd = i + 1;
+					FD_SET(newSocket, &currentSocket);
+					if (newSocket >= max_fd)
+						max_fd = newSocket + 1;
 				}
 				else {
 					// TODO taff
 					char buff[5000];
-						recv(i, &buff, sizeof(buff), 0);
-					
+					if ((recv(i, &buff, sizeof(buff), O_NONBLOCK)) <= 0 || strcmp(buff, "quit\n") == 0) {
+						FD_CLR(i, &currentSocket);
+						close(i);
+						std::cout << RED << "fd " << i << " gone" << NC << std::endl;
+					} else {
+						// server receive
+				    	std::cout << "fd " << i << " receive: " << buff;
+
+					}
 					// send command for client
 				    //send(_server, &buff, sizeof(std::string), 0);
-				        std::cout << "fd: " << i << " \n" << buff << std::endl;
-					FD_CLR(i, &currentSocket);
 				}
-			}else std::cout << "shit\n";
+			}
 		}
 	}
 }
