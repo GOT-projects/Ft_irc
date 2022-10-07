@@ -15,12 +15,14 @@ MK = Makefile
 DIR_HDS				=	includes
 
 RELATIVE_HDS		=	includes.hpp		\
-						server.hpp
+						Server.hpp			\
+						Channel.hpp
 
 # Code
 DIR_GLOBAL						=	srcs
 SRC_GLOBAL						=	main.cpp				\
-									server.cpp
+									Server.cpp				\
+									Channel.cpp
 
 
 ################################################################################

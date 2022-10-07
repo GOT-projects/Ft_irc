@@ -1,4 +1,4 @@
-#include "../includes/server.hpp"
+#include "../includes/Server.hpp"
 
 using namespace irc;
 
