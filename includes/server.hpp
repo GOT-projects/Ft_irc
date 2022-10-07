@@ -13,8 +13,8 @@
 #endif
 
 #ifndef FT_INET_ADDR
-// Max of demand waiting on socket
-# define FT_INET_ADDR "127.0.0.1"
+// ip match
+# define FT_INET_ADDR "0.0.0.0"
 #endif
 
 namespace irc
