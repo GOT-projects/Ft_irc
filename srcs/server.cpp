@@ -83,17 +83,21 @@ void	Server::connect() {
 				else {
 					// TODO taff
 					char buff[5000];
+					bzero(buff, sizeof(buff));
 					if ((recv(i, &buff, sizeof(buff), O_NONBLOCK)) <= 0 || strcmp(buff, "quit\n") == 0) {
 						FD_CLR(i, &currentSocket);
 						close(i);
 						std::cout << RED << "fd " << i << " gone" << NC << std::endl;
 					} else {
 						// server receive
-				    	std::cout << "fd " << i << " receive: " << buff;
+						std::string tmp = buff;
+						//std::replace( tmp.begin(), tmp.end(), '\r', '#');
+						//std::replace( tmp.begin(), tmp.end() - 1, '\n', '_');
+				    	std::cout << "fd " << i << " receive: " << tmp;
+				    	send(i, ":127.0.0.1 001 aartiges :Welcome aartiges!aartiges@127.0.0.1\r\n", 63, O_NONBLOCK);
 
 					}
 					// send command for client
-				    //send(_server, &buff, sizeof(std::string), 0);
 				}
 			}
 		}

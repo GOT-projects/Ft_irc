@@ -6,7 +6,7 @@
 /*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 00:48:53 by aartiges jm       #+#    #+#             */
-/*   Updated: 2022/10/07 01:02:11 by aartiges jm      ###   ########lyon.fr   */
+/*   Updated: 2022/10/07 01:41:58 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <exception>
 #include <stdexcept>
 #include <map>
-//#include <algorithm>
+#include <algorithm>
 
 // Réseau
 #include <sys/socket.h>
