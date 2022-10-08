@@ -29,6 +29,7 @@
 #include <unistd.h>
 
 #include <errno.h>
+#include <list>
 //#include <cstring>
 //#include <iterator>
 //#include <ostream>
