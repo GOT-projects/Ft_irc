@@ -42,3 +42,5 @@
 // Our code
 
 #include "Server.hpp"
+#include "user/UserMode.hpp"
+#include "user/User.hpp"
