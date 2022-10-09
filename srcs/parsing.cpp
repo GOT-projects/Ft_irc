@@ -6,7 +6,7 @@
 /*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 12:56:59 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/09 07:13:19 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/09 08:01:01 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ std::string ConnectonSend(const irc::Parse &parse){
     ret.append("!");
     ret.append(info.User);
     ret.append("@127.0.0.1\r\n");
-    std::cout << ret << std::endl;
+    std::cout << "Send to client: " << ret << std::endl;
     return ret;
 }
 
@@ -42,8 +42,18 @@ void	ExecCmd(std::string& msg, const int fd) {
         case CONNECT:
             sendMsg = ConnectonSend(pars);
             send(fd, sendMsg.c_str(), sendMsg.length(), O_NONBLOCK);
+            break;
         case PING:
-            send(fd, "PONG", 3, O_NONBLOCK);
+            std::cout << "reply Pong" << std::endl;
+            send(fd, "PONG\r\n", 6, O_NONBLOCK);
+            break;
+        case JOIN:
+            std::cout << "JOIN Active" << std::endl;
+            //TODO send to romain class
+            break;
+        default:
+            std::cout << "Command not found" << std::endl;
+            break;
     }
     std::cout << pars;
     std::cout << "fd " << fd << " receive: " << msg;

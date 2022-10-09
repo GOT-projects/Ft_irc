@@ -6,7 +6,7 @@
 /*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:50:44 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/09 07:14:18 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/09 07:47:40 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ using namespace irc;
 Parse::Parse(std::string& msg){
     std::vector<std::string> cmd;
     _connect = false;
+    _caseCmd = -1;
     msg = ReplaceSpecialChar(msg);
     cmd = SplitCmd(msg, ':');
     ParseCmd(cmd);
@@ -48,7 +49,7 @@ std::vector<std::string> Parse::SplitCmd(std::string &msg, const char sep){
     }
     std::cout << "Print Pars Cmd: " << std::endl;
     for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++){
-        std::cout << *it << std::endl;
+        std::cout << "\t" << *it << std::endl;
     }
     return cmd;
 }
@@ -57,7 +58,10 @@ void Parse::AddCase(){
     if (_connect){
         _caseCmd = CONNECT;
     }else if (_cmd[0] == "PING"){
+        std::cout << "Ping active" << std::endl;
         _caseCmd = PING;
+    }else if (_cmd[0] == "JOIN"){
+        _caseCmd = JOIN;
     }
 
 }
@@ -65,22 +69,24 @@ void Parse::AddCase(){
 void Parse::ParseCmd(std::vector<std::string> &cmd){
     std::string regex;
     std::regex reCmd("[A-Z][\\w]+[ ]");
+    std::vector<std::string> info;
     std::sregex_iterator iter(cmd[0].begin(), cmd[0].end(), reCmd);
 
-    std::cout << "Regex:" << std::endl;
     const std::sregex_iterator end ;
     for(  ; iter != end ; ++iter ){ 
-        std::cout << iter->str() <<"$" <<  '\n';
+        /* std::cout << iter->str() <<  '\n'; */
         _cmd.push_back(std::regex_replace(iter->str(), std::regex(" "), "\0"));
     }
     if (_cmd.size() == 2 && _cmd[0] == "NICK" && _cmd[1] == "USER"){
         _connect = true;
-        std::vector<std::string> info;
         info = SplitCmd(cmd[0], ' ');
         _UserInfo.Nick = info[1];
         _UserInfo.User = info[3];
         _UserInfo.Arg1 = info[4];
         _UserInfo.Arg2 = info[5];
+    }else if (_cmd[0] == "JOIN"){
+        info = SplitCmd(cmd[0], ' ');
+        _cmd.push_back(std::regex_replace(info[1], std::regex(" "), "\0"));
     }
 }
 

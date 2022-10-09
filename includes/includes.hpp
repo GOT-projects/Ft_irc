@@ -6,7 +6,7 @@
 /*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 13:03:08 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/09 07:01:56 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/09 07:36:59 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 //define cmd
 #define CONNECT 1
 #define PING 2
+#define JOIN 3
 
 // c++
 #include <iostream>
