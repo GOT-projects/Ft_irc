@@ -10,7 +10,8 @@ using namespace irc;
  */
 Server::Server(const std::string& port, const std::string& pwd)
 {
-	int	tmp = std::stoi(port.c_str());
+	// FIXME c++11 int	tmp = std::stoi(port.c_str());
+	int	tmp = atoi(port.c_str());
 	if (tmp < 0 || tmp > 65535)
 		throw std::out_of_range("port: out of range 0-65535");
 	_port = static_cast<uint32_t>(tmp);
@@ -115,13 +116,10 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
  */
 void	Server::connect(void) {
 	fd_set	currentSocket, readySocket;
-	struct timeval	tv;
 	int max_fd;
 
 	createServer();
 	runServer();
-	tv.tv_sec = 1;
-	tv.tv_usec = 1000;
 	max_fd = _sockServ + 1;
 	FD_ZERO(&currentSocket);
 	FD_SET(_sockServ, &currentSocket);

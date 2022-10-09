@@ -13,11 +13,12 @@
 // c++
 #include <iostream>
 #include <string>
-#include <cstdint>
+// #include <cstdint> // FIXME c++11
 #include <exception>
 #include <stdexcept>
-#include <map>
 #include <algorithm>
+#include <map>
+#include <list>
 
 // Réseau
 #include <sys/socket.h>
@@ -28,14 +29,16 @@
 #include <sys/select.h>
 #include <unistd.h>
 
+// Error
 #include <errno.h>
+#include <string.h>
+
 //#include <cstring>
 //#include <iterator>
 //#include <ostream>
 //#include <vector>
 //#include <stdio.h>
 //#include <stdlib.h>
-//#include <string.h>
 //#include <iomanip>
 //#include <sstream>
 

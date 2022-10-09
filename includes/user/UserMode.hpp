@@ -2,8 +2,7 @@
 
 #include "../includes.hpp"
 
-using namespace irc;
-
+namespace irc {
 class UserMode
 {
 	private:
@@ -24,5 +23,7 @@ class UserMode
 		void	setServerNotice(const bool boolean);
 		void	setWallOps(const bool boolean);
 		void	setOperatorServer(const bool boolean);
-	}; // class UserMode
+}; // class UserMode
+} // namespace irc
+
 

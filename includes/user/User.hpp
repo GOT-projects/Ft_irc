@@ -2,8 +2,8 @@
 
 #include "../includes.hpp"
 
-using namespace irc;
-
+namespace irc
+{
 class User
 {
 	private:
@@ -42,3 +42,6 @@ class User
 		// utility
 		int	sendCommand(const std::string& command) const;
 }; // class User
+} // namespace irc
+
+

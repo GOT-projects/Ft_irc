@@ -17,7 +17,8 @@ DIR_HDS				=	includes
 RELATIVE_HDS		=	includes.hpp		\
 						Server.hpp			\
 						Channel.hpp			\
-						user/UserMode.hpp
+						user/UserMode.hpp	\
+						user/User.hpp
 
 # Code
 DIR_GLOBAL						=	srcs
@@ -25,7 +26,7 @@ SRC_GLOBAL						=	main.cpp				\
 									Server.cpp				\
 									Channel.cpp
 DIR_USER		=	$(DIR_GLOBAL)/user
-SRC_USER		=	UserMode.cpp
+SRC_USER		=	UserMode.cpp User.cpp
 
 ################################################################################
 ##                       Compilation Environnement                            ##
