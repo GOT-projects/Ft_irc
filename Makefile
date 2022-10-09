@@ -16,17 +16,20 @@ DIR_HDS				=	includes
 
 RELATIVE_HDS		=	includes.hpp		\
 						Server.hpp			\
-						Channel.hpp			\
+						channel/Channel.hpp	\
+						channel/Channel.hpp	\
 						user/UserMode.hpp	\
 						user/User.hpp
 
 # Code
 DIR_GLOBAL						=	srcs
 SRC_GLOBAL						=	main.cpp				\
-									Server.cpp				\
-									Channel.cpp
+									Server.cpp
 DIR_USER		=	$(DIR_GLOBAL)/user
 SRC_USER		=	UserMode.cpp User.cpp
+
+DIR_CHANNEL		=	$(DIR_GLOBAL)/channel
+SRC_CHANNEL		=	ChannelMode.cpp Channel.cpp
 
 ################################################################################
 ##                       Compilation Environnement                            ##
@@ -38,13 +41,14 @@ CFLAGS	=	-Wall -Werror -Wextra -std=c++98 -g3 -ggdb -fsanitize=address
 # Sources
 
 # All dirs
-DIRS_SRC			=	$(DIR_GLOBAL) $(DIR_USER)
+DIRS_SRC			=	$(DIR_GLOBAL) $(DIR_USER) $(DIR_CHANNEL)
 
 DIR_OBJ				=	obj
 
 # All srcs
 SRCS		=	$(addprefix $(DIR_GLOBAL)/, $(SRC_GLOBAL))	\
-				$(addprefix $(DIR_USER)/, $(SRC_USER))
+				$(addprefix $(DIR_USER)/, $(SRC_USER))	\
+				$(addprefix $(DIR_CHANNEL)/, $(SRC_CHANNEL))
 
 # All hpp
 HDS			=	$(addprefix $(DIR_HDS)/, $(RELATIVE_HDS))

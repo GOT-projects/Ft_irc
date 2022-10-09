@@ -47,3 +47,5 @@
 #include "Server.hpp"
 #include "user/UserMode.hpp"
 #include "user/User.hpp"
+#include "channel/ChannelMode.hpp"
+#include "channel/Channel.hpp"
