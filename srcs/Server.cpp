@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/08 12:56:36 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/09 06:54:32 by jmilhas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/Server.hpp"
 
 using namespace irc;
@@ -97,13 +109,9 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 		killSocket(currentSocket, fd, max_fd);
 	} else {
 		// server receive
-		std::string tmp = buff;
-		//std::replace( tmp.begin(), tmp.end(), '\r', '#');
-		//std::replace( tmp.begin(), tmp.end() - 1, '\n', '_');
-		std::cout << "fd " << fd << " receive: " << tmp;
-		std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
-		std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-		send(fd, ":127.0.0.1 001 aartiges :Welcome aartiges!aartiges@127.0.0.1\r\n", 63, O_NONBLOCK);
+		std::string msg = buff;
+        std::cout << "message brute: " << buff << "$" << std::endl;
+        ExecCmd(msg, fd);
 	}
 }
 

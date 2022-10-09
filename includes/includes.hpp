@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   includes.hpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/08 13:03:08 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/09 07:01:56 by jmilhas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
 #define DEBUG		true
@@ -10,6 +22,13 @@
 #define BLUE_BK		"\033[1;44m"
 #define NC			"\033[0m"
 
+//Message de Bienvenu
+#define WELCOME "Welcome to ft_irc "
+
+//define cmd
+#define CONNECT 1
+#define PING 2
+
 // c++
 #include <iostream>
 #include <string>
@@ -17,7 +36,9 @@
 #include <exception>
 #include <stdexcept>
 #include <map>
+#include <vector>
 #include <algorithm>
+#include <regex>
 
 // Réseau
 #include <sys/socket.h>
@@ -32,7 +53,6 @@
 //#include <cstring>
 //#include <iterator>
 //#include <ostream>
-//#include <vector>
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include <string.h>
@@ -42,3 +62,8 @@
 // Our code
 
 #include "Server.hpp"
+#include "Parse.hpp"
+
+
+//ProtoType
+void	ExecCmd(std::string& msg, const int fd);

@@ -16,13 +16,16 @@ DIR_HDS				=	includes
 
 RELATIVE_HDS		=	includes.hpp		\
 						Server.hpp			\
+						Parse.hpp			\
 						Channel.hpp
 
 # Code
 DIR_GLOBAL						=	srcs
 SRC_GLOBAL						=	main.cpp				\
 									Server.cpp				\
-									Channel.cpp
+									Channel.cpp				\
+									Parse.cpp				\
+									parsing.cpp
 
 
 ################################################################################
