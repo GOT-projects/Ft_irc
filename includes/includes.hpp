@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   includes.hpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/10 23:16:07 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/11 00:17:23 by jmilhas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
 #define DEBUG		true
@@ -10,6 +22,10 @@
 #define BLUE_BK		"\033[1;44m"
 #define NC			"\033[0m"
 
+
+//Commande size max can be receive
+#define MAX_CMD_LEN 512
+
 // c++
 #include <iostream>
 #include <string>
@@ -18,6 +34,7 @@
 #include <stdexcept>
 #include <map>
 #include <algorithm>
+#include <sys/_types/_ssize_t.h>
 
 // Réseau
 #include <sys/socket.h>
@@ -41,4 +58,3 @@
 
 // Our code
 
-#include "Server.hpp"
