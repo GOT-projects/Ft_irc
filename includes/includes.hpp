@@ -6,7 +6,7 @@
 /*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:07 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/11 00:17:23 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/11 14:24:25 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 #define NC			"\033[0m"
 
 
-//Commande size max can be receive
-#define MAX_CMD_LEN 512
 
 // c++
 #include <iostream>
