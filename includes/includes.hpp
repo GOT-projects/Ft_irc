@@ -27,12 +27,12 @@
 // c++
 #include <iostream>
 #include <string>
-#include <cstdint>
+// #include <cstdint> // FIXME c++11
 #include <exception>
 #include <stdexcept>
-#include <map>
 #include <algorithm>
-#include <sys/_types/_ssize_t.h>
+#include <map>
+#include <list>
 
 // Réseau
 #include <sys/socket.h>
@@ -43,16 +43,23 @@
 #include <sys/select.h>
 #include <unistd.h>
 
+// Error
 #include <errno.h>
+#include <string.h>
+
 //#include <cstring>
 //#include <iterator>
 //#include <ostream>
 //#include <vector>
 //#include <stdio.h>
 //#include <stdlib.h>
-//#include <string.h>
 //#include <iomanip>
 //#include <sstream>
 
 // Our code
 
+#include "Server.hpp"
+#include "user/UserMode.hpp"
+#include "user/User.hpp"
+#include "channel/ChannelMode.hpp"
+#include "channel/Channel.hpp"
