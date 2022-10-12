@@ -6,7 +6,7 @@
 /*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:06 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/12 23:12:47 by aartiges jm      ###   ########lyon.fr   */
+/*   Updated: 2022/10/12 23:24:21 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ using namespace irc;
  */
 Server::Server(const std::string& port, const std::string& pwd)
 {
-	// FIXME c++11
 	if (!is_number(port))
 		throw std::out_of_range("port: not a number");
 	int	tmp = atoi(port.c_str());
