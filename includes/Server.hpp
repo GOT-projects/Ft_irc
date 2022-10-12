@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:56 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/12 22:33:32 by aartiges jm      ###   ########lyon.fr   */
+/*   Updated: 2022/10/12 23:06:28 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ namespace irc
 			typedef map::iterator			map_iterator;
 
 			u_int32_t			_port;
+			std::string			_portString;
 			std::string			_pwd;
 			struct sockaddr_in	_sockAddr;
 			int					_sockServ;
@@ -41,5 +42,6 @@ namespace irc
 			~Server(void);
 			void	connect(void);
             void    SendClient(int fd, const std::string &msg);
+			void    display(void);
 	};
 } // namespace irc

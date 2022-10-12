@@ -6,11 +6,12 @@
 /*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:06 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/12 23:24:21 by aartiges jm      ###   ########lyon.fr   */
+/*   Updated: 2022/10/13 00:36:11 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/includes.hpp"
+#include <iostream>
 
 using namespace irc;
 
@@ -29,6 +30,7 @@ Server::Server(const std::string& port, const std::string& pwd)
 		throw std::out_of_range("port: out of range 0-65535");
 	_port = static_cast<uint32_t>(tmp);
 	_pwd = pwd; // TODO politic
+	_portString = port;
 	bzero(&_sockAddr, sizeof(_sockAddr));
 	_sockServ = 0;
 	std::cout << GREEN << "Server created" << NC << std::endl;
@@ -154,6 +156,7 @@ void	Server::connect(void) {
 
 	createServer();
 	runServer();
+	display();
 	max_fd = _sockServ + 1;
 	FD_ZERO(&currentSocket);
 	FD_SET(_sockServ, &currentSocket);
@@ -176,4 +179,18 @@ void	Server::connect(void) {
 	}
 }
 
+
+void Server::display(void){
+	std::string ipLan = runUnixCommandAndCaptureOutput("ifconfig  | grep -e 'inet .*broadcast ' | awk '{ print $2 }'");
+	std::cout << "┌───────────────────────────────────────────────┐" << std::endl;
+	std::cout << "│                                               │" << std::endl;
+	std::cout << "│ " << std::setw(25) << std::right << "ft_irc v1" << std::setw(24) << "│" << std::endl;
+	std::cout << "│ " << std::setw(14) << std::right << "(host " << ipLan << " " << "port: " << _portString << ")" << std::setw(19 - (_portString.length())) <<  "│" << std::endl;
+	std::cout << "│                                               │" << std::endl;
+	std::cout << "│ " << "Bind " << std::setfill('.') << std::setw(10)<< _sockServ << std::setfill(' ') 
+		          << std::setw(20) << std::right << "Processes " << std::setfill('.') << std::setw(10)<< '1' << std::setfill(' ') << " │" << std::endl;
+	std::cout << "│ " << "Pid " << std::setfill('.') << std::setw(15)<< getpid() << std::setfill(' ') << std::setw(30) << " │" << std::endl;
+	std::cout << "│                                               │" << std::endl;
+	std::cout << "└───────────────────────────────────────────────┘" << std::endl;
+}
 

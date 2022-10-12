@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   includes.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 23:16:07 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/12 23:10:28 by aartiges jm      ###   ########lyon.fr   */
+/*   Created: 2022/10/13 00:27:40 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/13 00:27:48 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 #include <fcntl.h>
 #include <sys/select.h>
 #include <unistd.h>
+#include <iomanip>
 
 // Utils
 #include <stdlib.h>
