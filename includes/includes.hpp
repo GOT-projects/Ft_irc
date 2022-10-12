@@ -6,7 +6,7 @@
 /*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:07 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/12 22:28:31 by aartiges jm      ###   ########lyon.fr   */
+/*   Updated: 2022/10/12 23:10:28 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // c++
 #include <iostream>
 #include <string>
-// #include <cstdint> // FIXME c++11
 #include <exception>
 #include <stdexcept>
 #include <algorithm>
@@ -31,6 +30,9 @@
 #include <fcntl.h>
 #include <sys/select.h>
 #include <unistd.h>
+
+// Utils
+#include <stdlib.h>
 
 // Error
 #include <errno.h>
@@ -48,6 +50,7 @@
 // Our code
 
 #include "define.hpp"
+#include "utils/string.hpp"
 #include "Parsing.hpp"
 #include "user/UserMode.hpp"
 #include "user/User.hpp"
