@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Channel.hpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/12 22:38:33 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/12 22:39:21 by jmilhas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
 #include "../includes.hpp"
@@ -23,52 +35,48 @@
 namespace irc { 
 	class Channel {
 		private:
-				std::string		_channelName;//Channels names are strings (beginning with a '&' or '#' character) of length up to 200 characters. pas de ' ' , ',' ou ascii 7 (ctrl g)
-				bool			_private;
-				std::string		_password;
+			std::string		_channelName;//Channels names are strings (beginning with a '&' or '#' character) of length up to 200 characters. pas de ' ' , ',' ou ascii 7 (ctrl g)
+			bool			_private;
+			std::string		_password;
 
-				int				_userLimits;
+			int				_userLimits;
 
-				std::list<int>	_users;		
-				std::list<int>	_bans;		
-				std::list<int>	_operators;	     
+			std::list<int>	_users;		
+			std::list<int>	_bans;		
+			std::list<int>	_operators;	     
 
-				void		sendMessage();
-				bool		checkMessage();
+			void		sendMessage();
+			bool		checkMessage();
 
-				void		addToConnectedList();
-				void		addToDeconnectedList();
+			void		addToConnectedList();
+			void		addToDeconnectedList();
 
-				void		giveRights();
-				void		changeMods();
-				void		renameTopic();
-				void		kickUser();
+			void		giveRights();
+			void		changeMods();
+			void		renameTopic();
+			void		kickUser();
 
-				bool		checkUserRights(); // => j utilise @ ou une autre variable?
-				bool		checkPassword();
-
-
-
-
+			bool		checkUserRights(); // => j utilise @ ou une autre variable?
+			bool		checkPassword();
 
 		public:
-				std::string getChannelName();
+			std::string getChannelName();
 			//	Mods			*getMods();
-				bool		getPrivateBool();
-				bool		isInChannel();
-				bool		isInBanList();
-				bool		isInOperatorList();
+			bool		getPrivateBool();
+			bool		isInChannel();
+			bool		isInBanList();
+			bool		isInOperatorList();
 
-				void		addToOperatorList();
-				void		addToBanList();  // if in channel => kik (fonction?)
-				void		applyNewMods();
-				void		joinChannel();
-				void		inviteToChannel();
-				void		expulse();
-				// comment gerer le fait de leave le channel : check si tjrs connecté? ou appel d une fct de deconnection
+			void		addToOperatorList();
+			void		addToBanList();  // if in channel => kik (fonction?)
+			void		applyNewMods();
+			void		joinChannel();
+			void		inviteToChannel();
+			void		expulse();
+			// comment gerer le fait de leave le channel : check si tjrs connecté? ou appel d une fct de deconnection
 
-				Channel( std::string name, bool privatebool, std::string password );
-				~Channel();
+			Channel( std::string name, bool privatebool, std::string password );
+			~Channel();
 
 	};
 }
