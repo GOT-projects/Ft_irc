@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   includes.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 23:16:07 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/12 22:58:04 by jmilhas          ###   ########.fr       */
+/*   Created: 2022/10/13 00:27:40 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/13 00:27:48 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // c++
 #include <iostream>
 #include <string>
-// #include <cstdint> // FIXME c++11
 #include <exception>
 #include <stdexcept>
 #include <algorithm>
@@ -33,6 +32,9 @@
 #include <unistd.h>
 #include <iomanip>
 
+// Utils
+#include <stdlib.h>
+
 // Error
 #include <errno.h>
 #include <string.h>
@@ -49,6 +51,7 @@
 // Our code
 
 #include "define.hpp"
+#include "utils/string.hpp"
 #include "Parsing.hpp"
 #include "user/UserMode.hpp"
 #include "user/User.hpp"

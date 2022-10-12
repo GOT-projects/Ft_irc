@@ -21,6 +21,7 @@ RELATIVE_HDS		=	includes.hpp		\
 						user/UserMode.hpp	\
 						user/User.hpp \
 						Parsing.hpp			\
+						utils/string.hpp
 
 
 # Code
@@ -35,6 +36,9 @@ SRC_USER		=	UserMode.cpp User.cpp
 DIR_CHANNEL		=	$(DIR_GLOBAL)/channel
 SRC_CHANNEL		=	ChannelMode.cpp Channel.cpp
 
+DIR_UTILS		=	$(DIR_GLOBAL)/utils
+SRC_UTILS		=	string.cpp
+
 ################################################################################
 ##                       Compilation Environnement                            ##
 ################################################################################
@@ -45,13 +49,14 @@ CFLAGS	=	-Wall -Werror -Wextra -std=c++98 -g3 -ggdb -fsanitize=address
 # Sources
 
 # All dirs
-DIRS_SRC			=	$(DIR_USER) $(DIR_CHANNEL) $(DIR_GLOBAL)
+DIRS_SRC			=	$(DIR_UTILS) $(DIR_USER) $(DIR_CHANNEL) $(DIR_GLOBAL)
 
 DIR_OBJ				=	obj
 
 # All srcs
 SRCS		=	$(addprefix $(DIR_GLOBAL)/, $(SRC_GLOBAL))	\
 				$(addprefix $(DIR_USER)/, $(SRC_USER))	\
+				$(addprefix $(DIR_UTILS)/, $(SRC_UTILS))	\
 				$(addprefix $(DIR_CHANNEL)/, $(SRC_CHANNEL))
 
 # All hpp
