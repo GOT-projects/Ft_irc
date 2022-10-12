@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 23:16:06 by jmilhas           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/10/13 00:25:58 by jmilhas          ###   ########.fr       */
-=======
-/*   Updated: 2022/10/12 23:12:47 by aartiges jm      ###   ########lyon.fr   */
->>>>>>> 783f68d00e4f1c94f452a76d163d213ca6ee2140
+/*   Created: 2022/10/13 00:29:03 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/13 00:30:42 by jmilhas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,23 +180,6 @@ void	Server::connect(void) {
 	}
 }
 
-std::string runUnixCommandAndCaptureOutput(std::string cmd) {
-   char buffer[128];
-   std::string result = "";
-   FILE* pipe = popen(cmd.c_str(), "r");
-   if (!pipe) throw std::runtime_error("popen() failed!");
-   try {
-      while (!feof(pipe)) {
-         if (fgets(buffer, 128, pipe) != NULL)
-            result += buffer;
-      }
-   } catch (...) {
-      pclose(pipe);
-      throw;
-   }
-   pclose(pipe);
-   return result.substr(0, result.length() -1);
-}
 
 void Server::display(void){
 	std::string ipLan = runUnixCommandAndCaptureOutput("ifconfig  | grep -e 'inet .*broadcast ' | awk '{ print $2 }'");
