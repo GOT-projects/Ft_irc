@@ -1,6 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/10 23:16:56 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/11 01:49:39 by jmilhas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
+#include "Parsing.hpp"
 #include "includes.hpp"
+#include <iostream>
+
 
 #ifndef FT_TCP_PROTOCOL
 // Protocol number of tcp protocol (less /etc/protocols)
@@ -19,10 +34,11 @@
 
 namespace irc
 {
-	class Server
+	class Server 
 	{
 		private:
 			typedef std::map<int, int>	map;
+			typedef std::map<int, irc::Parsing>	mapParse;
 			typedef std::pair<int, int>	pair_type;
 			typedef map::iterator	map_iterator;
 
@@ -31,6 +47,7 @@ namespace irc
 			struct sockaddr_in	_sockAddr;
 			int					_sockServ;
 			map					_clients;
+            mapParse            _Parse;
 
 			void	createServer(void);
 			void	runServer(void) const;
@@ -41,5 +58,6 @@ namespace irc
 			Server(const std::string& port, const std::string& pwd);
 			~Server(void);
 			void	connect(void);
+            void    SendClient(int fd, const std::string &msg);
 	};
 } // namespace irc

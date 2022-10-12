@@ -1,4 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/10 23:16:06 by jmilhas           #+#    #+#             */
+/*   Updated: 2022/10/11 14:23:28 by jmilhas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/Server.hpp"
+#include "../includes/Parsing.hpp"
+#include <string>
+#include <vector>
 
 using namespace irc;
 
@@ -90,17 +105,38 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	std::cout << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
 
+void Server::SendClient(int fd, const std::string &msg){
+	send(fd, msg.c_str(), msg.length(), O_NONBLOCK);
+}
+
 void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
-	// TODO all
-	char buff[5000];
+	// TODO Need working on CTRl-D
+	char    buff[1048];
+    ssize_t ret;
+    std::vector< std::string > cmd_string;
+
 	bzero(buff, sizeof(buff));
-	if (recv(fd, &buff, sizeof(buff), O_NONBLOCK) <= 0) {
+	ret = recv(fd, &buff, sizeof(buff), O_NONBLOCK);
+    if (ret <= 0){
 		killSocket(currentSocket, fd, max_fd);
 	} else {
 		// server receive
 		std::string tmp = buff;
-		//std::replace( tmp.begin(), tmp.end(), '\r', '#');
-		//std::replace( tmp.begin(), tmp.end() - 1, '\n', '_');
+        _Parse[fd] = Parsing(fd, tmp);
+        try{
+            cmd_string = _Parse[fd].splitMsg("\r\n");
+        }
+        catch (std::runtime_error &e) { 
+            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+		    killSocket(currentSocket, fd, max_fd);
+            return;
+        }
+        try {
+            _Parse[fd].splitCmds(cmd_string);
+        }catch (std::runtime_error &e) { 
+            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+        }
+        _Parse[fd].displayCommands();
 		std::cout << "fd " << fd << " receive: " << tmp;
 		std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
 		std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
