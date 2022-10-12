@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   includes.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:07 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/11 14:24:25 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:28:31 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-
-#define DEBUG		true
-#define RED			"\033[0;31m"
-#define RED_ERR		"\033[1;41m"
-#define GREEN		"\033[1;32m"
-#define YELLOW		"\033[1;33m"
-#define YELLOW_BK	"\033[1;43m"
-#define BLUE		"\033[1;34m"
-#define BLUE_BK		"\033[1;44m"
-#define NC			"\033[0m"
-
-
 
 // c++
 #include <iostream>
@@ -33,6 +21,7 @@
 #include <algorithm>
 #include <map>
 #include <list>
+#include <vector>
 
 // Réseau
 #include <sys/socket.h>
@@ -58,8 +47,10 @@
 
 // Our code
 
-#include "Server.hpp"
+#include "define.hpp"
+#include "Parsing.hpp"
 #include "user/UserMode.hpp"
 #include "user/User.hpp"
 #include "channel/ChannelMode.hpp"
 #include "channel/Channel.hpp"
+#include "Server.hpp"

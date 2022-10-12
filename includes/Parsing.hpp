@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Parsing.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:47 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/11 01:49:04 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:18:05 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #pragma once
 
-#include <string>
-#include <vector>
+#include "includes.hpp"
 
 namespace irc
 {

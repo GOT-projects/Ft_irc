@@ -45,7 +45,7 @@ CFLAGS	=	-Wall -Werror -Wextra -std=c++98 -g3 -ggdb -fsanitize=address
 # Sources
 
 # All dirs
-DIRS_SRC			=	$(DIR_GLOBAL) $(DIR_USER) $(DIR_CHANNEL)
+DIRS_SRC			=	$(DIR_USER) $(DIR_CHANNEL) $(DIR_GLOBAL)
 
 DIR_OBJ				=	obj
 

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:05 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/11 01:23:59 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:37:25 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/includes.hpp"
-#include "../includes/Server.hpp"
 
 int main(int argc, char const *argv[])
 {

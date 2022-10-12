@@ -1,53 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:56 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/11 01:49:39 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:33:32 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "Parsing.hpp"
 #include "includes.hpp"
-#include <iostream>
-
-
-#ifndef FT_TCP_PROTOCOL
-// Protocol number of tcp protocol (less /etc/protocols)
-# define FT_TCP_PROTOCOL 6
-#endif
-
-#ifndef FT_SOCK_BACKLOG
-// Max of demand waiting on socket
-# define FT_SOCK_BACKLOG 100
-#endif
-
-#ifndef FT_INET_ADDR
-// ip match
-# define FT_INET_ADDR "0.0.0.0"
-#endif
 
 namespace irc
 {
 	class Server 
 	{
 		private:
-			typedef std::map<int, int>	map;
-			typedef std::map<int, irc::Parsing>	mapParse;
-			typedef std::pair<int, int>	pair_type;
-			typedef map::iterator	map_iterator;
+			typedef std::map<int, int>		map;
+			typedef std::map<int, Parsing>	mapParse;
+			typedef std::pair<int, int>		pair_type;
+			typedef map::iterator			map_iterator;
 
 			u_int32_t			_port;
 			std::string			_pwd;
 			struct sockaddr_in	_sockAddr;
 			int					_sockServ;
 			map					_clients;
-            mapParse            _Parse;
+			mapParse			_Parse;
 
 			void	createServer(void);
 			void	runServer(void) const;

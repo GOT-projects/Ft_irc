@@ -3,21 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Parsing.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:18:15 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/11 14:13:40 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:30:47 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "../includes/Parsing.hpp"
-#include <string>
-#include <iostream>
-#include <vector>
-//Commande size max can be receive
-#define MAX_CMD_LEN 512
+#include "../includes/includes.hpp"
 
 using namespace irc;
 

@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
+/*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmilhas <jmilhas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aartiges jmilhas rcuminal <x@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 23:16:06 by jmilhas           #+#    #+#             */
-/*   Updated: 2022/10/11 14:23:28 by jmilhas          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:38:05 by aartiges jm      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Server.hpp"
-#include "../includes/Parsing.hpp"
-#include <string>
-#include <vector>
+#include "../includes/includes.hpp"
 
 using namespace irc;
 
@@ -57,7 +54,6 @@ void	Server::createServer(void) {
 	if ((_sockServ = socket(AF_INET, SOCK_STREAM, FT_TCP_PROTOCOL)) < 0)
 		throw std::runtime_error("error create socket server");
 	// Change socket control
-	// TODO F_SETFL
 	std::cout << GREEN << "Server configured" << NC << std::endl;
 }
 
@@ -69,6 +65,7 @@ void	Server::runServer(void) const {
 	if (
 		// Change socket control
 		fcntl(_sockServ, F_SETFL, O_NONBLOCK) == -1
+		// TODO F_SETFL
 		||
 		// Link information of the socket with the socket
 		bind(_sockServ, (struct sockaddr*)&_sockAddr, sizeof(_sockAddr)) == -1
