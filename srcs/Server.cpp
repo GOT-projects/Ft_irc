@@ -21,6 +21,7 @@ Server::Server(const std::string& port, const std::string& pwd)
 	_portString = port;
 	bzero(&_sockAddr, sizeof(_sockAddr));
 	_sockServ = 0;
+    _log = Log();
 	std::cout << GREEN << "Server created" << NC << std::endl;
 }
 
@@ -125,9 +126,10 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
         }catch (std::runtime_error &e) { 
             SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
         }
+        std::cout << _log;
         _Parse[fd].displayCommands();
         if (_Parse[fd].getCompleted()){
-		    std::cout << "fd " << fd << " receive: " << tmp;
+		    std::cout << _log << "fd " << fd << " receive: " << tmp;
 		    std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
 		    std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
 		    send(fd, ":127.0.0.1 001 aartiges :Welcome aartiges!aartiges@127.0.0.1\r\n", 63, O_NONBLOCK);

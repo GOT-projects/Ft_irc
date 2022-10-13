@@ -39,6 +39,7 @@
 // Our code
 
 #include "define.hpp"
+#include "log/log.hpp"
 #include "utils/string.hpp"
 #include "Parsing.hpp"
 #include "user/UserMode.hpp"
