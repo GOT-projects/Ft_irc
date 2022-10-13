@@ -16,6 +16,7 @@ ircserv
 .vscode/
 .idea/
 .ccls
+.ccls-cache/
 _*/
 _*
 *.gch

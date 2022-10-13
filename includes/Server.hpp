@@ -19,6 +19,7 @@ namespace irc
 			int					_sockServ;
 			map					_clients;
 			mapParse			_Parse;
+            Log                 _log;
 
 			void	createServer(void);
 			void	runServer(void) const;

@@ -20,6 +20,7 @@ RELATIVE_HDS		=	includes.hpp		\
 						channel/Channel.hpp	\
 						user/UserMode.hpp	\
 						user/User.hpp \
+						log/log.hpp \
 						Parsing.hpp			\
 						utils/string.hpp
 
@@ -32,6 +33,9 @@ SRC_GLOBAL						=	main.cpp				\
 
 DIR_USER		=	$(DIR_GLOBAL)/user
 SRC_USER		=	UserMode.cpp User.cpp
+
+DIR_LOG		=	$(DIR_GLOBAL)/log
+SRC_LOG		=	log.cpp
 
 DIR_CHANNEL		=	$(DIR_GLOBAL)/channel
 SRC_CHANNEL		=	ChannelMode.cpp Channel.cpp
@@ -49,7 +53,7 @@ CFLAGS	=	-Wall -Werror -Wextra -std=c++98 -g3 -ggdb -fsanitize=address
 # Sources
 
 # All dirs
-DIRS_SRC			=	$(DIR_UTILS) $(DIR_USER) $(DIR_CHANNEL) $(DIR_GLOBAL)
+DIRS_SRC			=	$(DIR_UTILS) $(DIR_USER) $(DIR_LOG) $(DIR_CHANNEL) $(DIR_GLOBAL) 
 
 DIR_OBJ				=	obj
 
@@ -57,6 +61,7 @@ DIR_OBJ				=	obj
 SRCS		=	$(addprefix $(DIR_GLOBAL)/, $(SRC_GLOBAL))	\
 				$(addprefix $(DIR_USER)/, $(SRC_USER))	\
 				$(addprefix $(DIR_UTILS)/, $(SRC_UTILS))	\
+				$(addprefix $(DIR_LOG)/, $(SRC_LOG))	\
 				$(addprefix $(DIR_CHANNEL)/, $(SRC_CHANNEL))
 
 # All hpp
