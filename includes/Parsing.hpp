@@ -17,20 +17,22 @@ namespace irc
 	class Parsing
 	{
 		private:
-            int _fd;
-            std::string _msg;
-            std::string _buffer;
-            std::vector<std::string> _cmd;
+            int                         _fd;
+            bool                        _completed;
+            std::string                 _msg;
+            std::string                 _buffer;
+            std::vector<std::string>    _cmd;
             std::vector<Command>        _cmds;
 
 		public:
-			Parsing(const int fd, std::string &msg);
+			Parsing(const int fd);
 			Parsing(){};
 			~Parsing(void);
 
             Parsing &operator = (const Parsing &parsing);
-            std::vector<std::string>  splitMsg(const std::string &delimiter);
+            std::vector<std::string>  splitMsg(std::string &msg, const std::string &delimiter);
             void  splitCmds(std::vector<std::string> cmd_strings);
+            bool getCompleted()const;
             void	displayCommands();
 	};
 } // namespace irc
