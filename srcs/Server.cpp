@@ -90,6 +90,7 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	close(fd);
 	if (fd + 1 == max_fd)
 		max_fd = fd;
+	//TODO rm user - rm parse
 	std::cout << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
 
@@ -100,31 +101,34 @@ void Server::SendClient(int fd, const std::string &msg){
 void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 	// TODO Need working on CTRl-D
 	char    buff[1048];
-    ssize_t ret;
-    std::vector< std::string > cmd_string;
+	ssize_t ret;
+	std::vector< std::string > cmd_string;
 
 	bzero(buff, sizeof(buff));
 	ret = recv(fd, &buff, sizeof(buff), O_NONBLOCK);
-    if (ret <= 0){
+	if (ret <= 0){
 		killSocket(currentSocket, fd, max_fd);
 	} else {
 		// server receive
 		std::string tmp = buff;
-        _Parse[fd] = Parsing(fd, tmp);
-        try{
-            cmd_string = _Parse[fd].splitMsg("\r\n");
-        }
-        catch (std::runtime_error &e) { 
-            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
-		    killSocket(currentSocket, fd, max_fd);
-            return;
-        }
-        try {
-            _Parse[fd].splitCmds(cmd_string);
-        }catch (std::runtime_error &e) { 
-            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
-        }
-        _Parse[fd].displayCommands();
+		_Parse[fd] = Parsing(fd, tmp);
+		try{
+			cmd_string = _Parse[fd].splitMsg("\r\n");
+		}
+		catch (std::runtime_error &e) { 
+			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+			killSocket(currentSocket, fd, max_fd);
+			return;
+		}
+		try {
+			_Parse[fd].splitCmds(cmd_string);
+		}catch (std::runtime_error &e) { 
+			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+		}
+		_Parse[fd].displayCommands();
+		// TODO ctl+v nc \r  /!\ not rm comment
+		// TODO command exec
+		// template map <string cmd, void *fctCmd(Command &cmd, User& from, Server& serv)>
 		std::cout << "fd " << fd << " receive: " << tmp;
 		std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
 		std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
