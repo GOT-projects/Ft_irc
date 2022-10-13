@@ -2,12 +2,14 @@
 
 using namespace irc;
 
-Parsing::Parsing (const int fd, std::string &msg): _fd(fd), _msg(msg){
+Parsing::Parsing (const int fd): _fd(fd){
     //Add msg to buffer for handl CTRL-D
-    _buffer.append(msg);
+    _completed = false;
 }
 
-Parsing::~Parsing(){}
+Parsing::~Parsing(){
+    std::cout << "Destructor" << std::endl;
+}
 
 Parsing &Parsing::operator = (const Parsing &parsing){
     _fd = parsing._fd;
@@ -15,18 +17,31 @@ Parsing &Parsing::operator = (const Parsing &parsing){
     _buffer = parsing._buffer;
     _cmd = parsing._cmd;
     _cmds = parsing._cmds;
+    _completed = parsing._completed;
     return (*this);
 }
 
 Command::Command(std::string cmd, std::string prefix, std::vector<std::string> params)
 : command(cmd), prefix(prefix), params(params){}
+
+bool Parsing::getCompleted()const{
+    return _completed;
+}
+
             
 
-std::vector<std::string>  Parsing::splitMsg(const std::string &delimiter){
+std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string &delimiter){
     std::vector<std::string>    result;
-    std::string                 str = _buffer;
+    std::string                 str;
 	size_t                      end;
 
+    _buffer.append(msg);
+    if (!checkEndString(msg, "\r\n")){
+        return result;
+    }else{
+        _completed = true;
+    }
+    str = _buffer;
     // first check 
     end = str.find(delimiter);
     if (end == std::string::npos)
@@ -60,6 +75,8 @@ void Parsing::splitCmds(std::vector<std::string> cmd_strings){
     size_t                              end;
     std::string                         prefix;
 
+    if (!_completed)
+        return;
     for (it = cmd_strings.begin(); it != cmd_strings.end(); ++it)
     {
         // extract CMD name

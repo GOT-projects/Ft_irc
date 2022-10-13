@@ -111,28 +111,31 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 	} else {
 		// server receive
 		std::string tmp = buff;
-		_Parse[fd] = Parsing(fd, tmp);
-		try{
-			cmd_string = _Parse[fd].splitMsg("\r\n");
-		}
-		catch (std::runtime_error &e) { 
-			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
-			killSocket(currentSocket, fd, max_fd);
-			return;
-		}
-		try {
-			_Parse[fd].splitCmds(cmd_string);
-		}catch (std::runtime_error &e) { 
-			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
-		}
-		_Parse[fd].displayCommands();
+        if (_Parse.find(fd) == _Parse.end())
+            _Parse[fd] = Parsing(fd);
+        try{
+            cmd_string = _Parse[fd].splitMsg(tmp, "\r\n");
+        }
+        catch (std::runtime_error &e) { 
+            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+		    killSocket(currentSocket, fd, max_fd);
+            return;
+        }
+        try {
+            _Parse[fd].splitCmds(cmd_string);
+        }catch (std::runtime_error &e) { 
+            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+        }
+        _Parse[fd].displayCommands();
 		// TODO ctl+v nc \r  /!\ not rm comment
 		// TODO command exec
 		// template map <string cmd, void *fctCmd(Command &cmd, User& from, Server& serv)>
-		std::cout << "fd " << fd << " receive: " << tmp;
-		std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
-		std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-		send(fd, ":127.0.0.1 001 aartiges :Welcome aartiges!aartiges@127.0.0.1\r\n", 63, O_NONBLOCK);
+        if (_Parse[fd].getCompleted()){
+		    std::cout << "fd " << fd << " receive: " << tmp;
+		    std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
+		    std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
+		    send(fd, ":127.0.0.1 001 aartiges :Welcome aartiges!aartiges@127.0.0.1\r\n", 63, O_NONBLOCK);
+        }
 	}
 }
 
@@ -177,7 +180,7 @@ void Server::display(void){
 	std::cout << "┌───────────────────────────────────────────────┐" << std::endl;
 	std::cout << "│                                               │" << std::endl;
 	std::cout << "│ " << std::setw(25) << std::right << "ft_irc v1" << std::setw(24) << "│" << std::endl;
-	std::cout << "│ " << std::setw(14) << std::right << "(host " << ipLan << " " << "port: " << _portString << ")" << std::setw(19 - (_portString.length())) <<  "│" << std::endl;
+	std::cout << "│ " << std::setw(14) << std::right << "(host " << ipLan << " " << "port: " << _portString << ")" << std::setw(27 - _portString.length() - ipLan.length()) <<  "│" << std::endl;
 	std::cout << "│                                               │" << std::endl;
 	std::cout << "│ " << "Bind " << std::setfill('.') << std::setw(10)<< _sockServ << std::setfill(' ') 
 		          << std::setw(20) << std::right << "Processes " << std::setfill('.') << std::setw(10)<< '1' << std::setfill(' ') << " │" << std::endl;
