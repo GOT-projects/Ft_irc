@@ -7,19 +7,23 @@ namespace irc
 	class Server 
 	{
 		private:
-			typedef std::map<int, int>		map;
+			typedef std::list<User>			listUser;
+			typedef listUser::iterator		listUserIterator;
 			typedef std::map<int, Parsing>	mapParse;
-			typedef std::pair<int, int>		pair_type;
-			typedef map::iterator			map_iterator;
+			typedef mapParse::iterator		mapParseIterator;
 
+			// Server infos
 			u_int32_t			_port;
 			std::string			_portString;
 			std::string			_pwd;
 			struct sockaddr_in	_sockAddr;
 			int					_sockServ;
-			map					_clients;
+			// User infos
+			listUser			_onlineUser;
+			listUser			_offlineUser;
 			mapParse			_Parse;
-            Log                 _log;
+			// Debug
+			Log					_log;
 
 			void	createServer(void);
 			void	runServer(void) const;
