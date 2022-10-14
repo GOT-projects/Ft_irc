@@ -1,6 +1,8 @@
 #include "../includes/includes.hpp"
 #include <iostream>
 
+#define test ":ft_irc 433 aartiges :Nickname is already in user\r\n"
+
 using namespace irc;
 
 /**
@@ -103,6 +105,7 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	if (fd + 1 == max_fd)
 		max_fd = fd;
 	//TODO rm user - rm parse
+	_Parse.erase(fd);
 	std::cout << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
 
@@ -143,7 +146,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 		// TODO ctl+v nc \r  /!\ not rm comment
 		// TODO run multiple cmd
 		if (_Parse[fd].getCompleted()){
-			std::cout << _log << "fd " << fd << " receive: " << tmp;
+			//std::cout << _log << "fd " << fd << " receive: " << tmp;
 			std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
 			std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
 			User*	user = getUser(fd);
@@ -151,6 +154,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 				std::cerr << RED << "NO COMMAND" << NC << std::endl;
 				return ;
 			}
+			std::cout << "wep" << std::endl;
 			mapCommandConstIterator cmd = _commands.find((*(_Parse[fd].getNextCmd())).command);
 			if (cmd != _commands.end())
 				(*(cmd->second))(*this, *user, (*(_Parse[fd].getNextCmd())));
@@ -159,6 +163,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 				std::cerr << RED << "COMMAND NOT FOUND" << NC << std::endl;
 			}
 			_Parse[fd].rmFirstCmd();
+			//_Parse[fd].setReadyToSend(false);
 		}
 	}
 	// TODO if (_waitingUsers.find(fd) != _waitingUsers.end() && user finish && !exist)
