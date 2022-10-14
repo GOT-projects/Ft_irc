@@ -162,3 +162,14 @@ void	Parsing::displayCommands() {
 		}
 	}
 }
+
+Command*	Parsing::getNextCmd() {
+	if (_cmds.size() == 0)
+		return NULL;
+	return &(_cmds[0]);
+}
+
+void		Parsing::rmFirstCmd() {
+	if (_cmds.size() != 0)
+		_cmds.erase(_cmds.begin());
+}

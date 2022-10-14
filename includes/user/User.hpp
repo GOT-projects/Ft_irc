@@ -4,6 +4,9 @@
 
 namespace irc
 {
+
+class Server;
+
 class User
 {
 	private:
@@ -16,6 +19,7 @@ class User
 		UserMode	_mode;
 	public:
 		User(void);
+		User(int fd);
 		~User(void);
 		// getter
 		int			getSocketFd(void) const;
@@ -30,17 +34,17 @@ class User
 		bool	isOperatorServer(void) const;
 		// setter
 		void	setSocketFd(const int socketFd);
-		void	getUsername(const std::string& val);
-		void	getNickname(const std::string& val);
-		void	getRealname(const std::string& val);
-		void	getHostname(const std::string& val);
-		void	getServername(const std::string& val);
+		void	setUsername(const std::string& val);
+		void	setNickname(const std::string& val);
+		void	setRealname(const std::string& val);
+		void	setHostname(const std::string& val);
+		void	setServername(const std::string& val);
 		void	beInvisible(const bool boolean);
 		void	beServerNotice(const bool boolean);
 		void	beWallOps(const bool boolean);
 		void	beOperatorServer(const bool boolean);
 		// utility
-		int	sendCommand(const std::string& command) const;
+		int			sendCommand(const std::string& command) const;
 }; // class User
 } // namespace irc
 

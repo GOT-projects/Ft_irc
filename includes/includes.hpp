@@ -47,3 +47,5 @@
 #include "channel/ChannelMode.hpp"
 #include "channel/Channel.hpp"
 #include "Server.hpp"
+#include "utils/compare.hpp"
+#include "commands.hpp"

@@ -9,7 +9,7 @@ using namespace irc;
  * @param port the number of the port
  * @param pwd the password of the server
  */
-Server::Server(const std::string& port, const std::string& pwd)
+Server::Server(const std::string& port, const std::string& pwd) : _commands(Server::initCmd())
 {
 	if (!is_number(port))
 		throw std::out_of_range("port: not a number");
@@ -82,6 +82,7 @@ void	Server::acceptNewConnection(fd_set&	currentSocket, int& max_fd) {
 	std::cout << "New client connection with socket " << newSocket << std::endl;
 	// TODO add creation of a new connection
 	FD_SET(newSocket, &currentSocket);
+	_waitingUsers[newSocket] = User(newSocket);
 	if (newSocket >= max_fd)
 		max_fd = newSocket + 1;
 }
@@ -89,6 +90,16 @@ void	Server::acceptNewConnection(fd_set&	currentSocket, int& max_fd) {
 void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	FD_CLR(fd, &currentSocket);
 	close(fd);
+	// RM user if user not create
+	if (_waitingUsers.find(fd) != _waitingUsers.end())
+		_waitingUsers.erase(fd);
+	else { // Disconnect user
+		listUserConstIterator	tmp = disconnectUserIn(fd, _onlineUsers);
+		if (tmp != _onlineUsers.end()) {
+			_offlineUsers.push_back(*tmp);
+			_onlineUsers.erase(tmp);
+		}
+	}
 	if (fd + 1 == max_fd)
 		max_fd = fd;
 	//TODO rm user - rm parse
@@ -112,33 +123,46 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 	} else {
 		// server receive
 		std::string tmp = buff;
-        if (_Parse.find(fd) == _Parse.end())
-            _Parse[fd] = Parsing(fd);
-        try{
-            cmd_string = _Parse[fd].splitMsg(tmp, "\r\n");
-        }
-        catch (std::runtime_error &e) { 
-            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
-		    killSocket(currentSocket, fd, max_fd);
-            return;
-        }
-        try {
-            _Parse[fd].splitCmds(cmd_string);
-        }catch (std::runtime_error &e) { 
-            SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
-        }
-        std::cout << _log;
-        _Parse[fd].displayCommands();
+		if (_Parse.find(fd) == _Parse.end())
+			_Parse[fd] = Parsing(fd);
+		try{
+			cmd_string = _Parse[fd].splitMsg(tmp, "\r\n");
+		}
+		catch (std::runtime_error &e) { 
+			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+			killSocket(currentSocket, fd, max_fd);
+			return;
+		}
+		try {
+			_Parse[fd].splitCmds(cmd_string);
+		}catch (std::runtime_error &e) { 
+			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
+		}
+		std::cout << _log;
+		_Parse[fd].displayCommands();
 		// TODO ctl+v nc \r  /!\ not rm comment
-		// TODO command exec
-		// template map <string cmd, void *fctCmd(Command &cmd, User& from, Server& serv)>
-        if (_Parse[fd].getCompleted()){
-		    std::cout << _log << "fd " << fd << " receive: " << tmp;
-		    std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
-		    std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-		    send(fd, ":127.0.0.1 001 aartiges :Welcome aartiges!aartiges@127.0.0.1\r\n", 63, O_NONBLOCK);
-        }
+		// TODO run multiple cmd
+		if (_Parse[fd].getCompleted()){
+			std::cout << _log << "fd " << fd << " receive: " << tmp;
+			std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
+			std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
+			User*	user = getUser(fd);
+			mapCommandConstIterator cmd = _commands.find((*(_Parse[fd].getNextCmd())).command);
+			if (cmd != _commands.end())
+				(*(cmd->second))(*this, *user, (*(_Parse[fd].getNextCmd())));
+			else {
+				//TODO send error user.sendCommand(...)
+				std::cerr << RED << "COMMAND NOT FOUND" << NC << std::endl;
+			}
+			_Parse[fd].rmFirstCmd();
+		}
 	}
+	// TODO if (_waitingUsers.find(fd) != _waitingUsers.end() && user finish && !exist)
+	// online <- user
+	// rm user
+	// TODO if (_waitingUsers.find(fd) != _waitingUsers.end() && user finish && exist)
+	// rm user
+	// online fd = fd
 }
 
 /**
@@ -165,6 +189,12 @@ void	Server::connect(void) {
 			throw std::runtime_error(strerror(errno));
 		for (int fd = 0; fd <= max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
+				std::cout << BLUE_BK << "Users" << NC << BLUE
+					<< " In creation: " << _waitingUsers.size()
+					<< " online: " << _onlineUsers.size()
+					<< " offline: " << _offlineUsers.size()
+					<< NC << std::endl;
+
 				if (fd == _sockServ) {
 					acceptNewConnection(currentSocket, max_fd);
 				}
@@ -191,3 +221,22 @@ void Server::display(void){
 	std::cout << "└───────────────────────────────────────────────┘" << std::endl;
 }
 
+listUser&	Server::getOnlineUsers( void ){
+	return (this->_onlineUsers);
+}
+
+listUser&	Server::getOfflineUsers( void ){
+	return (this->_offlineUsers);
+}
+
+mapUser&	Server::getWaitingUsers( void ){
+	return (this->_waitingUsers);
+}
+
+User*	Server::getUser(int fd) {
+	if (_waitingUsers.find(fd) != _waitingUsers.end())
+		return &(_waitingUsers[fd]);
+	User*	online = getUserInList(fd, _onlineUsers);
+	User*	offline = getUserInList(fd, _offlineUsers);
+	return (online == NULL ? offline : online);
+}

@@ -23,8 +23,8 @@
 namespace irc { 
 	class Channel {
 		private:
-			typedef std::list<User&>			ListUser;
-			typedef ListUser::iterator		ListUserIterator;
+			typedef std::list<User*>			ListUserChannel;
+			typedef ListUserChannel::iterator		ListUserChannelIterator;
 
 			std::string		_channelName;//Channels names are strings (beginning with a '&' or '#' character) of length up to 200 characters. pas de ' ' , ',' ou ascii 7 (ctrl g)
                         std::string             _topic;
@@ -32,9 +32,9 @@ namespace irc {
 			std::string		_password;
 
 
-			ListUser		_users;		
-			ListUser		_bans;		
-			ListUser		_operators;	     
+			ListUserChannel		_users;		
+			ListUserChannel		_bans;		
+			ListUserChannel		_operators;	     
 
 			// bool		checkMessage();
 			// void		addToConnectedList();

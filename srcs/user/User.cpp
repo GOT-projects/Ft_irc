@@ -2,6 +2,12 @@
 
 using namespace irc;
 
+User::User(int fd)
+: _socketFd(fd), _username(""), _nickname(""), _realname(""), _hostname(""),
+_servername(""), _mode(UserMode())
+{}
+
+
 User::User(void)
 : _socketFd(-1), _username(""), _nickname(""), _realname(""), _hostname(""),
 _servername(""), _mode(UserMode())
@@ -23,11 +29,11 @@ bool		User::isOperatorServer(void) const {return _mode.getOperatorServer();}
 
 // setter
 void		User::setSocketFd(const int socketFd) {_socketFd = socketFd;}
-void		User::getUsername(const std::string& val) {_username = val;}
-void		User::getNickname(const std::string& val) {_nickname = val;}
-void		User::getRealname(const std::string& val) {_realname = val;}
-void		User::getHostname(const std::string& val) {_hostname = val;}
-void		User::getServername(const std::string& val) {_servername = val;}
+void		User::setUsername(const std::string& val) {_username = val;}
+void		User::setNickname(const std::string& val) {_nickname = val;}
+void		User::setRealname(const std::string& val) {_realname = val;}
+void		User::setHostname(const std::string& val) {_hostname = val;}
+void		User::setServername(const std::string& val) {_servername = val;}
 
 void		User::beInvisible(const bool boolean) {_mode.setInvisible(boolean);}
 void		User::beServerNotice(const bool boolean) {_mode.setServerNotice(boolean);}

@@ -34,14 +34,14 @@ bool	Channel::checkPassword( std::string str){
 
 
 void	Channel::sendMessage( std::string message ){
-	for (ListUserIterator it = _users.begin(); it != _users.end(); it++)
-		it->sendCommand(message.c_str());
+	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
+		(*it)->sendCommand(message.c_str());
 }
 
 void		Channel::kick( User& user ){
-	for (ListUserIterator it = _users.begin(); it != _users.end(); it++)
+	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if (it->_username == user.getUsername())
+		if ((*it)->getUsername() == user.getUsername())
 		{
 			_users.erase(it); // add to ban list?
 			return ;
@@ -51,21 +51,21 @@ void		Channel::kick( User& user ){
 }
 
 void		Channel::delFromOperatorList( User& user ){
-	for (ListUserIterator it = _operators.begin(); it != _operators.end(); it++)
+	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++)
 	{
-		if (it->_username == user.getUsername())
+		if ((*it)->getUsername() == user.getUsername())
 		{
 			_operators.erase(it);
 			return ;
-		}	
+		}
 	}
 	return ;
 }
 
 void		Channel::delFromBansList( User& user ){
-	for (ListUserIterator it = _bans.begin(); it != _bans.end(); it++)
+	for (ListUserChannelIterator it = _bans.begin(); it != _bans.end(); it++)
 	{
-		if (it->_username == user.getUsername())
+		if ((*it)->getUsername() == user.getUsername())
 		{
 			_bans.erase(it);
 			return ;
@@ -75,17 +75,17 @@ void		Channel::delFromBansList( User& user ){
 }
 
 void    Channel::joinChannel( User& user ){
-	_users.push_back(user);
+	_users.push_back(&user);
 }
 
 void		Channel::addToOperatorList( User& user ){
-	_operators.push_back(user);
+	_operators.push_back(&user);
 }
 
 void		Channel::addToBanList( User& user ){
 	if (Channel::isInBanList(user.getUsername()))
 		kick(user);
-	_bans.push_back(user);
+	_bans.push_back(&user);
 }
 
 
@@ -94,27 +94,27 @@ void		Channel::addToBanList( User& user ){
 
 
 bool		Channel::isInChannel( std::string username ){
-	for (ListUserIterator it = _users.begin(); it != _users.end(); it++)
+	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if (it->_username == username )
+		if ((*it)->getUsername() == username )
 			return (true);
 	}
 	return (false);
 }
 
 bool		Channel::isInBanList( std::string username ){
-	for (ListUserIterator it = _bans.begin(); it != _bans.end(); it++)
+	for (ListUserChannelIterator it = _bans.begin(); it != _bans.end(); it++)
 	{
-		if (it->_username == username )
+		if ((*it)->getUsername() == username )
 			return (true);
 	}
 	return (false);
 }
 
 bool		Channel::isInOperatorList( std::string username ){
-	for (ListUserIterator it = _operators.begin(); it != _operators.end(); it++)
+	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++)
 	{
-		if (it->_username == username )
+		if ((*it)->getUsername() == username )
 			return (true);
 	}
 	return (false);

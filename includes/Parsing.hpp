@@ -9,7 +9,7 @@ namespace irc
 		std::string					command;
 		std::string					prefix;
 		std::vector<std::string>	params;
-
+		
 		Command(std::string cmd, std::string prefix = std::string(), \
 				std::vector<std::string> params = std::vector<std::string>());
 	};
@@ -34,5 +34,7 @@ namespace irc
 			void  splitCmds(std::vector<std::string> cmd_strings);
 			bool getCompleted()const;
 			void	displayCommands();
+			Command*	getNextCmd();
+			void		rmFirstCmd();
 	};
 } // namespace irc
