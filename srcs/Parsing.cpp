@@ -18,6 +18,7 @@ Parsing &Parsing::operator = (const Parsing &parsing){
     _cmd = parsing._cmd;
     _cmds = parsing._cmds;
     _completed = parsing._completed;
+	_readyTosend = false;
     return (*this);
 }
 
@@ -28,7 +29,9 @@ bool Parsing::getCompleted()const{
     return _completed;
 }
 
-            
+std::vector<Command> Parsing::getCommand()const{
+	return _cmds;
+}
 
 std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string &delimiter){
     std::vector<std::string>    result;
@@ -36,8 +39,8 @@ std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string 
 	size_t                      end;
 
     _buffer.append(msg);
-    if (!checkEndString(msg, "\r\n")){
-        return result;
+    if (!checkEndString(msg, "\r\n")){ 
+		return result;
     }else{
         _completed = true;
     }
@@ -70,21 +73,33 @@ std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string 
     return (result);
 }
 
+void Parsing::setReadyToSend(bool b){
+	_readyTosend = b;
+}
+
+bool Parsing::getReadyToSend(void)const{
+	return _readyTosend;
+}
+
+
 void Parsing::splitCmds(std::vector<std::string> cmd_strings){
     std::vector<std::string>::iterator  it;
     size_t                              end;
     std::string                         prefix;
 
-    if (!_completed)
+    if (_completed == false)
         return;
+	_readyTosend = true;
     for (it = cmd_strings.begin(); it != cmd_strings.end(); ++it)
     {
         // extract CMD name
         end = it->find(' ');
         if (end == std::string::npos) // only the command
         {
-            if (it->find(':') == 0) // the only token is a prefix :'(
+            if (it->find(':') == 0){
+				_completed = false;
                 throw std::runtime_error("IRC itage must have a command");
+			} // the only token is a prefix :'(
             _cmds.push_back(Command(it->substr(0, end)));
         }
         else // CMD + params
@@ -145,6 +160,8 @@ void Parsing::splitCmds(std::vector<std::string> cmd_strings){
             }
         }
     }
+	_buffer.clear();
+	_completed = false;
 }
 
 void	Parsing::displayCommands() {
@@ -152,13 +169,13 @@ void	Parsing::displayCommands() {
 	std::vector<Command>::iterator  it;
 	std::vector<std::string>::iterator  it2;
     int i(0);
-	for (it = _cmds.begin(); it < _cmds.end(); ++it)
+	for (it = _cmds.end() - 1; it < _cmds.end(); ++it)
 	{
 		std::cout << "\nPREFIX : " << it->prefix << std::endl;
 		std::cout << "CMD : " << it->command << std::endl;
 		for (it2 = it->params.begin(); it2 < it->params.end(); ++it2)
 		{
-			std::cout << "PARAM " << i++ << ": " << *it2 << std::endl;
+			std::cout << "\tPARAM " << i++ << ": " << *it2 << std::endl;
 		}
 	}
 }

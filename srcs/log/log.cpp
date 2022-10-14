@@ -20,7 +20,7 @@ std::tm *Log::getTm(){
 std::ostream & operator<< (std::ostream &o, Log &log) {
     log.initLog();
     std::tm *ltm = log.getTm();
-	o << "[ " << 1900 + ltm->tm_year << "/" << 1 + ltm->tm_mon << "/" << ltm->tm_mday << " " << 5 + ltm->tm_hour << ":" << 30 + ltm->tm_min << ":" << ltm->tm_sec << " ] ";
+	o << "[ " << 1900 + ltm->tm_year << "/" << 1 + ltm->tm_mon << "/" << ltm->tm_mday << " " << ltm->tm_hour << ":" << 1 + ltm->tm_min << ":" << 1+  ltm->tm_sec << " ] ";
 	return (o);
 }
 

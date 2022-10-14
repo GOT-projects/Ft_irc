@@ -1,6 +1,8 @@
 #include "../includes/includes.hpp"
 #include <iostream>
 
+#define test ":ft_irc 433 aartiges :Nickname is already in user\r\n"
+
 using namespace irc;
 
 /**
@@ -92,6 +94,7 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	if (fd + 1 == max_fd)
 		max_fd = fd;
 	//TODO rm user - rm parse
+	_Parse.erase(fd);
 	std::cout << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
 
@@ -132,12 +135,12 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 		// TODO ctl+v nc \r  /!\ not rm comment
 		// TODO command exec
 		// template map <string cmd, void *fctCmd(Command &cmd, User& from, Server& serv)>
-        if (_Parse[fd].getCompleted()){
-		    std::cout << _log << "fd " << fd << " receive: " << tmp;
+		if (_Parse[fd].getReadyToSend()){
 		    std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
 		    std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-		    send(fd, ":127.0.0.1 001 aartiges :Welcome aartiges!aartiges@127.0.0.1\r\n", 63, O_NONBLOCK);
-        }
+		    send(fd, test, sizeof(test), O_NONBLOCK);
+			_Parse[fd].setReadyToSend(false);
+		}
 	}
 }
 
