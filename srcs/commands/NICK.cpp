@@ -3,6 +3,7 @@
 namespace irc
 {
 	void NICK(Server& serv, User& user, Command& cmd) {
+        std::cout << "Entry in NICK fonction" << std::endl;
 		if (cmd.params.size() < 1) {
 			std::cerr << RED << "NICK: too low/many arguments ERR_NONICKNAMEGIVEN" << NC << std::endl;
 			// TODO send err
