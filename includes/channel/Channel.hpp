@@ -23,47 +23,65 @@
 namespace irc { 
 	class Channel {
 		private:
+			typedef std::list<User&>			ListUser;
+			typedef ListUser::iterator		ListUserIterator;
+
 			std::string		_channelName;//Channels names are strings (beginning with a '&' or '#' character) of length up to 200 characters. pas de ' ' , ',' ou ascii 7 (ctrl g)
+                        std::string             _topic;
 			bool			_private;
 			std::string		_password;
 
-			int				_userLimits;
 
-			std::list<int>	_users;		
-			std::list<int>	_bans;		
-			std::list<int>	_operators;	     
+			ListUser		_users;		
+			ListUser		_bans;		
+			ListUser		_operators;	     
 
-			void		sendMessage();
-			bool		checkMessage();
+			// bool		checkMessage();
+			// void		addToConnectedList();
+			// void		changeMods();
+			// void		kickUser();
+			// bool		checkUserRights(); // => j utilise @ ou une autre variable?
 
-			void		addToConnectedList();
-			void		addToDeconnectedList();
 
-			void		giveRights();
-			void		changeMods();
-			void		renameTopic();
-			void		kickUser();
 
-			bool		checkUserRights(); // => j utilise @ ou une autre variable?
-			bool		checkPassword();
+
+
+
+			bool		checkPassword( std::string str );
+			void	        changeChanName( std::string name );
+			void	        changeChanTopic( std::string name );
+			void	        changeChanPassword( std::string name );
 
 		public:
-			std::string getChannelName();
-			//	Mods			*getMods();
-			bool		getPrivateBool();
-			bool		isInChannel();
-			bool		isInBanList();
-			bool		isInOperatorList();
-
-			void		addToOperatorList();
-			void		addToBanList();  // if in channel => kik (fonction?)
+			void		sendMessage( std::string message );
+			//surement a remettre en privé (check puis utiliser la fction)
+                        
+                        
+                        //	Mods			*getMods();
 			void		applyNewMods();
-			void		joinChannel();
 			void		inviteToChannel();
-			void		expulse();
+			// liste d invité?
+
+
+
+			void		giveRights( User& host, User& guest );
 			// comment gerer le fait de leave le channel : check si tjrs connecté? ou appel d une fct de deconnection
+			void		joinChannel( User& user);
+			void		addToOperatorList( User& user );
+			void		addToBanList( User& user );  // if in channel => kik (fonction?)
+			void		kick( User& user );
+			void		delFromOperatorList( User& user );
+			void		delFromBansList( User& user );
+
+			std::string 	getChannelName();  //
+			std::string 	getPassword(); //
+			bool		getPrivateBool(); //
+			bool		isInChannel( std::string username );
+			bool		isInBanList( std::string username );
+			bool		isInOperatorList( std::string username );
 
 			Channel( std::string name, bool privatebool, std::string password );
+			Channel( std::string name );
 			~Channel();
 
 	};
