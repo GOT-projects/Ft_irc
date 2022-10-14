@@ -147,6 +147,10 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 			std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
 			std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
 			User*	user = getUser(fd);
+			if (_Parse[fd].getNextCmd() == NULL) {
+				std::cerr << RED << "NO COMMAND" << NC << std::endl;
+				return ;
+			}
 			mapCommandConstIterator cmd = _commands.find((*(_Parse[fd].getNextCmd())).command);
 			if (cmd != _commands.end())
 				(*(cmd->second))(*this, *user, (*(_Parse[fd].getNextCmd())));
