@@ -27,6 +27,11 @@ Server::Server(const std::string& port, const std::string& pwd) : _commands(Serv
 	std::cout << GREEN << "Server created" << NC << std::endl;
 }
 
+Log Server::getLog(){
+    return _log;
+}
+
+
 /**
  * @brief Destroy the Server:: Server object
  * 

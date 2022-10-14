@@ -3,7 +3,6 @@
 namespace irc
 {
 	void NICK(Server& serv, User& user, Command& cmd) {
-        std::cout << "Entry in NICK fonction" << std::endl;
 		if (cmd.params.size() < 1) {
 			std::cerr << RED << "NICK: too low/many arguments ERR_NONICKNAMEGIVEN" << NC << std::endl;
 			// TODO send err
@@ -16,7 +15,7 @@ namespace irc
 			|| (isInMap(tmp, serv.getWaitingUsers()) & EXIST_IN_COPY)
 		) {
 			std::cerr << RED << "NICK ERR_NICKNAMEINUSE" << NC << std::endl;
-			// TODO send error
+            user.sendCommand(ERR_NICKNAMEINUSE(tmp.getNickname()));
 		}
 		user.setNickname(cmd.params[0]);
 		//TODO if connected (nick user) go online list
