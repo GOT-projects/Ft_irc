@@ -15,7 +15,7 @@ namespace irc
 			|| (isInMap(tmp, serv.getWaitingUsers()) & EXIST_IN_COPY)
 		) {
 			std::cerr << RED << "NICK ERR_NICKNAMEINUSE" << NC << std::endl;
-			// TODO send error
+            user.sendCommand(ERR_NICKNAMEINUSE(tmp.getNickname()));
 		}
 		user.setNickname(cmd.params[0]);
 		//TODO if connected (nick user) go online list

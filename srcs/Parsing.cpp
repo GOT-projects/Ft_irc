@@ -161,7 +161,7 @@ void Parsing::splitCmds(std::vector<std::string> cmd_strings){
         }
     }
 	_buffer.clear();
-	_completed = false;
+	_completed = true;
 }
 
 void	Parsing::displayCommands() {
@@ -169,7 +169,7 @@ void	Parsing::displayCommands() {
 	std::vector<Command>::iterator  it;
 	std::vector<std::string>::iterator  it2;
     int i(0);
-	for (it = _cmds.end() - 1; it < _cmds.end(); ++it)
+	for (it = _cmds.begin(); it < _cmds.end(); ++it)
 	{
 		std::cout << "\nPREFIX : " << it->prefix << std::endl;
 		std::cout << "CMD : " << it->command << std::endl;

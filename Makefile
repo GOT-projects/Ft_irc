@@ -23,6 +23,7 @@ RELATIVE_HDS		=	includes.hpp		\
 						user/User.hpp \
 						log/log.hpp \
 						Parsing.hpp			\
+						reply.hpp			\
 						utils/string.hpp	\
 						utils/compare.hpp
 
@@ -46,7 +47,11 @@ DIR_UTILS		=	$(DIR_GLOBAL)/utils
 SRC_UTILS		=	string.cpp compare.cpp
 
 DIR_COMMANDS		=	$(DIR_GLOBAL)/commands
-SRC_COMMANDS		=	initCmd.cpp NICK.cpp USER.cpp
+SRC_COMMANDS		=	initCmd.cpp			\
+						NICK.cpp 			\
+						PING.cpp 			\
+						PONG.cpp 			\
+						USER.cpp
 
 ################################################################################
 ##                       Compilation Environnement                            ##

@@ -27,6 +27,11 @@ Server::Server(const std::string& port, const std::string& pwd) : _commands(Serv
 	std::cout << GREEN << "Server created" << NC << std::endl;
 }
 
+Log Server::getLog(){
+    return _log;
+}
+
+
 /**
  * @brief Destroy the Server:: Server object
  * 
@@ -155,16 +160,28 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 				return ;
 			}
 			std::cout << "wep" << std::endl;
-			mapCommandConstIterator cmd = _commands.find((*(_Parse[fd].getNextCmd())).command);
-			if (cmd != _commands.end())
-				(*(cmd->second))(*this, *user, (*(_Parse[fd].getNextCmd())));
-			else {
-				//TODO send error user.sendCommand(...)
-				std::cerr << RED << "COMMAND NOT FOUND" << NC << std::endl;
-			}
-			_Parse[fd].rmFirstCmd();
+            mapCommandConstIterator cmd = _commands.begin();
+            std::vector<Command> cmds = _Parse[fd].getCommand();
+            std::vector<Command>::iterator itcmd = cmds.begin();
+            std::vector<Command>::iterator itcmdEnd= cmds.end();
+            functionPtr executeCmd;
+
+            for (; itcmd != itcmdEnd; itcmd++){
+                if (_commands.find((*itcmd).command) != _commands.end()){
+				    std::cerr <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
+                    cmd = _commands.find(itcmd->command);
+                    executeCmd = cmd->second;
+                    executeCmd(*this, *user, *itcmd);
+                }else{
+                    std::cerr << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
+                }
+            }
+            _Parse[fd].getCommand().erase(itcmd, cmds.end());
+
+			/* 	//TODO send error user.sendCommand(...) */
+			/* 	std::cerr << RED << "COMMAND NOT FOUND" << NC << std::endl; */
+			/* _Parse[fd].rmFirstCmd(); */
 			//_Parse[fd].setReadyToSend(false);
-		}
 	}
 	// TODO if (_waitingUsers.find(fd) != _waitingUsers.end() && user finish && !exist)
 	// online <- user
@@ -172,6 +189,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 	// TODO if (_waitingUsers.find(fd) != _waitingUsers.end() && user finish && exist)
 	// rm user
 	// online fd = fd
+    }
 }
 
 /**

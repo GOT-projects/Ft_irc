@@ -3,14 +3,15 @@
 namespace irc
 {
 	void USER(Server& serv, User& user, Command& cmd) {
+        Log log;
 		serv.getOnlineUsers();
 		if (cmd.params.size() < 4) {
-			std::cerr << RED << "USER:  ERR_NEEDMOREPARAMS" << NC << std::endl;
-			user.sendCommand("USER :Not enough parameters\r\n"); //FIXME
+			std::cerr << RED << log << "USER:  ERR_NEEDMOREPARAMS" << NC << std::endl;
+			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command));
 		}
 		else if (user.getUsername().size() > 0) {
-			std::cerr << RED << "USER:  ERR_ALREADYREGISTERED " << NC << std::endl;
-			user.sendCommand("USER :You may not reregister\r\n");//FIXME
+			std::cerr << RED << log << "USER:  ERR_ALREADYREGISTERED " << NC << std::endl;
+			user.sendCommand(ERR_ALREADYREGISTERED());//FIXME
 		}else {
 			user.setUsername(cmd.params[0]);
 			user.setRealname(cmd.params[3]);

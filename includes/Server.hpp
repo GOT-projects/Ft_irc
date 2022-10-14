@@ -54,6 +54,7 @@ namespace irc
 			listUser&	getOnlineUsers();
 			listUser&	getOfflineUsers();
 			mapUser&	getWaitingUsers();
+			Log		    getLog();
 			void		connect(void);
             void    	SendClient(int fd, const std::string &msg);
 			void    	display(void);
