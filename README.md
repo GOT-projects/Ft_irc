@@ -12,6 +12,8 @@ Sur netcat (`nc`) pour tapper un `\n` saisir `ctrl+v`
 
 [University Chicago Project](http://chi.cs.uchicago.edu/chirc/index.html)
 
+[c++](https://cplusplus.com/) ou [c++ (old version)](https://legacy.cplusplus.com/)
+
 ### RFC
 
 [Internet Relay Chat Protocol](https://www.rfc-editor.org/info/rfc1459)
