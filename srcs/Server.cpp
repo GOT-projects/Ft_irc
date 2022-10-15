@@ -101,7 +101,7 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	if (_waitingUsers.find(fd) != _waitingUsers.end())
 		_waitingUsers.erase(fd);
 	else { // Disconnect user
-		listUserConstIterator	tmp = disconnectUserIn(fd, _onlineUsers);
+		listUserIterator	tmp = disconnectUserIn(fd, _onlineUsers);
 		if (tmp != _onlineUsers.end()) {
 			_offlineUsers.push_back(*tmp);
 			_onlineUsers.erase(tmp);

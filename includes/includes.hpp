@@ -22,6 +22,8 @@
 
 // Utils
 #include <stdlib.h>
+#include <stdio.h>
+#include <ctime>
 
 // Error
 #include <errno.h>

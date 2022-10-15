@@ -87,8 +87,9 @@ void Parsing::splitCmds(std::vector<std::string> cmd_strings){
     size_t                              end;
     std::string                         prefix;
 
-    if (_completed == false)
+    if (_completed == false) {
         return;
+    }
 	_readyTosend = true;
     for (it = cmd_strings.begin(); it != cmd_strings.end(); ++it)
     {
