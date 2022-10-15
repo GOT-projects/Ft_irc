@@ -20,6 +20,11 @@ User::User(void)
 _servername(""), _mode(UserMode())
 {}
 
+User::User(const User& ref)
+: _socketFd(ref._socketFd), _username(ref._username), _nickname(ref._nickname), _realname(ref._realname), _hostname(ref._hostname),
+_servername(ref._servername), _mode(ref._mode)
+{}
+
 /**
  * @brief Destroy the User:: User object
  */
@@ -104,71 +109,81 @@ bool	User::isOperatorServer(void) const {return _mode.getOperatorServer();}
  * @brief Set the file descriptor of the client where the user is connected
  * 
  * @param socketFd the file descriptor
+ * @return User& the user
  */
-void	User::setSocketFd(const int socketFd) {_socketFd = socketFd;}
+User&	User::setSocketFd(const int socketFd) {_socketFd = socketFd;return *this;}
 
 /**
  * @brief Set the username of the user
  * 
  * @param val the username
+ * @return User& the user
  */
-void	User::setUsername(const std::string& val) {_username = val;}
+User&	User::setUsername(const std::string& val) {_username = val;return *this;}
 
 /**
  * @brief Set the nickname of the user
  * 
  * @param val the nickname
+ * @return User& the user
  */
-void	User::setNickname(const std::string& val) {_nickname = val;}
+User&	User::setNickname(const std::string& val) {_nickname = val;return *this;}
 
 /**
  * @brief Set the real name of the user
  * 
  * @param val the real name
+ * @return User& the user
  */
-void	User::setRealname(const std::string& val) {_realname = val;}
+User&	User::setRealname(const std::string& val) {_realname = val;return *this;}
 
 /**
  * @brief Set the hostname of the user
  * 
  * @param val the hostname
+ * @return User& the user
  */
-void	User::setHostname(const std::string& val) {_hostname = val;}
+User&	User::setHostname(const std::string& val) {_hostname = val;return *this;}
 
 /**
  * @brief Set the servername of the user
  * 
  * @param val the servername
+ * @return User& the user
  */
-void	User::setServername(const std::string& val) {_servername = val;}
+User&	User::setServername(const std::string& val) {_servername = val;return *this;}
 
 /**
  * @brief Set the mode status of invisible of the user
  * 
  * @param boolean true if user mode invisible is on, else false
+ * @return User& the user
  */
-void	User::beInvisible(const bool boolean) {_mode.setInvisible(boolean);}
+User&	User::beInvisible(const bool boolean) {_mode.setInvisible(boolean);return *this;}
 
 /**
  * @brief Set the mode status of server notice of the user
  * 
  * @param boolean true if user mode server notice is on, else false
+ * @return User& the user
  */
-void	User::beServerNotice(const bool boolean) {_mode.setServerNotice(boolean);}
+User&	User::beServerNotice(const bool boolean) {_mode.setServerNotice(boolean);return *this;}
 
 /**
  * @brief Set the mode status of Wall Operators of the user
  * 
  * @param boolean true if user mode Wall Operators is on, else false
+ * @return User& the user
  */
-void	User::beWallOps(const bool boolean) {_mode.setWallOps(boolean);}
+User&	User::beWallOps(const bool boolean) {_mode.setWallOps(boolean);return *this;}
 
 /**
  * @brief Set the mode status of Operator Server of the user
  * 
  * @param boolean true if user mode Operator Server is on, else false
+ * @return User& the user
  */
-void	User::beOperatorServer(const bool boolean) {_mode.setOperatorServer(boolean);}
+User&	User::beOperatorServer(const bool boolean) {_mode.setOperatorServer(boolean);return *this;}
 
 
 // utility
@@ -188,3 +203,20 @@ int	User::sendCommand(const std::string& command) const {
 	send(_socketFd, command.c_str(), command.size(), O_NONBLOCK);
 	return 0;
 }
+
+namespace irc
+{
+
+/**
+ * @brief check if user have requirements to register as user online
+ * 
+ * @param user the user
+ * @return true if the user can be register, else false
+ */
+bool	canRegisterable(const User& user) {
+	if (user.getNickname().size() && user.getUsername().size())
+		return true;
+	return false;
+}
+	
+} // namespace irc

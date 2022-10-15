@@ -292,7 +292,7 @@ mapUser&	Server::getWaitingUsers( void ){
 User*	Server::getUser(int fd) {
 	if (_waitingUsers.find(fd) != _waitingUsers.end())
 		return &(_waitingUsers[fd]);
-	User*	online = getUserInList(fd, _onlineUsers);
-	User*	offline = getUserInList(fd, _offlineUsers);
+	User*	online = getUserInList(User(fd), _onlineUsers, &isSameSocket);
+	User*	offline = getUserInList(User(fd), _offlineUsers, &isSameSocket);
 	return (online == NULL ? offline : online);
 }

@@ -15,6 +15,7 @@ class UserMode
 		bool	_operatorServer;
 	public:
 		UserMode(void);
+		UserMode(const UserMode& ref);
 		~UserMode(void);
 		// getter
 		bool	getInvisible(void) const;

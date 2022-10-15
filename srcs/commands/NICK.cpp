@@ -13,19 +13,39 @@ namespace irc
 		if (cmd.params.size() < 1) {
 			std::cerr << RED << "NICK: too low/many arguments ERR_NONICKNAMEGIVEN" << NC << std::endl;
 			// TODO send err
+			return ;
 		}
+		if (cmd.params[0] == user.getNickname())
+			return ;
 		User tmp;
-		tmp.setNickname(cmd.params[0]);
+		tmp.setNickname(cmd.params[0]).setUsername(user.getUsername());
 		if (
-			(isInList(tmp, serv.getOfflineUsers()) & EXIST_IN_COPY)
-			|| (isInList(tmp, serv.getOnlineUsers()) & EXIST_IN_COPY)
-			|| (isInMap(tmp, serv.getWaitingUsers()) & EXIST_IN_COPY)
+			(isInList(tmp, serv.getOnlineUsers(), &isSameNickname) & EXIST_IN_COPY)
+			|| (isInMap(tmp, serv.getWaitingUsers(), &isSameNickname) & EXIST_IN_COPY)
 		) {
 			std::cerr << RED << "NICK ERR_NICKNAMEINUSE" << NC << std::endl;
 			user.sendCommand(ERR_NICKNAMEINUSE(tmp.getNickname()));
+			return;
 		}
 		user.setNickname(cmd.params[0]);
-		//TODO if connected (nick user) go online list
+		// Can register
+		if (canRegisterable(user)) {
+			// Not already register
+			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
+				User*	toTransfert = getUserInList(user, serv.getOfflineUsers(), &isSameUsername);
+				// If user corresponding to offline user
+				if (toTransfert) {
+					// ADD offline user update to online state and rm from offline user
+					toTransfert->setNickname(user.getNickname());
+					serv.getOnlineUsers().push_back(*toTransfert);
+					serv.getOfflineUsers().erase(getUserIteratorInList(user, serv.getOfflineUsers(), &isSameUsername));
+				} else {
+					// ADD user to online user
+					serv.getOnlineUsers().push_back(user);
+				}
+				// RM from anonym users
+				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
+			}
+		}
 	}
 } // namespace irc
-
