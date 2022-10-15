@@ -8,7 +8,6 @@ Parsing::Parsing (const int fd): _fd(fd){
 }
 
 Parsing::~Parsing(){
-    std::cout << "Destructor" << std::endl;
 }
 
 Parsing &Parsing::operator = (const Parsing &parsing){
@@ -33,6 +32,20 @@ std::vector<Command> Parsing::getCommand()const{
 	return _cmds;
 }
 
+
+/* @Brief Clear Vector and reset bool to false*/
+/* @Param  NONE*/
+/* @Return  NONE*/
+void Parsing::ClearCommand(){
+    _cmds.clear();
+    _buffer.clear();
+    _completed = false;
+	_readyTosend = false;
+}
+
+/* @Brief Split msg receive and check if message finish by \r\n if not just append for waiting the end command*/
+/* @Param  msg, delimiter*/
+/* @Return  vector<string>*/
 std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string &delimiter){
     std::vector<std::string>    result;
     std::string                 str;
@@ -81,7 +94,9 @@ bool Parsing::getReadyToSend(void)const{
 	return _readyTosend;
 }
 
-
+/* @Brief Parse the command split for get CMD and the Params*/
+/* @Param  cmd_splits*/
+/* @Return  NONE*/
 void Parsing::splitCmds(std::vector<std::string> cmd_strings){
     std::vector<std::string>::iterator  it;
     size_t                              end;
@@ -163,8 +178,24 @@ void Parsing::splitCmds(std::vector<std::string> cmd_strings){
     }
 	_buffer.clear();
 	_completed = true;
+    _tolowerCmd();
 }
 
+/* @Brief UPPERCASE the cmd*/
+/* @Param  NONE*/
+/* @Return  NONE*/
+void Parsing::_tolowerCmd(){
+	std::vector<Command>::iterator  it;
+    std::string::iterator itcmd;
+
+	for (it = _cmds.begin(); it < _cmds.end(); ++it){
+        transform((*it).command.begin(), (*it).command.end(), (*it).command.begin(), ::toupper);
+    }
+}
+
+/* @Brief Print cmd receive use for DEBEUG*/
+/* @Param  NONE*/
+/* @Return  NONE*/
 void	Parsing::displayCommands() {
 
 	std::vector<Command>::iterator  it;
@@ -185,9 +216,4 @@ Command*	Parsing::getNextCmd() {
 	if (_cmds.size() == 0)
 		return NULL;
 	return &(_cmds[0]);
-}
-
-void		Parsing::rmFirstCmd() {
-	if (_cmds.size() != 0)
-		_cmds.erase(_cmds.begin());
 }

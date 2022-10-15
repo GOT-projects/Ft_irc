@@ -20,14 +20,19 @@
 
 
 // creer classe mods
+
 namespace irc { 
+	/**
+	 * @brief The Channel class stock all informations of a channel
+	 * and has some utils for channel management
+	 */
 	class Channel {
 		private:
 			typedef std::list<User*>			ListUserChannel;
 			typedef ListUserChannel::iterator		ListUserChannelIterator;
 
 			std::string		_channelName;//Channels names are strings (beginning with a '&' or '#' character) of length up to 200 characters. pas de ' ' , ',' ou ascii 7 (ctrl g)
-                        std::string             _topic;
+			std::string		_topic;
 			bool			_private;
 			std::string		_password;
 
@@ -48,16 +53,16 @@ namespace irc {
 
 
 			bool		checkPassword( std::string str );
-			void	        changeChanName( std::string name );
-			void	        changeChanTopic( std::string name );
-			void	        changeChanPassword( std::string name );
+			void		changeChanName( std::string name );
+			void		changeChanTopic( std::string name );
+			void		changeChanPassword( std::string name );
 
 		public:
 			void		sendMessage( std::string message );
 			//surement a remettre en privé (check puis utiliser la fction)
-                        
-                        
-                        //	Mods			*getMods();
+
+
+		//	Mods			*getMods();
 			void		applyNewMods();
 			void		inviteToChannel();
 			// liste d invité?

@@ -3,6 +3,9 @@
 #include "../includes.hpp"
 
 namespace irc {
+/**
+ * @brief Class that represente the modes of a user
+ */
 class UserMode
 {
 	private:
