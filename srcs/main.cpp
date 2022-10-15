@@ -1,5 +1,12 @@
 #include "../includes/includes.hpp"
 
+/**
+ * @brief The main program (entry)
+ * 
+ * @param argc number og arguments
+ * @param argv arguments pass
+ * @return int 0 if success, else failure
+ */
 int main(int argc, char const *argv[])
 {
 	errno = 0;

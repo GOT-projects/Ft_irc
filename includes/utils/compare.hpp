@@ -4,6 +4,11 @@
 
 namespace irc
 {
+	/**
+	 * @brief All functions here, are for research / compare
+	 */
+
+
 	u_int8_t			isInList(User& user, listUser& users);
 	u_int8_t			isInMap(User& user, mapUser& users);
 	listUserIterator	disconnectUserIn(int fd, listUser& users);

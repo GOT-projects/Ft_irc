@@ -42,7 +42,6 @@ Server::~Server(void) {
 
 /**
  * @brief Create the socket and set all informations of the socket
- * 
  */
 void	Server::createServer(void) {
 	// Initialise information of the socket
@@ -58,7 +57,6 @@ void	Server::createServer(void) {
 
 /**
  * @brief Start the server, socket ready to recieve requests
- * 
  */
 void	Server::runServer(void) const {
 	if (
@@ -87,13 +85,20 @@ void	Server::acceptNewConnection(fd_set&	currentSocket, int& max_fd) {
 	socklen_t	lenS;
 	int newSocket = accept(_sockServ, (struct sockaddr*)&_sockAddr, &lenS);
 	std::cout << "New client connection with socket " << newSocket << std::endl;
-	// TODO add creation of a new connection
+	// Creation of a new connection
 	FD_SET(newSocket, &currentSocket);
 	_waitingUsers[newSocket] = User(newSocket);
 	if (newSocket >= max_fd)
 		max_fd = newSocket + 1;
 }
 
+/**
+ * @brief Destroy the connection - end of connection with the client (user)
+ * 
+ * @param currentSocket set of socket contain all connected user
+ * @param fd file descriptor of the client
+ * @param max_fd the higher file descriptor reserved by the server for clients + 1
+ */
 void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	FD_CLR(fd, &currentSocket);
 	close(fd);
@@ -109,7 +114,6 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	}
 	if (fd + 1 == max_fd)
 		max_fd = fd;
-	//TODO rm user - rm parse
 	_Parse.erase(fd);
 	std::cout << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
@@ -118,6 +122,14 @@ void Server::SendClient(int fd, const std::string &msg){
 	send(fd, msg.c_str(), msg.length(), O_NONBLOCK);
 }
 
+/**
+ * @brief Manage all clients interaction with the server, from post creation of
+ * the connection to the end of connection
+ * 
+ * @param currentSocket set of socket contain all connected user
+ * @param fd file descriptor of the client
+ * @param max_fd the higher file descriptor reserved by the server for clients + 1
+ */
 void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 	// TODO Need working on CTRl-D
 	char    buff[1048];
@@ -160,43 +172,32 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 				return ;
 			}
 			std::cout << "wep" << std::endl;
-            mapCommandConstIterator cmd = _commands.begin();
-            std::vector<Command> cmds = _Parse[fd].getCommand();
-            std::vector<Command>::iterator itcmd = cmds.begin();
-            std::vector<Command>::iterator itcmdEnd= cmds.end();
-            functionPtr executeCmd;
+			mapCommandConstIterator 		cmd      = _commands.begin();
+			std::vector<Command>			cmds     = _Parse[fd].getCommand();
+			std::vector<Command>::iterator	itcmd    = cmds.begin();
+			std::vector<Command>::iterator	itcmdEnd = cmds.end();
+			functionPtr executeCmd;
 
-            for (; itcmd != itcmdEnd; itcmd++){
-                if (_commands.find((*itcmd).command) != _commands.end()){
-				    std::cerr <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
-                    cmd = _commands.find(itcmd->command);
-                    executeCmd = cmd->second;
-                    executeCmd(*this, *user, *itcmd);
-                }else{
-                    std::cerr << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
-                }
-            }
-            _Parse[fd].getCommand().erase(itcmd, cmds.end());
-
-			/* 	//TODO send error user.sendCommand(...) */
-			/* 	std::cerr << RED << "COMMAND NOT FOUND" << NC << std::endl; */
-			/* _Parse[fd].rmFirstCmd(); */
-			//_Parse[fd].setReadyToSend(false);
+			for (; itcmd != itcmdEnd; itcmd++){
+				if (_commands.find((*itcmd).command) != _commands.end()){
+					std::cerr <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
+					cmd = _commands.find(itcmd->command);
+					executeCmd = cmd->second;
+					executeCmd(*this, *user, *itcmd);
+				}else{
+					std::cerr << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
+					//TODO send error user.sendCommand(...)
+				}
+			}
+			_Parse[fd].getCommand().erase(itcmd, cmds.end());
+		}
 	}
-	// TODO if (_waitingUsers.find(fd) != _waitingUsers.end() && user finish && !exist)
-	// online <- user
-	// rm user
-	// TODO if (_waitingUsers.find(fd) != _waitingUsers.end() && user finish && exist)
-	// rm user
-	// online fd = fd
-    }
 }
 
 /**
  * @brief Create and open the port of the server
  * 
  * Connection between the server and the clients
- * 
  */
 void	Server::connect(void) {
 	fd_set	currentSocket, readySocket;
@@ -233,7 +234,9 @@ void	Server::connect(void) {
 	}
 }
 
-
+/**
+ * @brief Display at the start of the server
+ */
 void Server::display(void){
 	std::string ipLan = runUnixCommandAndCaptureOutput("ifconfig  | grep -e 'inet .*broadcast ' | awk '{ print $2 }'");
 	std::cout << "┌───────────────────────────────────────────────┐" << std::endl;
@@ -248,18 +251,39 @@ void Server::display(void){
 	std::cout << "└───────────────────────────────────────────────┘" << std::endl;
 }
 
+/**
+ * @brief Get the online users
+ * 
+ * @return listUser& list of online users
+ */
 listUser&	Server::getOnlineUsers( void ){
 	return (this->_onlineUsers);
 }
 
+/**
+ * @brief Get the offline users
+ * 
+ * @return listUser& list of offline users
+ */
 listUser&	Server::getOfflineUsers( void ){
 	return (this->_offlineUsers);
 }
 
+/**
+ * @brief Get the waiting users (not register users)
+ * 
+ * @return mapUser& map of waiting users (not register users)
+ */
 mapUser&	Server::getWaitingUsers( void ){
 	return (this->_waitingUsers);
 }
 
+/**
+ * @brief Research and get a user in all users of the server
+ * 
+ * @param fd file descriptor of the client
+ * @return User* NULL if not find, else pointer on user
+ */
 User*	Server::getUser(int fd) {
 	if (_waitingUsers.find(fd) != _waitingUsers.end())
 		return &(_waitingUsers[fd]);

@@ -4,6 +4,9 @@
 
 namespace irc
 {
+	/**
+	 * @brief A command parsed
+	 */
 	struct Command
 	{
 		std::string					command;
@@ -14,6 +17,9 @@ namespace irc
 				std::vector<std::string> params = std::vector<std::string>());
 	};
 
+	/**
+	 * @brief Class used for parsing
+	 */
 	class Parsing
 	{
 		private:
@@ -31,14 +37,14 @@ namespace irc
 			~Parsing(void);
 
 			Parsing &operator = (const Parsing &parsing);
-			std::vector<std::string>  splitMsg(std::string &msg, const std::string &delimiter);
-			void  splitCmds(std::vector<std::string> cmd_strings);
-			bool getCompleted()const;
-			void setReadyToSend(bool b);
-			bool getReadyToSend(void)const;
-			std::vector<Command> getCommand()const;
-			void	displayCommands();
-			Command*	getNextCmd();
-			void		rmFirstCmd();
+			std::vector<std::string>	splitMsg(std::string &msg, const std::string &delimiter);
+			void						splitCmds(std::vector<std::string> cmd_strings);
+			bool						getCompleted()const;
+			void						setReadyToSend(bool b);
+			bool						getReadyToSend(void)const;
+			std::vector<Command>		getCommand()const;
+			void						displayCommands();
+			Command*					getNextCmd();
+			void						rmFirstCmd();
 	};
 } // namespace irc

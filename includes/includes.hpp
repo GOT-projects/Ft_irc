@@ -29,15 +29,6 @@
 #include <errno.h>
 #include <string.h>
 
-//#include <cstring>
-//#include <iterator>
-//#include <ostream>
-//#include <vector>
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <iomanip>
-//#include <sstream>
-
 // Our code
 
 #include "define.hpp"
