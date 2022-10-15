@@ -24,7 +24,7 @@ Server::Server(const std::string& port, const std::string& pwd) : _commands(Serv
 	bzero(&_sockAddr, sizeof(_sockAddr));
 	_sockServ = 0;
     _log = Log();
-	std::cout << GREEN << "Server created" << NC << std::endl;
+	std::cout << _log << GREEN << "Server created" << NC << std::endl;
 }
 
 Log Server::getLog(){
@@ -37,7 +37,7 @@ Log Server::getLog(){
  * 
  */
 Server::~Server(void) {
-	std::cout << GREEN << "Server shutdown" << NC << std::endl;
+	std::cout << _log << GREEN << "Server shutdown" << NC << std::endl;
 }
 
 /**
@@ -52,13 +52,14 @@ void	Server::createServer(void) {
 	if ((_sockServ = socket(AF_INET, SOCK_STREAM, FT_TCP_PROTOCOL)) < 0)
 		throw std::runtime_error("error create socket server");
 	// Change socket control
-	std::cout << GREEN << "Server configured" << NC << std::endl;
+	std::cout << _log << GREEN << "Server configured" << NC << std::endl;
 }
 
 /**
  * @brief Start the server, socket ready to recieve requests
  */
 void	Server::runServer(void) const {
+    Log log;
 	if (
 		// Change socket control
 		fcntl(_sockServ, F_SETFL, O_NONBLOCK) == -1
@@ -71,7 +72,7 @@ void	Server::runServer(void) const {
 		listen(_sockServ, FT_SOCK_BACKLOG) == -1
 	)
 		throw std::runtime_error(strerror(errno));
-	std::cout << GREEN << "Server start" << NC << std::endl;
+	std::cout << log << GREEN << "Server start" << NC << std::endl;
 }
 
 /**
@@ -84,7 +85,7 @@ void	Server::runServer(void) const {
 void	Server::acceptNewConnection(fd_set&	currentSocket, int& max_fd) {
 	socklen_t	lenS;
 	int newSocket = accept(_sockServ, (struct sockaddr*)&_sockAddr, &lenS);
-	std::cout << "New client connection with socket " << newSocket << std::endl;
+	std::cout << _log << "New client connection with socket " << newSocket << std::endl;
 	// Creation of a new connection
 	FD_SET(newSocket, &currentSocket);
 	_waitingUsers[newSocket] = User(newSocket);
@@ -115,7 +116,7 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	if (fd + 1 == max_fd)
 		max_fd = fd;
 	_Parse.erase(fd);
-	std::cout << RED << "Disconnected client with socket " << fd << NC << std::endl;
+	std::cout << _log << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
 
 void Server::SendClient(int fd, const std::string &msg){
@@ -158,40 +159,44 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 		}catch (std::runtime_error &e) { 
 			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
 		}
-		std::cout << _log;
 		_Parse[fd].displayCommands();
 		// TODO ctl+v nc \r  /!\ not rm comment
-		// TODO run multiple cmd
 		if (_Parse[fd].getCompleted()){
-			//std::cout << _log << "fd " << fd << " receive: " << tmp;
-			std::cout << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
-			std::cout << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-			User*	user = getUser(fd);
-			if (_Parse[fd].getNextCmd() == NULL) {
-				std::cerr << RED << "NO COMMAND" << NC << std::endl;
-				return ;
-			}
-			std::cout << "wep" << std::endl;
-			mapCommandConstIterator 		cmd      = _commands.begin();
-			std::vector<Command>			cmds     = _Parse[fd].getCommand();
-			std::vector<Command>::iterator	itcmd    = cmds.begin();
-			std::vector<Command>::iterator	itcmdEnd = cmds.end();
-			functionPtr executeCmd;
-
-			for (; itcmd != itcmdEnd; itcmd++){
-				if (_commands.find((*itcmd).command) != _commands.end()){
-					std::cerr <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
-					cmd = _commands.find(itcmd->command);
-					executeCmd = cmd->second;
-					executeCmd(*this, *user, *itcmd);
-				}else{
-					std::cerr << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
-					//TODO send error user.sendCommand(...)
-				}
-			}
-			_Parse[fd].getCommand().erase(itcmd, cmds.end());
+            std::cout << _log << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
+            std::cout << _log << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
+            this->ExecuteCmd(fd);
 		}
 	}
+}
+
+
+/* @Brief Execute cmd of irc server from cmd reveceive*/
+/* @Param  int fd*/
+/* @Return  NONE*/
+void Server::ExecuteCmd(int fd){
+	User*	user = getUser(fd);
+	if (_Parse[fd].getNextCmd() == NULL) {
+		std::cerr << _log << RED << "NO COMMAND" << NC << std::endl;
+		return ;
+	}
+	mapCommandConstIterator 		cmd      = _commands.begin();
+	std::vector<Command>			cmds     = _Parse[fd].getCommand();
+	std::vector<Command>::iterator	itcmd    = cmds.begin();
+	std::vector<Command>::iterator	itcmdEnd = cmds.end();
+	functionPtr executeCmd;
+
+	for (; itcmd != itcmdEnd; itcmd++){
+		if (_commands.find((*itcmd).command) != _commands.end()){
+			std::cerr << _log <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
+			cmd = _commands.find(itcmd->command);
+			executeCmd = cmd->second;
+			executeCmd(*this, *user, *itcmd);
+		}else{
+			std::cerr << _log << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
+			//TODO send error user.sendCommand(...)
+		}
+	}
+	_Parse[fd].ClearCommand();
 }
 
 /**
@@ -217,7 +222,7 @@ void	Server::connect(void) {
 			throw std::runtime_error(strerror(errno));
 		for (int fd = 0; fd <= max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
-				std::cout << BLUE_BK << "Users" << NC << BLUE
+				std::cout << _log << BLUE_BK << "Users" << NC << BLUE
 					<< " In creation: " << _waitingUsers.size()
 					<< " online: " << _onlineUsers.size()
 					<< " offline: " << _offlineUsers.size()

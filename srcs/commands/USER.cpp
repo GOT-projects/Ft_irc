@@ -17,7 +17,7 @@ namespace irc
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command));
 		}
 		else if (user.getUsername().size() > 0) {
-			std::cerr << RED << log << "USER:  ERR_ALREADYREGISTERED " << NC << std::endl;
+			std::cerr << log << RED << "USER:  ERR_ALREADYREGISTERED " << NC << std::endl;
 			user.sendCommand(ERR_ALREADYREGISTERED());
 		}else {
 			user.setUsername(cmd.params[0]);

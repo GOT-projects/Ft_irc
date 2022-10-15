@@ -83,6 +83,7 @@ namespace irc
 			void		acceptNewConnection(fd_set&	currentSocket, int& max_fd);
 			void		handleClient(fd_set& currentSocket, const int fd, int& max_fd);
 			void		killSocket(fd_set& currentSocket, const int fd, int& max_fd);
+            void        ExecuteCmd(int fd);
 
 			static mapCommand	initCmd(void);
 		public:
