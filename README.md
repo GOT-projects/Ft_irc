@@ -2,7 +2,7 @@
 
 ### Notes
 
-Sur netcat (`nc`) pour tapper un `\n` saisir `ctrl+v`
+Sur netcat (`nc`) pour tapper un `\r` saisir `ctrl+v`
 
 ## Liens
 
@@ -16,7 +16,7 @@ Sur netcat (`nc`) pour tapper un `\n` saisir `ctrl+v`
 
 ### RFC
 
-[Internet Relay Chat Protocol](https://www.rfc-editor.org/info/rfc1459)
+[Internet Relay Chat Protocol](https://www.rfc-editor.org/info/rfc1459) - [Internet Relay Chat Protocol [fr]](http://abcdrfc.free.fr/rfc-vf/rfc1459.html#412)
 
 [Internet Relay Chat: Architecture](https://www.rfc-editor.org/info/rfc2810)
 
