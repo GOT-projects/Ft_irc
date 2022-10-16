@@ -21,9 +21,11 @@ class User
 		std::string	_hostname;
 		std::string	_servername;
 		UserMode	_mode;
+		bool		_pass;
 	public:
 		User(void);
 		User(int fd);
+		User(const User& ref);
 		~User(void);
 
 		// getter
@@ -34,6 +36,7 @@ class User
 		std::string	getRealname(void) const;
 		std::string	getHostname(void) const;
 		std::string	getServername(void) const;
+		bool		getPass(void) const;
 		// getter modes
 
 		bool	isInvisible(void) const;
@@ -44,22 +47,32 @@ class User
 
 		// setter
 
-		void	setSocketFd(const int socketFd);
-		void	setUsername(const std::string& val);
-		void	setNickname(const std::string& val);
-		void	setRealname(const std::string& val);
-		void	setHostname(const std::string& val);
-		void	setServername(const std::string& val);
+		User&	setSocketFd(const int socketFd);
+		User&	setUsername(const std::string& val);
+		User&	setNickname(const std::string& val);
+		User&	setRealname(const std::string& val);
+		User&	setHostname(const std::string& val);
+		User&	setServername(const std::string& val);
+		User&	setPass(const bool val);
 		// setter modes
 
-		void	beInvisible(const bool boolean);
-		void	beServerNotice(const bool boolean);
-		void	beWallOps(const bool boolean);
-		void	beOperatorServer(const bool boolean);
+		User&	beInvisible(const bool boolean);
+		User&	beServerNotice(const bool boolean);
+		User&	beWallOps(const bool boolean);
+		User&	beOperatorServer(const bool boolean);
 		// utility
 
 		int		sendCommand(const std::string& command) const;
 }; // class User
+
+/**
+ * @brief Checck the respect requirements of the registration
+ * 
+ * @param user the user
+ * @return true if user respect requirements of the registration, else false
+ */
+bool	canRegisterable(const User& user);
+
 } // namespace irc
 
 

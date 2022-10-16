@@ -10,6 +10,7 @@ using namespace irc;
  */
 mapCommand	Server::initCmd(void){
 	mapCommand	ret;
+	ret["PASS"] = &PASS;
 	ret["NICK"] = &NICK;
 	ret["USER"] = &USER;
 	ret["PING"] = &ping;

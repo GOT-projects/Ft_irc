@@ -9,6 +9,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <cctype>
 
 // Réseau
 #include <sys/socket.h>

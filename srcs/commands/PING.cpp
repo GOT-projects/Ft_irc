@@ -1,4 +1,3 @@
-
 #include "../../includes/includes.hpp"
 
 namespace irc
@@ -10,13 +9,14 @@ namespace irc
 	 * @param user user who send request
 	 * @param cmd command
 	 */
-	void	ping(Server& , User& user, Command& cmd) {
-		Log log;
-		if (cmd.params.size() == 0){
-			std::cerr << RED << log << "USER: ERR_NOORIGIN" << NC << std::endl;
-			user.sendCommand(ERR_NOORIGIN());
-		}else if (cmd.params.size() >= 1){
-			user.sendCommand(PONG(cmd.params[0]));
-		} 
+	void	ping(Server& serv, User& user, Command& cmd) {
+		if (user.getUsername() == "" || user.getNickname() == "")
+			return;
+		if (cmd.params.size() < 1){
+			std::cerr << RED << serv.getLog() << "PING: ERR_NEEDMOREPARAMS " << NC << std::endl;
+			user.sendCommand(ERR_NEEDMOREPARAMS());
+			return;
+		}
+		user.sendCommand(PONG(cmd.params[0]));
 	};
 }//namespace irc

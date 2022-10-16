@@ -69,8 +69,6 @@ namespace irc
 
 			// online users
 			listUser			_onlineUsers;
-			// offline users
-			listUser			_offlineUsers;
 			// online users not register
 			mapUser				_waitingUsers;
 			// parsing per fd
@@ -83,19 +81,19 @@ namespace irc
 			void		acceptNewConnection(fd_set&	currentSocket, int& max_fd);
 			void		handleClient(fd_set& currentSocket, const int fd, int& max_fd);
 			void		killSocket(fd_set& currentSocket, const int fd, int& max_fd);
-            void        ExecuteCmd(int fd);
+			void		ExecuteCmd(int fd);
 
 			static mapCommand	initCmd(void);
 		public:
 			Server(const std::string& port, const std::string& pwd);
 			~Server(void);
 			listUser&	getOnlineUsers();
-			listUser&	getOfflineUsers();
 			mapUser&	getWaitingUsers();
-			Log		    getLog();
+			Log&		getLog();
+			std::string	getPassword() const;
 			void		connect(void);
-            void    	SendClient(int fd, const std::string &msg);
-			void    	display(void);
+			void		SendClient(int fd, const std::string &msg);
+			void		display(void);
 			User*		getUser(int fd);
 	};
 } // namespace irc

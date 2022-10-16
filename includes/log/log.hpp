@@ -17,8 +17,8 @@ namespace irc
 		public:
 			Log();
 			~Log(void);
-            void initLog();
-            std::tm *getTm();
+			void initLog();
+			std::tm *getTm();
 	};
 } // namespace irc
 std::ostream & operator<< (std::ostream &o, irc::Log &log);

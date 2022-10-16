@@ -48,10 +48,11 @@ SRC_UTILS		=	string.cpp compare.cpp
 
 DIR_COMMANDS		=	$(DIR_GLOBAL)/commands
 SRC_COMMANDS		=	initCmd.cpp			\
+						PASS.cpp 			\
 						NICK.cpp 			\
+						USER.cpp			\
 						PING.cpp 			\
-						PONG.cpp 			\
-						USER.cpp
+						PONG.cpp 			
 
 ################################################################################
 ##                       Compilation Environnement                            ##

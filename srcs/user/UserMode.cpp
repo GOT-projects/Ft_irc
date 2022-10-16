@@ -7,6 +7,9 @@ using namespace irc;
  */
 UserMode::UserMode(void) : _invisible(false), _serverNotice(false), _wallOps(false), _operatorServer(false) {}
 
+UserMode::UserMode(const UserMode& ref)
+: _invisible(ref._invisible), _serverNotice(ref._serverNotice), _wallOps(ref._wallOps), _operatorServer(ref._operatorServer) {}
+
 /**
  * @brief Destroy the User Mode:: User Mode object
  */
