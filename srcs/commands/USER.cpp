@@ -32,7 +32,7 @@ namespace irc
 				// If user corresponding to offline user
 				if (toTransfert) {
 					// ADD offline user update to online state and rm from offline user
-					toTransfert->setNickname(user.getNickname());
+					toTransfert->setNickname(user.getNickname()).setSocketFd(user.getSocketFd());
 					serv.getOnlineUsers().push_back(*toTransfert);
 					serv.getOfflineUsers().erase(getUserIteratorInList(user, serv.getOfflineUsers(), &isSameUsername));
 				} else {
