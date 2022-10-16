@@ -210,8 +210,10 @@ User&	User::beOperatorServer(const bool boolean) {_mode.setOperatorServer(boolea
  * @return int 1 if the user is not connected, 2 if the send fail, else 0
  */
 int	User::sendCommand(const std::string& command) const {
+    Log log;
+    int err;
 	if (_socketFd == -1) {
-		std::cout << RED << "Send to user fail - no client" << NC << std::endl;
+		std::cout << RED << log << "Send to user fail - no client" << NC << std::endl;
 		return 1;
 	}
 	if (send(_socketFd, command.c_str(), command.size(), O_NONBLOCK) == -1) {
