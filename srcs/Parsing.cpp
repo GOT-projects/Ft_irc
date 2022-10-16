@@ -32,10 +32,10 @@ std::vector<Command> Parsing::getCommand()const{
 	return _cmds;
 }
 
-
-/* @Brief Clear Vector and reset bool to false*/
-/* @Param  NONE*/
-/* @Return  NONE*/
+/**
+ * @brief Clear Vector and reset bool to false
+ * 
+ */
 void Parsing::ClearCommand(){
     _cmds.clear();
     _buffer.clear();
@@ -43,147 +43,154 @@ void Parsing::ClearCommand(){
 	_readyTosend = false;
 }
 
-/* @Brief Split msg receive and check if message finish by \r\n if not just append for waiting the end command*/
-/* @Param  msg, delimiter*/
-/* @Return  vector<string>*/
+/**
+ * @brief Split msg receive and check if message finish by \r\n if not just append for waiting the end command
+ * 
+ * @param msg message
+ * @param delimiter delimiter
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string &delimiter){
-    std::vector<std::string>    result;
-    std::string                 str;
-	size_t                      end;
+	std::vector<std::string>	result;
+	std::string					str;
+	size_t						end;
 
-    _buffer.append(msg);
-    if (!checkEndString(msg, "\r\n")){ 
+	_buffer.append(msg);
+	if (!checkEndString(msg, "\r\n")){ 
 		return result;
-    }else{
-        _completed = true;
-    }
-    str = _buffer;
-    // first check 
-    end = str.find(delimiter);
-    if (end == std::string::npos)
-        return (std::vector<std::string>());
-    // save first command in vector
-    if (end + delimiter.length() > MAX_CMD_LEN)
-        throw std::runtime_error("Request too long");
-    result.push_back(str.substr(0, end));
-    
-    // update str
-    str.erase(0, end + delimiter.length());
+	}else{
+		_completed = true;
+	}
+	str = _buffer;
+	// first check 
+	end = str.find(delimiter);
+	if (end == std::string::npos)
+		return (std::vector<std::string>());
+	// save first command in vector
+	if (end + delimiter.length() > MAX_CMD_LEN)
+		throw std::runtime_error("Request too long");
+	result.push_back(str.substr(0, end));
 
-    // loop for other commands
-    end = str.find(delimiter);
-    while (end != std::string::npos)
-    {
-        if (end + delimiter.length() > MAX_CMD_LEN)
-            throw std::runtime_error("Request too long");
-        result.push_back(str.substr(0, end));
-        str.erase(0, end + delimiter.length());
-        end = str.find(delimiter);
-    }
+	// update str
+	str.erase(0, end + delimiter.length());
+
+	// loop for other commands
+	end = str.find(delimiter);
+	while (end != std::string::npos)
+	{
+		if (end + delimiter.length() > MAX_CMD_LEN)
+			throw std::runtime_error("Request too long");
+		result.push_back(str.substr(0, end));
+		str.erase(0, end + delimiter.length());
+		end = str.find(delimiter);
+	}
 	_buffer.clear();
 	if (!str.empty())
-	    _buffer = str;
-    return (result);
-}
+		_buffer = str;
+	return (result);
+	}
 
-void Parsing::setReadyToSend(bool b){
+	void Parsing::setReadyToSend(bool b){
 	_readyTosend = b;
-}
+	}
 
-bool Parsing::getReadyToSend(void)const{
+	bool Parsing::getReadyToSend(void)const{
 	return _readyTosend;
-}
+	}
 
-/* @Brief Parse the command split for get CMD and the Params*/
-/* @Param  cmd_splits*/
-/* @Return  NONE*/
-void Parsing::splitCmds(std::vector<std::string> cmd_strings){
-    std::vector<std::string>::iterator  it;
-    size_t                              end;
-    std::string                         prefix;
+	/**
+	 * @brief Parse the command split for get CMD and the Params
+	 * @param  cmd_splits
+	 * @return  NONE
+	 */
+	void Parsing::splitCmds(std::vector<std::string> cmd_strings){
+	std::vector<std::string>::iterator  it;
+	size_t                              end;
+	std::string                         prefix;
 
-    if (_completed == false) {
-        return;
-    }
+	if (_completed == false) {
+		return;
+	}
 	_readyTosend = true;
-    for (it = cmd_strings.begin(); it != cmd_strings.end(); ++it)
-    {
-        // extract CMD name
-        end = it->find(' ');
-        if (end == std::string::npos) // only the command
-        {
-            if (it->find(':') == 0){
+	for (it = cmd_strings.begin(); it != cmd_strings.end(); ++it)
+	{
+		// extract CMD name
+		end = it->find(' ');
+		if (end == std::string::npos) // only the command
+		{
+			if (it->find(':') == 0){
 				_completed = false;
-                throw std::runtime_error("IRC itage must have a command");
+				throw std::runtime_error("IRC itage must have a command");
 			} // the only token is a prefix :'(
-            _cmds.push_back(Command(it->substr(0, end)));
-        }
-        else // CMD + params
-        {
-            // CMD WITH PREFIX
-            if (it->find(':') == 0)
-            {
-                prefix = it->substr(1, end);
-                it->erase(0, end + 1);
-                end = it->find(' ');
-                if (end == std::string::npos)
-                {
-                    _cmds.push_back(Command(*it, prefix));
-                    it->clear();
-                }
-                else
-                {
-                    _cmds.push_back(Command(it->substr(0, end), \
-                                       prefix));
-                    it->erase(0, end + 1);
-                }
-            }
-            else // CMD WITH NO PREFIX
-            { 
-                _cmds.push_back(Command(it->substr(0, end)));
-                end = it->find(' ');
-                if (end == std::string::npos)
-                    it->clear();
-                else
-                    it->erase(0, end + 1);
-            }
-            // PARAMS
-            // TODO need check more about it
-            if (!it->empty())
-            {
-                while (end != std::string::npos)
-                {
-                    // if long param starting with ":"
-                    if (it->find(':') == 0)
-                    {
-                        _cmds.back().params.push_back(it->substr(1, \
-                                                           it->length() - 1));
-                        end = std::string::npos;
-                    }
-                    else
-                    {
-                        end = it->find(' ');
-                        if (end == std::string::npos)
-                            _cmds.back().params.push_back(*it);
-                        else
-                        {
-                            _cmds.back().params
-                                .push_back(it->substr(0, end));
-                            it->erase(0, end + 1);
-                        }
-                    }
-                }
-            }
-        }
-    }
+			_cmds.push_back(Command(it->substr(0, end)));
+		}
+		else // CMD + params
+		{
+			// CMD WITH PREFIX
+			if (it->find(':') == 0)
+			{
+				prefix = it->substr(1, end);
+				it->erase(0, end + 1);
+				end = it->find(' ');
+				if (end == std::string::npos)
+				{
+					_cmds.push_back(Command(*it, prefix));
+					it->clear();
+				}
+				else
+				{
+					_cmds.push_back(Command(it->substr(0, end), \
+										prefix));
+					it->erase(0, end + 1);
+				}
+			}
+			else // CMD WITH NO PREFIX
+			{ 
+				_cmds.push_back(Command(it->substr(0, end)));
+				end = it->find(' ');
+				if (end == std::string::npos)
+					it->clear();
+				else
+					it->erase(0, end + 1);
+			}
+			// PARAMS
+			// TODO need check more about it
+			if (!it->empty())
+			{
+				while (end != std::string::npos)
+				{
+					// if long param starting with ":"
+					if (it->find(':') == 0)
+					{
+						_cmds.back().params.push_back(it->substr(1, \
+															it->length() - 1));
+						end = std::string::npos;
+					}
+					else
+					{
+						end = it->find(' ');
+						if (end == std::string::npos)
+							_cmds.back().params.push_back(*it);
+						else
+						{
+							_cmds.back().params
+								.push_back(it->substr(0, end));
+							it->erase(0, end + 1);
+						}
+					}
+				}
+			}
+		}
+	}
 	_buffer.clear();
 	_completed = true;
-    _tolowerCmd();
+	_tolowerCmd();
 }
 
-/* @Brief UPPERCASE the cmd*/
-/* @Param  NONE*/
-/* @Return  NONE*/
+/**
+ * @brief UPPERCASE the cmd
+ * 
+ */
 void Parsing::_tolowerCmd(){
 	std::vector<Command>::iterator  it;
     std::string::iterator itcmd;
@@ -193,9 +200,10 @@ void Parsing::_tolowerCmd(){
     }
 }
 
-/* @Brief Print cmd receive use for DEBEUG*/
-/* @Param  NONE*/
-/* @Return  NONE*/
+/**
+ * @brief Print cmd receive use for DEBEUG
+ * 
+ */
 void	Parsing::displayCommands() {
 
 	std::vector<Command>::iterator  it;

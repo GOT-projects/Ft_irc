@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
 		serv.connect();
 	}
 	catch(const std::exception& e) {
-		std::cerr << RED_ERR << "Exception: " << RED << e.what() << NC << std::endl;
+		std::cerr << RED_ERR << "Exception: " << NC << RED << e.what() << NC << std::endl;
 	}
 	
 	return 0;
