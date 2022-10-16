@@ -19,14 +19,19 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	NICK(Server& serv, User& user, Command& cmd) {
+		if (!user.getPass()) {
+			std::cerr << RED << serv.getLog() << "NICK: password required" << NC << std::endl;
+			user.sendCommand(":please set password");
+			return;
+		}
 		// TODO test if pass
 		if (cmd.params.size() < 1) {
-			std::cerr << RED << serv.getLog() << "NICK:  ERR_NONICKNAMEGIVEN" << NC << std::endl;
+			std::cerr << RED << serv.getLog() << "NICK: ERR_NONICKNAMEGIVEN" << NC << std::endl;
 			user.sendCommand(ERR_NONICKNAMEGIVEN());
 			return ;
 		}
 		if (!nicknameValid(cmd.params[0])) {
-			std::cerr << RED << serv.getLog() << "NICK:  ERR_ERRONEUSNICKNAME" << NC << std::endl;
+			std::cerr << RED << serv.getLog() << "NICK: ERR_ERRONEUSNICKNAME" << NC << std::endl;
 			user.sendCommand(ERR_ERRONEUSNICKNAME(cmd.params[0]));
 			return ;
 		}
@@ -45,7 +50,7 @@ namespace irc
 		}
 		user.setNickname(cmd.params[0]);
 		// Can register
-		if (canRegisterable(user)) {
+		if (isRegister(user)) {
 			// Not already register
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
 				// ADD user to online user

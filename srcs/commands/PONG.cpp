@@ -10,8 +10,12 @@ namespace irc
 	 * @param user user who send request
 	 * @param cmd command
 	 */
-	void	pong(Server&, User&, Command&) {
-		//user.sendCommand(PING(cmd.params[0]));
+	void	pong(Server& serv, User& user, Command&) {
+		if (!user.getPass() || !isRegister(user)) {
+			std::cerr << RED << serv.getLog() << "PING: password required / register need" << NC << std::endl;
+			user.sendCommand(":register need / password");
+			return;
+		}
 	};
 
 }//namespace irc

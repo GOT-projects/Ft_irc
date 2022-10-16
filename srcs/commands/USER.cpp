@@ -10,14 +10,19 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	USER(Server& serv, User& user, Command& cmd) {
+		if (!user.getPass()) {
+			std::cerr << RED << serv.getLog() << "USER: password required" << NC << std::endl;
+			user.sendCommand(":please set password");
+			return;
+		}
 		// TODO test if pass
 		if (cmd.params.size() < 4) {
-			std::cerr << RED << serv.getLog() << "USER:  ERR_NEEDMOREPARAMS" << NC << std::endl;
+			std::cerr << RED << serv.getLog() << "USER: ERR_NEEDMOREPARAMS" << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command));
 			return;
 		}
 		if (user.getUsername().size() > 0) {
-			std::cerr << serv.getLog() << RED << "USER:  ERR_ALREADYREGISTERED " << NC << std::endl;
+			std::cerr << serv.getLog() << RED << "USER: ERR_ALREADYREGISTERED " << NC << std::endl;
 			user.sendCommand(ERR_ALREADYREGISTERED());
 			return;
 		}
@@ -25,7 +30,7 @@ namespace irc
 		user.setUsername(cmd.params[0]);
 		user.setRealname(cmd.params[3]);
 		// Can register
-		if (canRegisterable(user)) {
+		if (isRegister(user)) {
 			// Not already register
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
 				// ADD user to online user

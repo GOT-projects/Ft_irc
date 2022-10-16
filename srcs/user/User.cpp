@@ -215,7 +215,8 @@ int	User::sendCommand(const std::string& command) const {
 		std::cout << RED << log << "Send to user fail - no client" << NC << std::endl;
 		return 1;
 	}
-	if (send(_socketFd, command.c_str(), command.size(), O_NONBLOCK) == -1) {
+	std::string	tmp = command + END;
+	if (send(_socketFd, tmp.c_str(), tmp.size(), O_NONBLOCK) == -1) {
 		std::cout << RED << "Send to user fail " << strerror(errno) << NC << std::endl;;
 		return 2;
 	}
@@ -231,7 +232,7 @@ namespace irc
  * @param user the user
  * @return true if the user can be register, else false
  */
-bool	canRegisterable(const User& user) {
+bool	isRegister(const User& user) {
 	if (user.getNickname().size() && user.getUsername().size())
 		return true;
 	return false;

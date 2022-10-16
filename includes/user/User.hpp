@@ -71,7 +71,7 @@ class User
  * @param user the user
  * @return true if user respect requirements of the registration, else false
  */
-bool	canRegisterable(const User& user);
+bool	isRegister(const User& user);
 
 } // namespace irc
 
