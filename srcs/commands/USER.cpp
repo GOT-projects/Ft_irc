@@ -28,20 +28,13 @@ namespace irc
 		if (canRegisterable(user)) {
 			// Not already register
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
-				User*	toTransfert = getUserInList(user, serv.getOfflineUsers(), &isSameUsername);
-				// If user corresponding to offline user
-				if (toTransfert) {
-					// ADD offline user update to online state and rm from offline user
-					toTransfert->setNickname(user.getNickname()).setSocketFd(user.getSocketFd());
-					serv.getOnlineUsers().push_back(*toTransfert);
-					serv.getOfflineUsers().erase(getUserIteratorInList(user, serv.getOfflineUsers(), &isSameUsername));
-				} else {
-					// ADD user to online user
-					serv.getOnlineUsers().push_back(user);
-				}
+				// ADD user to online user
+				serv.getOnlineUsers().push_back(user);
 				// RM from anonym users
 				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
-				// TODO send Welcome
+				// Welcome
+				User*	newUser = getUserInList(user, serv.getOnlineUsers(), &isSameUser);
+				newUser->sendCommand(RPL_WELCOME(user.getNickname()));
 			}
 		}
 	}

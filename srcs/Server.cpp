@@ -108,7 +108,6 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	else { // Disconnect user
 		listUserIterator	tmp = disconnectUserIn(fd, _onlineUsers);
 		if (tmp != _onlineUsers.end()) {
-			_offlineUsers.push_back(*tmp);
 			_onlineUsers.erase(tmp);
 		}
 	}
@@ -214,8 +213,7 @@ void	Server::connect(void) {
 	FD_SET(_sockServ, &currentSocket);
 	std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
 		<< " In creation: " << _waitingUsers.size()
-		<< " online: " << _onlineUsers.size()
-		<< " offline: " << _offlineUsers.size()
+		<< " | online: " << _onlineUsers.size()
 		<< NC << std::endl;
 	while (true)
 	{
@@ -232,8 +230,7 @@ void	Server::connect(void) {
 				}
 				std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
 					<< " In creation: " << _waitingUsers.size()
-					<< " online: " << _onlineUsers.size()
-					<< " offline: " << _offlineUsers.size()
+					<< " | online: " << _onlineUsers.size()
 					<< NC << std::endl;
 			}
 		}
@@ -267,15 +264,6 @@ listUser&	Server::getOnlineUsers( void ){
 }
 
 /**
- * @brief Get the offline users
- * 
- * @return listUser& list of offline users
- */
-listUser&	Server::getOfflineUsers( void ){
-	return (this->_offlineUsers);
-}
-
-/**
  * @brief Get the waiting users (not register users)
  * 
  * @return mapUser& map of waiting users (not register users)
@@ -294,8 +282,7 @@ User*	Server::getUser(int fd) {
 	if (_waitingUsers.find(fd) != _waitingUsers.end())
 		return &(_waitingUsers[fd]);
 	User*	online = getUserInList(User(fd), _onlineUsers, &isSameSocket);
-	User*	offline = getUserInList(User(fd), _offlineUsers, &isSameSocket);
-	return (online == NULL ? offline : online);
+	return (online);
 }
 
 /**

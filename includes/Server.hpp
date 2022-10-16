@@ -69,8 +69,6 @@ namespace irc
 
 			// online users
 			listUser			_onlineUsers;
-			// offline users
-			listUser			_offlineUsers;
 			// online users not register
 			mapUser				_waitingUsers;
 			// parsing per fd
@@ -90,7 +88,6 @@ namespace irc
 			Server(const std::string& port, const std::string& pwd);
 			~Server(void);
 			listUser&	getOnlineUsers();
-			listUser&	getOfflineUsers();
 			mapUser&	getWaitingUsers();
 			Log&		getLog();
 			std::string	getPassword() const;
