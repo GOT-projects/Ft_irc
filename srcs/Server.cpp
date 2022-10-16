@@ -23,12 +23,11 @@ Server::Server(const std::string& port, const std::string& pwd) : _commands(Serv
 	_portString = port;
 	bzero(&_sockAddr, sizeof(_sockAddr));
 	_sockServ = 0;
-    _log = Log();
-	std::cout << _log << GREEN << "Server created" << NC << std::endl;
+	std::cout << getLog() << GREEN << "Server created" << NC << std::endl;
 }
 
-Log Server::getLog(){
-    return _log;
+Log& Server::getLog(){
+	return _log;
 }
 
 
@@ -37,7 +36,7 @@ Log Server::getLog(){
  * 
  */
 Server::~Server(void) {
-	std::cout << _log << GREEN << "Server shutdown" << NC << std::endl;
+	std::cout << getLog() << GREEN << "Server shutdown" << NC << std::endl;
 }
 
 /**
@@ -52,7 +51,7 @@ void	Server::createServer(void) {
 	if ((_sockServ = socket(AF_INET, SOCK_STREAM, FT_TCP_PROTOCOL)) < 0)
 		throw std::runtime_error("error create socket server");
 	// Change socket control
-	std::cout << _log << GREEN << "Server configured" << NC << std::endl;
+	std::cout << getLog() << GREEN << "Server configured" << NC << std::endl;
 }
 
 /**
@@ -63,7 +62,7 @@ void	Server::runServer(void) const {
 	if (
 		// Change socket control
 		fcntl(_sockServ, F_SETFL, O_NONBLOCK) == -1
-		// TODO F_SETFL
+		// TODO doc F_SETFL
 		||
 		// Link information of the socket with the socket
 		bind(_sockServ, (struct sockaddr*)&_sockAddr, sizeof(_sockAddr)) == -1
@@ -85,7 +84,7 @@ void	Server::runServer(void) const {
 void	Server::acceptNewConnection(fd_set&	currentSocket, int& max_fd) {
 	socklen_t	lenS;
 	int newSocket = accept(_sockServ, (struct sockaddr*)&_sockAddr, &lenS);
-	std::cout << _log << "New client connection with socket " << newSocket << std::endl;
+	std::cout << getLog() << "New client connection with socket " << newSocket << std::endl;
 	// Creation of a new connection
 	FD_SET(newSocket, &currentSocket);
 	_waitingUsers[newSocket] = User(newSocket);
@@ -116,7 +115,7 @@ void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
 	if (fd + 1 == max_fd)
 		max_fd = fd;
 	_Parse.erase(fd);
-	std::cout << _log << RED << "Disconnected client with socket " << fd << NC << std::endl;
+	std::cout << getLog() << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
 
 void Server::SendClient(int fd, const std::string &msg){
@@ -160,10 +159,9 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
 		}
 		_Parse[fd].displayCommands();
-		// TODO ctl+v nc \r  /!\ not rm comment
 		if (_Parse[fd].getCompleted()){
-            std::cout << _log << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-            std::cout << _log << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
+            std::cout << getLog() << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
+            std::cout << getLog() << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
             this->ExecuteCmd(fd);
 		}
 	}
@@ -176,7 +174,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 void Server::ExecuteCmd(int fd){
 	User*	user = getUser(fd);
 	if (_Parse[fd].getNextCmd() == NULL) {
-		std::cerr << _log << RED << "NO COMMAND" << NC << std::endl;
+		std::cerr << getLog() << RED << "NO COMMAND" << NC << std::endl;
 		return ;
 	}
 	mapCommandConstIterator 		cmd      = _commands.begin();
@@ -187,12 +185,12 @@ void Server::ExecuteCmd(int fd){
 
 	for (; itcmd != itcmdEnd; itcmd++){
 		if (_commands.find((*itcmd).command) != _commands.end()){
-			std::cerr << _log <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
+			std::cerr << getLog() <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
 			cmd = _commands.find(itcmd->command);
 			executeCmd = cmd->second;
 			executeCmd(*this, *user, *itcmd);
 		}else{
-			std::cerr << _log << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
+			std::cerr << getLog() << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
 			//TODO send error user.sendCommand(...)
 		}
 	}
@@ -214,7 +212,11 @@ void	Server::connect(void) {
 	max_fd = _sockServ + 1;
 	FD_ZERO(&currentSocket);
 	FD_SET(_sockServ, &currentSocket);
-
+	std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
+		<< " In creation: " << _waitingUsers.size()
+		<< " online: " << _onlineUsers.size()
+		<< " offline: " << _offlineUsers.size()
+		<< NC << std::endl;
 	while (true)
 	{
 		readySocket = currentSocket;
@@ -222,18 +224,17 @@ void	Server::connect(void) {
 			throw std::runtime_error(strerror(errno));
 		for (int fd = 0; fd <= max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
-				std::cout << _log << BLUE_BK << "Users" << NC << BLUE
-					<< " In creation: " << _waitingUsers.size()
-					<< " online: " << _onlineUsers.size()
-					<< " offline: " << _offlineUsers.size()
-					<< NC << std::endl;
-
 				if (fd == _sockServ) {
 					acceptNewConnection(currentSocket, max_fd);
 				}
 				else {
 					handleClient(currentSocket, fd, max_fd);
 				}
+				std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
+					<< " In creation: " << _waitingUsers.size()
+					<< " online: " << _onlineUsers.size()
+					<< " offline: " << _offlineUsers.size()
+					<< NC << std::endl;
 			}
 		}
 	}
@@ -295,4 +296,13 @@ User*	Server::getUser(int fd) {
 	User*	online = getUserInList(User(fd), _onlineUsers, &isSameSocket);
 	User*	offline = getUserInList(User(fd), _offlineUsers, &isSameSocket);
 	return (online == NULL ? offline : online);
+}
+
+/**
+ * @brief Get the password of the server
+ * 
+ * @return std::string the server password
+ */
+std::string	Server::getPassword() const {
+	return _pwd;
 }

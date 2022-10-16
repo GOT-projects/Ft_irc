@@ -10,8 +10,8 @@ namespace irc
 	 * @param user user who send request
 	 * @param cmd command
 	 */
-	void	pong(Server&, User& user, Command& cmd) {
-		user.sendCommand(PING(cmd.params[0]));
+	void	pong(Server&, User&, Command&) {
+		//user.sendCommand(PING(cmd.params[0]));
 	};
 
 }//namespace irc

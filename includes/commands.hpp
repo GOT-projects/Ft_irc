@@ -10,11 +10,11 @@ namespace irc
 	 * the server have to answer
 	 */
 
-
-	void NICK(Server& serv, User& user, Command& cmd);
-	void USER(Server& serv, User& user, Command& cmd);
-	void ping(Server& , User& user, Command& cmd);
-	void pong(Server& serv, User& user, Command& cmd);
+	void	PASS(Server& serv, User& user, Command& cmd);
+	void	NICK(Server& serv, User& user, Command& cmd);
+	void	USER(Server& serv, User& user, Command& cmd);
+	void	ping(Server& , User& user, Command& cmd);
+	void	pong(Server& serv, User& user, Command& cmd);
 	/*
 	void JOIN(Server& serv, User& user, Command& cmd);
 	void PRIVMSG(Server& serv, User& user, Command& cmd);

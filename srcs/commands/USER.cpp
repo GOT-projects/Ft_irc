@@ -10,18 +10,18 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	USER(Server& serv, User& user, Command& cmd) {
-		Log log;
+		// TODO test if pass
 		if (cmd.params.size() < 4) {
-			std::cerr << RED << log << "USER:  ERR_NEEDMOREPARAMS" << NC << std::endl;
+			std::cerr << RED << serv.getLog() << "USER:  ERR_NEEDMOREPARAMS" << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command));
 			return;
 		}
 		if (user.getUsername().size() > 0) {
-			std::cerr << log << RED << "USER:  ERR_ALREADYREGISTERED " << NC << std::endl;
+			std::cerr << serv.getLog() << RED << "USER:  ERR_ALREADYREGISTERED " << NC << std::endl;
 			user.sendCommand(ERR_ALREADYREGISTERED());
 			return;
 		}
-		// TODO check is used
+		// TODO check is used [unique] quelle erreur
 		user.setUsername(cmd.params[0]);
 		user.setRealname(cmd.params[3]);
 		// Can register
@@ -41,8 +41,8 @@ namespace irc
 				}
 				// RM from anonym users
 				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
+				// TODO send Welcome
 			}
 		}
 	}
 } // namespace irc
-
