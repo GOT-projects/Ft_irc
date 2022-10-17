@@ -19,7 +19,12 @@ typedef mapUser::iterator					mapUserIterator;
 typedef mapUser::const_iterator				mapUserConstIterator;
 // type of a pair of the mapUser
 typedef std::pair<int, irc::User>			pairUser;
+// map de channels
+typedef std::map<std::string, irc::Channel>			mapChannel;
 
+typedef mapChannel::const_iterator				mapChannelConstIterator;
+
+typedef mapChannel::iterator				mapChannelIterator;
 // ** Parsing
 
 // type of a map of <fd - Parsing class>
@@ -65,6 +70,8 @@ namespace irc
 			// map with all the command
 			const mapCommand	_commands;
 
+			mapChannel			_channels;
+
 			// User infos
 
 			// online users
@@ -75,6 +82,8 @@ namespace irc
 			mapParse			_Parse;
 			// Debug
 			Log					_log;
+
+
 
 			void		createServer(void);
 			void		runServer(void) const;
@@ -95,6 +104,9 @@ namespace irc
 			void		SendClient(int fd, const std::string &msg);
 			void		display(void);
 			User*		getUser(int fd);
+
+			mapChannel&	getMapChannel();
+			bool		isInMapChannel( std::string nickname );
 	};
 } // namespace irc
 

@@ -9,7 +9,7 @@ namespace irc
 	 * @brief All functions in this file are the different command that
 	 * the server have to answer
 	 */
-
+	void	JOIN(Server& serv, User& user, Command& cmd);
 	void	PASS(Server& serv, User& user, Command& cmd);
 	void	NICK(Server& serv, User& user, Command& cmd);
 	void	USER(Server& serv, User& user, Command& cmd);

@@ -15,5 +15,6 @@ mapCommand	Server::initCmd(void){
 	ret["USER"] = &USER;
 	ret["PING"] = &ping;
 	ret["PONG"] = &pong;
+	ret["JOIN"] = &JOIN;
 	return ret;
 }
