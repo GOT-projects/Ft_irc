@@ -75,6 +75,18 @@ void	Channel::sendMessage( std::string message ){
 }
 
 /**
+ * @brief Send message to all users of the channel, original thrower expected
+ * 
+ * @param message message to send
+ */
+void	Channel::sendMessage( std::string message , User& user){
+	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++){
+		if ((*it)->getNickname() != user.getNickname())
+			(*it)->sendCommand(message.c_str());
+	}
+}
+
+/**
  * @brief kick user of a channel
  * 
  * @param user the user
@@ -261,6 +273,5 @@ Channel::Channel( std::string name ) : _channelName(name){   // ajouter pointeur
  * @brief Destroy the Channel:: Channel object
  */
 Channel::~Channel(){
-	std::cout << this->_channelName << " destructor called\n";
 	//delete mes merdes
 };

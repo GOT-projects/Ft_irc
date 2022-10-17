@@ -294,25 +294,25 @@ std::string	Server::getPassword() const {
 	return _pwd;
 }
 
+/**
+ * @brief chope la mapChannel
+ * 
+ * @return mapChannel& 
+ */
 mapChannel&	Server::getMapChannel( void ){
 	return (this->_channels);
 }
 
-// Channel	getChannel(mapChannel& channels, std::string chan){
-
-// }
-
+/**
+ * @brief check la presence du chan
+ * 
+ * @return true or false
+ */
 bool	Server::isInMapChannel(std::string chan) {
 	if (this->getMapChannel().size() == 0)
 		return (false);
 	if (this->getMapChannel().find(chan) != this->getMapChannel().end())
 		return (true);
-	
-	// for (mapChannelConstIterator it = channels.begin(); it != ; it++) {
-	// 	if (it->first == chan)
-	// 		return (true);
-	// }
-
 	return (false);
 }
 

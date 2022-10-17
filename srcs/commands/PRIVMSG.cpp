@@ -28,9 +28,15 @@ namespace irc
 			user.sendCommand(":please set cap to 302");
 			return;
 		}
-		User tmp;
-		tmp.setNickname(cmd.params[0]);
-		User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
-		userSend->sendCommand(S_PRIVMSG(user, cmd.params[0], cmd.params[1]));
+		if (cmd.params[0][0] == '#'){
+			mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
+            it->second.sendMessage(S_PRIVMSG(user, cmd.params[0], cmd.params[1]));
+		}
+		else {
+			User tmp;
+			tmp.setNickname(cmd.params[0]);
+			User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+			userSend->sendCommand(S_PRIVMSG(user, cmd.params[0], cmd.params[1]));
+		}
 	}
 } // namespace irc
