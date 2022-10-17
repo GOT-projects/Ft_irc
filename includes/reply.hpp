@@ -12,7 +12,7 @@
 #define RPL_WELCOME(nickname)		("001 " + nickname + " :Welcome to the ft_irc_serv_42_Lyon, " + std::string(nickname))
 #define	PING(origin)				("PING " + origin)
 #define	PONG(origin)				(":" + origin + " PONG " + origin)
-#define	PRIVMSG(target, message)	("PRIVMSG " + target + " :" + message)
+#define	S_PRIVMSG(client, target, message)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " PRIVMSG " + target + " :" + message)
 
 // PASS
 #define ERR_PASSWDMISMATCH()		("464 :Password incorrect") // 464

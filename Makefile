@@ -51,6 +51,8 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						PASS.cpp 			\
 						NICK.cpp 			\
 						USER.cpp			\
+						PRIVMSG.cpp			\
+						CAP.cpp				\
 						PING.cpp 			\
 						PONG.cpp 			
 
