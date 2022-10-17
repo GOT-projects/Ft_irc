@@ -9,6 +9,10 @@ namespace irc
 	 * @brief All functions in this file are the different command that
 	 * the server have to answer
 	 */
+
+	bool	canRegister(const User& user, const std::string& cmd, Server& serv);
+	bool	canExecute(const User& user, const std::string& cmd, Server& serv);
+
 	void	JOIN(Server& serv, User& user, Command& cmd);
 	void	PASS(Server& serv, User& user, Command& cmd);
 	void	NICK(Server& serv, User& user, Command& cmd);
