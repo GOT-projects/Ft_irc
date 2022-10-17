@@ -154,7 +154,6 @@ std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string 
 					it->erase(0, end + 1);
 			}
 			// PARAMS
-			// TODO need check more about it
 			if (!it->empty())
 			{
 				while (end != std::string::npos)
@@ -183,8 +182,25 @@ std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string 
 		}
 	}
 	_buffer.clear();
+    _RemoveEmptyCmd();
 	_completed = true;
 	_tolowerCmd();
+}
+
+/**
+ * @brief Iter Command for remove the /n
+ * 
+ */
+void Parsing::_RemoveEmptyCmd(){
+	std::vector<Command>::iterator  it;
+	std::vector<std::string>::iterator  it2;
+    int i(0);
+	for (it = _cmds.begin(); it < _cmds.end(); ++it){
+        trim_backspace(it->command);
+		for (it2 = it->params.begin(); it2 < it->params.end(); ++it2){
+            trim_backspace(it->params[i++]);
+        }
+    }
 }
 
 /**

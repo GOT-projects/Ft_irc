@@ -14,7 +14,7 @@ MK = Makefile
 # Headers
 DIR_HDS				=	includes
 
-RELATIVE_HDS		=	includes.hpp		\
+RELATIVE_HDS		=	includes.hpp			\
 						Server.hpp			\
 						commands.hpp			\
 						channel/ChannelMode.hpp	\

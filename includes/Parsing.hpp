@@ -52,6 +52,7 @@ namespace irc
 
         private:
             void                         _tolowerCmd();
+            void                         _RemoveEmptyCmd();
 
 	};
 } // namespace irc

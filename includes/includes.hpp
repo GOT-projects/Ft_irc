@@ -10,6 +10,8 @@
 #include <list>
 #include <vector>
 #include <cctype>
+#include <regex>
+
 
 // Réseau
 #include <sys/socket.h>

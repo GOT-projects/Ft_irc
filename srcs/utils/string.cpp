@@ -16,6 +16,19 @@ namespace irc
 	}
 
 	/**
+	 * @brief Remove /n in string 
+	 * 
+	 * @param s the string to remove /n
+	 * @return string with /n
+	 */
+    std::string trim_backspace(std::string &s){
+        std::cout << "remove \\n" << std::endl;
+        s.erase(s.find_last_not_of('\n')+1);         //suffixing spaces
+        s.erase(0, s.find_first_not_of('\n'));       //prefixing spaces
+        return s;
+    }
+
+	/**
 	 * @brief Run a command and capture output in a string
 	 * 
 	 * @param cmd the unix command to run
