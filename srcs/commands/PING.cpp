@@ -10,6 +10,11 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	ping(Server& serv, User& user, Command& cmd) {
+		if (!user.getCap()) {
+			std::cerr << RED << serv.getLog() << "PING: Cap error" << NC << std::endl;
+			user.sendCommand(":please set cap to 302");
+			return;
+		}
 		if (!user.getPass() || !isRegister(user)) {
 			std::cerr << RED << serv.getLog() << "PING: password required / register need" << NC << std::endl;
 			user.sendCommand(":register need / password");

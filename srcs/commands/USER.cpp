@@ -10,6 +10,12 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	USER(Server& serv, User& user, Command& cmd) {
+		if (!user.getCap()) {
+			std::cerr << RED << serv.getLog() << "USER: Cap error" << NC << std::endl;
+			user.sendCommand(":please set cap to 302");
+			return;
+		}
+
 		if (!user.getPass()) {
 			std::cerr << RED << serv.getLog() << "USER: password required" << NC << std::endl;
 			user.sendCommand(":please set password");

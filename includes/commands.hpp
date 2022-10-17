@@ -15,6 +15,8 @@ namespace irc
 	void	USER(Server& serv, User& user, Command& cmd);
 	void	ping(Server& , User& user, Command& cmd);
 	void	pong(Server& serv, User& user, Command& cmd);
+	void	CAP(Server& serv, User& user, Command& cmd);
+	void	PRIVMSG(Server& serv, User& user, Command& cmd);
 	/*
 	void JOIN(Server& serv, User& user, Command& cmd);
 	void PRIVMSG(Server& serv, User& user, Command& cmd);

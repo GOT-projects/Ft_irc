@@ -8,21 +8,21 @@ using namespace irc;
  * @param fd file descriptor of client
  */
 User::User(int fd)
-: _socketFd(fd), _username(""), _nickname(""), _realname(""), _hostname(""),
-_servername(""), _mode(UserMode()), _pass(false)
+: _socketFd(fd), _username(""), _nickname(""), _realname(""), _hostname("irc"),
+_servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
 {}
 
 /**
  * @brief Construct a new User:: User object
  */
 User::User(void)
-: _socketFd(-1), _username(""), _nickname(""), _realname(""), _hostname(""),
-_servername(""), _mode(UserMode()), _pass(false)
+: _socketFd(-1), _username(""), _nickname(""), _realname(""), _hostname("irc"),
+_servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
 {}
 
 User::User(const User& ref)
 : _socketFd(ref._socketFd), _username(ref._username), _nickname(ref._nickname), _realname(ref._realname), _hostname(ref._hostname),
-_servername(ref._servername), _mode(ref._mode), _pass(ref._pass)
+_servername(ref._servername), _mode(ref._mode), _pass(ref._pass), _cap(ref._cap)
 {}
 
 /**
@@ -80,6 +80,13 @@ std::string	User::getServername(void) const {return _servername;}
  * @return bool the status
  */
 bool	User::getPass(void) const {return _pass;}
+
+/**
+ * @brief Get if the user send caps
+ * 
+ * @return bool the status
+ */
+bool	User::getCap(void) const {return _cap;}
 
 /**
  * @brief Get the mode status of invisible of the user
@@ -167,6 +174,14 @@ User&	User::setServername(const std::string& val) {_servername = val;return *thi
  * @return User& the user
  */
 User&	User::setPass(const bool val) {_pass = val;return *this;}
+
+/**
+ * @brief Set the caps of the user
+ * 
+ * @param val the pass status
+ * @return User& the user
+ */
+User&	User::setCap(const bool val) {_cap = val;return *this;}
 
 /**
  * @brief Set the mode status of invisible of the user
