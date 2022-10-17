@@ -302,10 +302,10 @@ mapChannel&	Server::getMapChannel( void ){
 
 // }
 
-bool	isInMapChannel(mapChannel& channels, std::string chan) {
-	if (channels.size() == 0)
+bool	Server::isInMapChannel(std::string chan) {
+	if (this->getMapChannel().size() == 0)
 		return (false);
-	if (channels.find(chan) != channels.end())
+	if (this->getMapChannel().find(chan) != this->getMapChannel().end())
 		return (true);
 	
 	// for (mapChannelConstIterator it = channels.begin(); it != ; it++) {

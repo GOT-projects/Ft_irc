@@ -13,6 +13,7 @@
 #define	PING(origin)				("PING " + origin)
 #define	PONG(origin)				(":" + origin + " PONG " + origin)
 #define	S_PRIVMSG(client, target, message)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " PRIVMSG " + target + " :" + message)
+#define	S_JOIN(client, target)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " JOIN " + target)
 
 // PASS
 #define ERR_PASSWDMISMATCH()		("464 :Password incorrect") // 464

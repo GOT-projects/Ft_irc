@@ -12,11 +12,15 @@ namespace irc
         {
             mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
             it->second.joinChannel(user);
-            //message a renvoyé
+            it->second.sendMessage(S_JOIN(user, cmd.params[0]));
         }
         else {
             Channel chan = Channel(cmd.params[0]);
             serv.getMapChannel().insert(std::pair<std::string, Channel>(cmd.params[0], chan));
+            mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
+            it->second.joinChannel(user);
+            it->second.sendMessage(S_JOIN(user, cmd.params[0]));
+            
             //message a renvoyé
         }
     }

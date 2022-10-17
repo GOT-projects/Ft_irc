@@ -54,7 +54,8 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						PRIVMSG.cpp			\
 						CAP.cpp				\
 						PING.cpp 			\
-						PONG.cpp 			
+						PONG.cpp 			\
+						JOIN.cpp 			
 
 ################################################################################
 ##                       Compilation Environnement                            ##
