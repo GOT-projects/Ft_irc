@@ -9,9 +9,10 @@
  */
 int main(int argc, char const *argv[])
 {
+    irc::Log log;
 	errno = 0;
 	if (argc != 3) {
-		std::cerr << RED << "Error: usage: ./ircserv port password" << NC << std::endl;
+		std::cerr << log << RED << "Error: usage: ./ircserv port password" << NC << std::endl;
 		return (EXIT_FAILURE);
 	}
 	try {
@@ -19,7 +20,7 @@ int main(int argc, char const *argv[])
 		serv.connect();
 	}
 	catch(const std::exception& e) {
-		std::cerr << RED_ERR << "Exception: " << NC << RED << e.what() << NC << std::endl;
+		std::cerr << log << RED_ERR << "Exception: " << NC << RED << e.what() << NC << std::endl;
 	}
 	
 	return 0;

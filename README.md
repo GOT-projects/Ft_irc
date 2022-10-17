@@ -4,6 +4,13 @@
 
 Sur netcat (`nc`) pour tapper un `\r` saisir `ctrl+v`
 
+Sur weechat:
+
+- Ajouter le serveur `/server add name server/port`
+- Connexion au serveur `/connect name -password=pass`
+- Déconnecion du serveur `/disconnect name`
+- Changer de fenetre `ctrl+x`
+
 ## Liens
 
 [Modern IRC Client Protocol](https://modern.ircdocs.horse/)

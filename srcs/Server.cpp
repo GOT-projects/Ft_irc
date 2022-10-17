@@ -293,3 +293,26 @@ User*	Server::getUser(int fd) {
 std::string	Server::getPassword() const {
 	return _pwd;
 }
+
+/**
+ * @brief chope la mapChannel
+ * 
+ * @return mapChannel& 
+ */
+mapChannel&	Server::getMapChannel( void ){
+	return (this->_channels);
+}
+
+/**
+ * @brief check la presence du chan
+ * 
+ * @return true or false
+ */
+bool	Server::isInMapChannel(std::string chan) {
+	if (this->getMapChannel().size() == 0)
+		return (false);
+	if (this->getMapChannel().find(chan) != this->getMapChannel().end())
+		return (true);
+	return (false);
+}
+

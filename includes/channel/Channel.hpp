@@ -59,6 +59,7 @@ namespace irc {
 
 		public:
 			void		sendMessage( std::string message );
+			void		sendMessage( std::string message , User& user);
 			//surement a remettre en privé (check puis utiliser la fction)
 
 

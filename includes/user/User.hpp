@@ -22,6 +22,7 @@ class User
 		std::string	_servername;
 		UserMode	_mode;
 		bool		_pass;
+		bool		_cap;
 	public:
 		User(void);
 		User(int fd);
@@ -37,6 +38,7 @@ class User
 		std::string	getHostname(void) const;
 		std::string	getServername(void) const;
 		bool		getPass(void) const;
+		bool		getCap(void) const;
 		// getter modes
 
 		bool	isInvisible(void) const;
@@ -54,6 +56,7 @@ class User
 		User&	setHostname(const std::string& val);
 		User&	setServername(const std::string& val);
 		User&	setPass(const bool val);
+		User&	setCap(const bool val);
 		// setter modes
 
 		User&	beInvisible(const bool boolean);

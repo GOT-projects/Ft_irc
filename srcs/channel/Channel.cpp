@@ -40,7 +40,7 @@ void	Channel::changeChanName( std::string name ){
  * @param guest the user that receive the operator mode
  */
 void	Channel::giveRights( User& host, User& guest){
-	if (this->isInOperatorList(host.getUsername()) && !this->isInBanList(guest.getUsername()))
+	if (this->isInOperatorList(host.getNickname()) && !this->isInBanList(guest.getNickname()))
 		this->addToOperatorList(guest);
 }
 
@@ -75,6 +75,18 @@ void	Channel::sendMessage( std::string message ){
 }
 
 /**
+ * @brief Send message to all users of the channel, original thrower expected
+ * 
+ * @param message message to send
+ */
+void	Channel::sendMessage( std::string message , User& user){
+	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++){
+		if ((*it)->getNickname() != user.getNickname())
+			(*it)->sendCommand(message.c_str());
+	}
+}
+
+/**
  * @brief kick user of a channel
  * 
  * @param user the user
@@ -82,7 +94,7 @@ void	Channel::sendMessage( std::string message ){
 void	Channel::kick( User& user ){
 	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if ((*it)->getUsername() == user.getUsername())
+		if ((*it)->getNickname() == user.getNickname())
 		{
 			_users.erase(it); // add to ban list?
 			return ;
@@ -99,7 +111,7 @@ void	Channel::kick( User& user ){
 void	Channel::delFromOperatorList( User& user ){
 	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++)
 	{
-		if ((*it)->getUsername() == user.getUsername())
+		if ((*it)->getNickname() == user.getNickname())
 		{
 			_operators.erase(it);
 			return ;
@@ -116,7 +128,7 @@ void	Channel::delFromOperatorList( User& user ){
 void	Channel::delFromBansList( User& user ){
 	for (ListUserChannelIterator it = _bans.begin(); it != _bans.end(); it++)
 	{
-		if ((*it)->getUsername() == user.getUsername())
+		if ((*it)->getNickname() == user.getNickname())
 		{
 			_bans.erase(it);
 			return ;
@@ -149,7 +161,7 @@ void	Channel::addToOperatorList( User& user ){
  * @param user the user to add
  */
 void	Channel::addToBanList( User& user ){
-	if (Channel::isInBanList(user.getUsername()))
+	if (Channel::isInBanList(user.getNickname()))
 		kick(user);
 	_bans.push_back(&user);
 }
@@ -168,7 +180,7 @@ void	Channel::addToBanList( User& user ){
 bool	Channel::isInChannel( std::string username ){
 	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if ((*it)->getUsername() == username )
+		if ((*it)->getNickname() == username )
 			return (true);
 	}
 	return (false);
@@ -184,7 +196,7 @@ bool	Channel::isInChannel( std::string username ){
 bool		Channel::isInBanList( std::string username ){
 	for (ListUserChannelIterator it = _bans.begin(); it != _bans.end(); it++)
 	{
-		if ((*it)->getUsername() == username )
+		if ((*it)->getNickname() == username )
 			return (true);
 	}
 	return (false);
@@ -200,7 +212,7 @@ bool		Channel::isInBanList( std::string username ){
 bool		Channel::isInOperatorList( std::string username ){
 	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++)
 	{
-		if ((*it)->getUsername() == username )
+		if ((*it)->getNickname() == username )
 			return (true);
 	}
 	return (false);
@@ -261,6 +273,5 @@ Channel::Channel( std::string name ) : _channelName(name){   // ajouter pointeur
  * @brief Destroy the Channel:: Channel object
  */
 Channel::~Channel(){
-	std::cout << this->_channelName << " destructor called\n";
 	//delete mes merdes
 };
