@@ -11,6 +11,7 @@
 #include <vector>
 #include <cctype>
 #include <regex>
+#include <sstream>
 
 
 // Réseau

@@ -11,6 +11,8 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	PRIVMSG(Server& serv, User& user, Command& cmd) {
+        std::vector<std::string>                target;
+        std::vector<std::string>::iterator      it;
 		//TODO check register
 		//TODO check add BANNED LIST user
 		//TODO ERR_NOSUCHNICK (401)
@@ -27,16 +29,35 @@ namespace irc
 			std::cerr << RED << serv.getLog() << "PRIVMSG: Cap error" << NC << std::endl;
 			user.sendCommand(":please set cap to 302");
 			return;
+		}else if (cmd.params.size() < 1){
+			std::cerr << RED << serv.getLog() << "PING: ERR_NEEDMOREPARAMS " << NC << std::endl;
+			user.sendCommand(ERR_NEEDMOREPARAMS());
+			return;
 		}
-		if (cmd.params[0][0] == '#'){
-			mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-            it->second.sendMessage(S_PRIVMSG(user, cmd.params[0], cmd.params[1]));
-		}
-		else {
+        target = split_target(cmd.params[0]);
+        for (it = target.begin(); it != target.end(); ++it){
+            //TODO need work here end send msg to the target 
+            std::cout << "target " << *it <<std::endl;
 			User tmp;
-			tmp.setNickname(cmd.params[0]);
+			tmp.setNickname(*it);
 			User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
-			userSend->sendCommand(S_PRIVMSG(user, cmd.params[0], cmd.params[1]));
-		}
+            if (userSend != NULL){
+			    userSend->sendCommand(S_PRIVMSG(user, *it, cmd.params[1]));
+            }else{
+			    user.sendCommand(ERR_NOSUCHNICK(*it));
+
+            }
+        }
+
+		/* if (cmd.params[0][0] == '#'){ */
+		/* 	mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]); */
+            /* it->second.sendMessage(S_PRIVMSG(user, cmd.params[0], cmd.params[1])); */
+		/* } */
+		/* else { */
+			/* User tmp; */
+			/* tmp.setNickname(cmd.params[0]); */
+			/* User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname); */
+			/* userSend->sendCommand(S_PRIVMSG(user, cmd.params[0], cmd.params[1])); */
+		/* } */
 	}
 } // namespace irc

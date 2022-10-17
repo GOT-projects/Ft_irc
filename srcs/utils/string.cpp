@@ -1,4 +1,6 @@
 #include "../../includes/includes.hpp"
+#include <algorithm>
+#include <string>
 
 namespace irc
 {
@@ -14,6 +16,29 @@ namespace irc
 		while (it != s.end() && std::isdigit(*it)) ++it;
 		return !s.empty() && it == s.end();
 	}
+
+	/**
+	 * @brief split the string with ',' for get all target client
+	 * 
+	 * @param s string to slipt
+	 * @return vector of target	 
+     */
+    std::vector<std::string>split_target(const std::string &s){
+        std::vector<std::string> ret;
+        std::string tmp;
+        std::istringstream stream(s);
+        std::cout << "target split \n";
+        if (s.find(',') == std::string::npos){
+            ret.push_back(s);
+            return ret;
+        }
+        while (std::getline(stream, tmp, ',')){
+            std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+            ret.push_back(tmp);
+        }
+        return ret;
+    }
+
 
 	/**
 	 * @brief Remove /n in string 

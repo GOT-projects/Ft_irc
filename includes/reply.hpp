@@ -8,6 +8,7 @@
 
 // Delimiter of a request
 #define END "\r\n"
+#define CHANNEL_MAX 100
 
 #define RPL_WELCOME(nickname)		("001 " + nickname + " :Welcome to the ft_irc_serv_42_Lyon, " + std::string(nickname))
 #define	PING(origin)				("PING " + origin)
@@ -29,3 +30,7 @@
  
 //Error User
 #define ERR_ALREADYREGISTERED()		(":You may not reregister") // 462
+
+#define ERR_TOOMANYCHANNELS()       ("405 :You have joined too many channels") //405
+                                                                               
+#define ERR_NOSUCHNICK(nickname)        (std::string(nickname) + "401 :No such nick/channel")       //405
