@@ -215,6 +215,8 @@ void	Server::connect(void) {
 		<< " In creation: " << _waitingUsers.size()
 		<< " | online: " << _onlineUsers.size()
 		<< NC << std::endl;
+	std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
+		<< "Open: " << this->getMapChannel().size() << NC << std::endl;	
 	while (true)
 	{
 		readySocket = currentSocket;
@@ -232,6 +234,8 @@ void	Server::connect(void) {
 					<< " In creation: " << _waitingUsers.size()
 					<< " | online: " << _onlineUsers.size()
 					<< NC << std::endl;
+				std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
+					<< "Open: " << this->getMapChannel().size() << NC << std::endl;	
 			}
 		}
 	}
