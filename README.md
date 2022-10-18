@@ -16,10 +16,10 @@ Sur weechat:
 [X] PASS
 [X] USER
 [X] NICK
-[ ] VERSION Message
-[ ] LUSERS message
-[X] INFO message
-[ ] MODE message [user, channel]
+[ ] VERSION
+[ ] LUSERS
+[X] INFO
+[ ] MODE
 [ ] PRIVMSG
 [ ] NOTICE
 [X] PING
