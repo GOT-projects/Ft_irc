@@ -18,7 +18,7 @@ namespace irc {
 			//o - give/take channel operator privileges;
 			//k - set a channel key (password).
 
-			Mods(){
+			Mods( void ){
 				_secretChannel = false;
 				_privateChannel = false;
 				_inviteOnly = false;
