@@ -47,10 +47,19 @@ namespace irc
 	 * @return string with /n
 	 */
     std::string trim_backspace(std::string &s){
-        std::cout << "remove \\n" << std::endl;
-        s.erase(s.find_last_not_of('\n')+1);         //suffixing spaces
-        s.erase(0, s.find_first_not_of('\n'));       //prefixing spaces
-        return s;
+        std::string ret;
+        std::string::difference_type n = std::count(s.begin(), s.end(), '\n');
+        if (n == 1)
+            return s;
+        for (std::string::iterator it = s.begin(); it != s.end(); ++it){
+            if (*it == '\r' && *it + 1 == '\n'){
+                ret.append("\r\n");
+                it+2;
+            }else if (*it != '\n' && it != s.end() - 1){
+                ret.append(&(*it));
+            }
+        }
+        return ret;
     }
 
 	/**

@@ -18,5 +18,6 @@ mapCommand	Server::initCmd(void){
 	ret["JOIN"] = &JOIN;
 	ret["USER"] = &USER;
 	ret["CAP"] = &CAP;
+	ret["INFO"] = &INFO;
 	return ret;
 }

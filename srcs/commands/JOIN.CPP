@@ -24,7 +24,7 @@ namespace irc
         //                                              and channel #bar using key "foobar".
         //              
         //              JOIN #foo,#bar                  ; join channels #foo and #bar.  @handle
-        //              
+        //             join   #test,#test1,#tes2 &test,&.... 
         channel = split_target(cmd.params[0]);
         if (channel.size() > CHANNEL_MAX){
             user.sendCommand(ERR_TOOMANYCHANNELS());

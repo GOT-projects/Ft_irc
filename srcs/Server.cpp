@@ -1,8 +1,6 @@
 #include "../includes/includes.hpp"
 #include <iostream>
 
-#define test ":ft_irc 433 aartiges :Nickname is already in user\r\n"
-
 using namespace irc;
 
 /**
@@ -142,6 +140,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 	} else {
 		// server receive
 		std::string tmp = buff;
+        std::cout << "tmp string: " << tmp << std::endl;
 		if (_Parse.find(fd) == _Parse.end())
 			_Parse[fd] = Parsing(fd);
 		try{
@@ -190,7 +189,7 @@ void Server::ExecuteCmd(int fd){
 			executeCmd(*this, *user, *itcmd);
 		}else{
 			std::cerr << getLog() << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
-			//TODO send error user.sendCommand(...)
+            user->sendCommand(ERR_UNKNOWNCOMMAND((*itcmd).command));
 		}
 	}
 	_Parse[fd].ClearCommand();

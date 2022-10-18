@@ -33,4 +33,9 @@
 
 #define ERR_TOOMANYCHANNELS()       ("405 :You have joined too many channels") //405
                                                                                
-#define ERR_NOSUCHNICK(nickname)        (std::string(nickname) + "401 :No such nick/channel")       //405
+#define ERR_NOSUCHNICK(nickname)        (std::string(nickname) + " 401 :No such nick/channel")       //405
+
+#define ERR_UNKNOWNCOMMAND(command)    (std::string(command) + " 421 :Unknown command")          //421
+
+#define RPL_INFO(text)                  ("371 INFO: " + std::string(text))
+#define RPL_ENDOFINFO()                 ("374 INFO: End of INFO list")  
