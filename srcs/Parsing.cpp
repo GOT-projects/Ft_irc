@@ -182,7 +182,6 @@ std::vector<std::string>  Parsing::splitMsg(std::string &msg, const std::string 
 		}
 	}
 	_buffer.clear();
-    /* _RemoveEmptyCmd(); */
 	_completed = true;
 	_tolowerCmd();
 }

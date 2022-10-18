@@ -50,6 +50,7 @@ DIR_COMMANDS		=	$(DIR_GLOBAL)/commands
 SRC_COMMANDS		=	initCmd.cpp			\
 						PASS.cpp 			\
 						NICK.cpp 			\
+						INFO.cpp 			\
 						USER.cpp			\
 						PRIVMSG.cpp			\
 						CAP.cpp				\
