@@ -11,6 +11,31 @@ Sur weechat:
 - Déconnecion du serveur `/disconnect name`
 - Changer de fenetre `ctrl+x`
 
+
+```
+[X] PASS
+[X] USER
+[X] NICK
+[ ] VERSION Message
+[ ] LUSERS message
+[X] INFO message
+[ ] MODE message [user, channel]
+[ ] PRIVMSG
+[ ] NOTICE
+[X] PING
+[X] PONG
+[ ] JOIN
+[ ] QUIT
+[ ] OPER
+[ ] PART
+[ ] TOPIC
+[ ] NAMES
+[ ] LIST
+[ ] INVITE
+[ ] KICK
+[ ] HELP
+```
+
 ## Liens
 
 [Modern IRC Client Protocol](https://modern.ircdocs.horse/)
