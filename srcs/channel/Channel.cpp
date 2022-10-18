@@ -87,6 +87,18 @@ void	Channel::sendMessage( std::string message , User& user){
 }
 
 /**
+ * @brief Send message to all users of the channel, original thrower expected
+ * 
+ * @param message message to send
+ */
+void	Channel::sendMessageToOper( std::string message , User& user){
+	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++){
+		if ((*it)->getNickname() != user.getNickname())
+			(*it)->sendCommand(message.c_str());
+	}
+}
+
+/**
  * @brief kick user of a channel
  * 
  * @param user the user
@@ -173,14 +185,14 @@ void	Channel::addToBanList( User& user ){
 /**
  * @brief Check if a user is in the channel
  * 
- * @param username the username
+ * @param nickname the username
  * @return true user is in
  * @return false user is not in
  */
-bool	Channel::isInChannel( std::string username ){
+bool	Channel::isInChannel( std::string nickname ){
 	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if ((*it)->getNickname() == username )
+		if ((*it)->getNickname() == nickname )
 			return (true);
 	}
 	return (false);
@@ -189,14 +201,14 @@ bool	Channel::isInChannel( std::string username ){
 /**
  * @brief Check if a user is in the channel ban users
  * 
- * @param username the username
+ * @param nickname the username
  * @return true user is in
  * @return false user is not in
  */
-bool		Channel::isInBanList( std::string username ){
+bool		Channel::isInBanList( std::string nickname ){
 	for (ListUserChannelIterator it = _bans.begin(); it != _bans.end(); it++)
 	{
-		if ((*it)->getNickname() == username )
+		if ((*it)->getNickname() == nickname )
 			return (true);
 	}
 	return (false);
