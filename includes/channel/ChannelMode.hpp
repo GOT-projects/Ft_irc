@@ -8,15 +8,23 @@ namespace irc {
 	 */
 	class Mods {
 		public:
-			bool	_secretChannel;			//s - secret channel flag;
-			bool	_inviteOnly;			//i - invite-only channel flag;
-			bool	_nameTopicByOper;		//t - topic settable by channel operator only flag;
+			bool	_secretChannel;
+			bool	_privateChannel;
+			bool	_inviteOnly;
+			bool	_nameTopicByOper;
+			int		_maxUsers;
 
-			void	operPrivileges();		//o - give/take channel operator privileges;
-			void	setChannelPassword();	//k - set a channel key (password).
-				
-			//When using the 'o' and 'b' options, a restriction on a total of three
-			//per mode command has been imposed.  That is, any combination of 'o'
-			//and
+
+			//o - give/take channel operator privileges;
+			//k - set a channel key (password).
+
+			Mods( void ){
+				_secretChannel = false;
+				_privateChannel = false;
+				_inviteOnly = false;
+				_nameTopicByOper = false;
+				_maxUsers = 0;
+			};
+			~Mods(){};
 	};
 }
