@@ -11,9 +11,10 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	PRIVMSG(Server& serv, User& user, Command& cmd) {
+		if (!canExecute(user, cmd.command, serv))
+			return;
         std::vector<std::string>                target;
         std::vector<std::string>::iterator      it;
-		//TODO check register
 		//TODO check add BANNED LIST user
 		//TODO ERR_NOSUCHNICK (401)
 		//TODO ERR_NOSUCHSERVER (402)
@@ -25,11 +26,7 @@ namespace irc
 		//TODO ERR_WILDTOPLEVEL (414)
 		//TODO RPL_AWAY (301)
 
-		if (!user.getCap()) {
-			std::cerr << RED << serv.getLog() << "PRIVMSG: Cap error" << NC << std::endl;
-			user.sendCommand(":please set cap to 302");
-			return;
-		}else if (cmd.params.size() < 1){
+		if (cmd.params.size() < 1){
 			std::cerr << RED << serv.getLog() << "PING: ERR_NEEDMOREPARAMS " << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS());
 			return;

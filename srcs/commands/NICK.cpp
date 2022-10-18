@@ -19,17 +19,8 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	NICK(Server& serv, User& user, Command& cmd) {
-		if (!user.getCap()) {
-			std::cerr << RED << serv.getLog() << "NICK: Cap error" << NC << std::endl;
-			user.sendCommand(":please set cap to 302");
+		if (!canRegister(user, cmd.command, serv))
 			return;
-		}
-		if (!user.getPass()) {
-			std::cerr << RED << serv.getLog() << "NICK: password required" << NC << std::endl;
-			user.sendCommand(":please set password");
-			return;
-		}
-		// TODO test if pass
 		if (cmd.params.size() < 1) {
 			std::cerr << RED << serv.getLog() << "NICK: ERR_NONICKNAMEGIVEN" << NC << std::endl;
 			user.sendCommand(ERR_NONICKNAMEGIVEN());
