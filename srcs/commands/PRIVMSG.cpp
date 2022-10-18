@@ -30,7 +30,7 @@ namespace irc
 		}
 		if (cmd.params[0][0] == '#'){
 			mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-            it->second.sendMessage(S_PRIVMSG(user, cmd.params[0], cmd.params[1]));
+            it->second.sendMessage(S_PRIVMSG(user, cmd.params[0], cmd.params[1]), user);
 		}
 		else {
 			User tmp;
