@@ -31,6 +31,8 @@ namespace irc {
 			typedef std::list<User*>			ListUserChannel;
 			typedef ListUserChannel::iterator		ListUserChannelIterator;
 
+			Mods			_chanMods;
+
 			std::string		_channelName;//Channels names are strings (beginning with a '&' or '#' character) of length up to 200 characters. pas de ' ' , ',' ou ascii 7 (ctrl g)
 			std::string		_topic;
 			bool			_private;
