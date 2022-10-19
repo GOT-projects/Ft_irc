@@ -103,16 +103,18 @@ void	Channel::sendMessageToOper( std::string message , User& user){
  * 
  * @param user the user
  */
-void	Channel::kick( User& user ){
+int	Channel::kick( User& user ){
 	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
 		if ((*it)->getNickname() == user.getNickname())
 		{
 			_users.erase(it); // add to ban list?
-			return ;
-		}	
+			if (!_users.size())
+				return (2);
+			return (1);
+		}
 	}
-	return ;
+return (0);
 }
 
 /**

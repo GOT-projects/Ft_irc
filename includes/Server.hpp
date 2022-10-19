@@ -67,6 +67,10 @@ namespace irc
 			struct sockaddr_in	_sockAddr;
 			// fd of the server socket
 			int					_sockServ;
+			// set of the clints socket
+			fd_set				_currentSocket;
+			// the higher file descriptor reserved by the server for clients + 1
+			int					_max_fd;
 			// map with all the command
 			const mapCommand	_commands;
 
@@ -87,9 +91,9 @@ namespace irc
 
 			void		createServer(void);
 			void		runServer(void) const;
-			void		acceptNewConnection(fd_set&	currentSocket, int& max_fd);
-			void		handleClient(fd_set& currentSocket, const int fd, int& max_fd);
-			void		killSocket(fd_set& currentSocket, const int fd, int& max_fd);
+			void		acceptNewConnection();
+			void		handleClient(const int fd);
+			void		killSocket(const int fd);
 			void		ExecuteCmd(int fd);
 
 			static mapCommand	initCmd(void);
@@ -104,6 +108,7 @@ namespace irc
 			void		SendClient(int fd, const std::string &msg);
 			void		display(void);
 			User*		getUser(int fd);
+			void		killClient(User& user);
 
 			mapChannel&	getMapChannel();
 			bool		isInMapChannel(std::string chan);

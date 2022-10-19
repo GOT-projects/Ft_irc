@@ -19,6 +19,7 @@ namespace irc
 		ret["USER"] = &USER;
 		ret["CAP"] = &CAP;
 	    ret["INFO"] = &INFO;
+	    ret["QUIT"] = &QUIT;
 		return ret;
 	}
 

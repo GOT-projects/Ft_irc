@@ -78,7 +78,7 @@ namespace irc {
 			void		joinChannel( User& user);
 			void		addToOperatorList( User& user );
 			void		addToBanList( User& user );  // if in channel => kik (fonction?)
-			void		kick( User& user );
+			int			kick( User& user );
 			void		delFromOperatorList( User& user );
 			void		delFromBansList( User& user );
 
