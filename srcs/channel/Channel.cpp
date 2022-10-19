@@ -244,7 +244,21 @@ void	Channel::addToBanList( User& user ){
 }
 
 
+/**
+ * @brief list of all users
+ * @return true user list as std::string
+ */
+std::string	Channel::channelList( void ){
+	std::string final = "";
 
+	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
+	{
+		if (it != _users.begin())
+			final += " ";
+		final += (*it)->getNickname();
+	}
+	return (final);
+}
 
 
 /**
@@ -262,6 +276,7 @@ bool	Channel::isInChannel( std::string nickname ){
 	}
 	return (false);
 }
+
 
 /**
  * @brief Check if a user is in the channel ban users
