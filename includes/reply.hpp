@@ -11,11 +11,13 @@
 #define CHANNEL_MAX 100
 
 #define RPL_PREFIX(client)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " ")
+#define RPL_HOST(client)	(":" + user.getServername() + " ")
 
 #define RPL_WELCOME(nickname)				("001 " + nickname + " :Welcome to the ft_irc_serv_42_Lyon, " + std::string(nickname))
 #define	PING(origin)						("PING " + origin)
 #define	PONG(origin)						(":" + origin + " PONG " + origin)
 #define	S_PRIVMSG(client, target, message)	(RPL_PREFIX(client) + "PRIVMSG " + target + " :" + message)
+#define	S_NOTICE(client, target, message)	(RPL_PREFIX(client) + "NOTICE " + target + " :" + message)
 #define	S_JOIN(client, target)				(RPL_PREFIX(client) + "JOIN " + target)
 
 // PASS
@@ -35,7 +37,7 @@
 
 #define ERR_TOOMANYCHANNELS()       ("405 :You have joined too many channels") //405
                                                                                
-#define ERR_NOSUCHNICK(nickname)        (std::string(nickname) + " 401 :No such nick/channel")       //405
+#define ERR_NOSUCHNICK(client, nickname)        (RPL_HOST(client) + "401 " + nickname + " :No such nick/channel")       //405
 
 #define ERR_UNKNOWNCOMMAND(command)    (std::string(command) + " 421 :Unknown command")          //421
 
