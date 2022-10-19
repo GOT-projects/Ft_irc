@@ -14,7 +14,7 @@ namespace irc
 			return;
 		if (cmd.params.size() < 4) {
 			std::cerr << RED << serv.getLog() << "USER: ERR_NEEDMOREPARAMS" << NC << std::endl;
-			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command));
+			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 			return;
 		}
 		if (user.getUsername().size() > 0) {

@@ -1,5 +1,6 @@
 
 #include "../../includes/includes.hpp"
+#include <string>
 
 using namespace irc;
 
@@ -15,6 +16,22 @@ Log::~Log(){
 
 std::tm *Log::getTm(){
 	return (_ltm);
+}
+
+std::string Log::getTime(){
+	initLog();
+    std::string ret = std::to_string(1900 + _ltm->tm_year);
+    ret.append("/");
+    ret.append(std::to_string(1 + _ltm->tm_mon));
+    ret.append("/");
+    ret.append(std::to_string(_ltm->tm_mday));
+    ret.append(" ");
+    ret.append(std::to_string(_ltm->tm_hour));
+    ret.append(":");
+    ret.append(std::to_string(1 + _ltm->tm_min));
+    ret.append(":");
+    ret.append(std::to_string(1 + _ltm->tm_sec));
+    return ret;
 }
 
 std::ostream & operator<< (std::ostream &o, Log &log) {

@@ -26,8 +26,12 @@ namespace irc
 	void	PRIVMSG(Server& serv, User& user, Command& cmd);
 	void	NOTICE(Server& serv, User& user, Command& cmd);
 	void	INFO(Server& serv, User& user, Command& cmd);
-	void	QUIT(Server& serv, User& user, Command& cmd);
 	void	KILL(Server& serv, User& user, Command& cmd);
+	void	HELP(Server& serv, User& user, Command& cmd);
+	void	VERSION(Server& serv, User& user, Command& cmd);
+	void	LUSERS(Server& serv, User& user, Command& cmd);
+	void	TIME(Server& serv, User& user, Command& cmd);
+	void	QUIT(Server& serv, User& user, Command& cmd);
 	/*
 	void JOIN(Server& serv, User& user, Command& cmd);
 	void PRIVMSG(Server& serv, User& user, Command& cmd);

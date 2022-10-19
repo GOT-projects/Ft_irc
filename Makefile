@@ -53,10 +53,14 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						INFO.cpp 			\
 						USER.cpp			\
 						PRIVMSG.cpp			\
+						HELP.cpp			\
+						VERSION.cpp			\
 						CAP.cpp				\
+						LUSERS.cpp			\
+						TIME.cpp			\
+						QUIT.cpp			\
 						PING.cpp 			\
 						PONG.cpp 			\
-						QUIT.cpp 			\
 						TOPIC.cpp 			\
 						NAMES.cpp 			\
 						MODE.cpp 			\

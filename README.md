@@ -16,24 +16,25 @@ Sur weechat:
 [X] PASS
 [X] USER
 [X] NICK
-[ ] VERSION
-[ ] LUSERS
+[X] VERSION
+[X] LUSERS
 [X] INFO
 [ ] MODE
-[ ] PRIVMSG
-[ ] NOTICE
+[X] PRIVMSG
+[X] NOTICE
 [X] PING
 [X] PONG
 [ ] JOIN
-[ ] QUIT
+[X] QUIT
 [ ] OPER
 [ ] PART
-[ ] TOPIC
+[S] TOPIC
 [ ] NAMES
 [ ] LIST
+[X] TIME
 [ ] INVITE
-[ ] KICK
-[ ] HELP
+[X] KICK
+[X] HELP
 ```
 
 ## Liens

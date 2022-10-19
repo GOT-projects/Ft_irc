@@ -25,7 +25,7 @@
 
 //Error general
 #define ERR_NOORIGIN()				(":No origin specified") //409
-#define ERR_NEEDMOREPARAMS(command)	(std::string(command) + " :Not enough parameters") //461 
+#define ERR_NEEDMOREPARAMS(command, param)	(std::string(command) + " :Not enough parameters " + std::string(param)) //461 
 
 //Error Nick
 #define ERR_NONICKNAMEGIVEN()		(":No nickname given") // 321
@@ -43,8 +43,30 @@
 
 #define ERR_UNKNOWNCOMMAND(command)    (std::string(command) + " 421 :Unknown command")          //421
 
+//INFO
 #define RPL_INFO(text)                  ("371 INFO: " + std::string(text))
 #define RPL_ENDOFINFO()                 ("374 INFO: End of INFO list")  
 
 // channel
 #define ERR_CANNOTSENDTOCHAN(client, target)	(RPL_PREFIX(client) + target + " : Cannot send to channel")
+//HELP
+#define ERR_HELPNOTFOUND(suject)        ("524 " + std::string(suject) + " :No help available on this topic")
+#define RPL_HELPSTART(text)             ("704 :" + std::string(text))
+#define RPL_HELPTXT(text)               ("705 :" + std::string(text))
+#define RPL_ENDOFHELP(text)             ("706 :" + std::string(text))
+
+//VERSION
+#define ERR_NOSUCHSERVER(servername)    ("402 " + std::string(servername) + " :No such server")
+#define RPL_VERSION(version, server, comment)    ("351 " + std::string(version) + " " + std::string(server) + " :" + std::string(comment))
+
+//TIME
+#define RPL_TIME(server, time)   ("391 " + std::string(server) + " :" + std::string(time))
+
+//LUSERS
+#define RPL_LUSERCLIENT(users, invi, server)            ("251 :There are " + std::string(users) + " users and " + std::string(invi) + " invisible on " + std::string(server) + " servers")
+#define RPL_LUSEROP(oper)                               ("252 " + std::string(oper) + " :operators online")
+
+//TOPIC
+#define RPL_TOPIC(channel, topic)    ("332 " + std::string(channel) + " :" + std::string(topic)) 
+#define RPL_NOTOPIC(channel)    ("331 " + std::string(channel) + " :No topic is set") 
+#define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + std::string(channel) + " " + std::string(nick) + " " + std::string(time))

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../includes.hpp"
+#include <string>
 
 namespace irc
 {
@@ -19,6 +20,7 @@ namespace irc
 			~Log(void);
 			void initLog();
 			std::tm *getTm();
+            std::string getTime();
 	};
 } // namespace irc
 std::ostream & operator<< (std::ostream &o, irc::Log &log);

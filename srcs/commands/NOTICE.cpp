@@ -17,7 +17,7 @@ namespace irc
 		std::vector<std::string>::iterator	it;
 		if (cmd.params.size() < 2){
 			std::cerr << RED << serv.getLog() << "NOTICE: ERR_NEEDMOREPARAMS " << NC << std::endl;
-			user.sendCommand(ERR_NEEDMOREPARAMS());
+			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 			return;
 		}
 		target = split_target(cmd.params[0]);

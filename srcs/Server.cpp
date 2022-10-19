@@ -250,6 +250,8 @@ listUser&	Server::getOnlineUsers( void ){
 	return (this->_onlineUsers);
 }
 
+
+
 /**
  * @brief Get the waiting users (not register users)
  * 

@@ -22,9 +22,13 @@ namespace irc
 		ret["USER"] = &USER;
 		ret["CAP"] = &CAP;
 	    ret["INFO"] = &INFO;
-	    ret["QUIT"] = &QUIT;
 	    ret["NOTICE"] = &NOTICE;
 	    ret["KILL"] = &KILL;
+	    ret["HELP"] = &HELP;
+	    ret["VERSION"] = &VERSION;
+	    ret["LUSERS"] = &LUSERS;
+	    ret["TIME"] = &TIME;
+	    ret["QUIT"] = &QUIT;
 		return ret;
 	}
 
