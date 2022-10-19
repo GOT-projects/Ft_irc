@@ -12,7 +12,7 @@ namespace irc
 	void	MODE(Server& serv, User& user, Command& cmd) {
 		if (cmd.params.size() < 1) {
 			std::cout << RED << serv.getLog() << "PASS: ERR_NEEDMOREPARAMS " << NC << std::endl;
-			user.sendCommand(ERR_NEEDMOREPARAMS("PASS"));
+			user.sendCommand(ERR_NEEDMOREPARAMS("PASS", ""));
 			return;
 		}
 	}

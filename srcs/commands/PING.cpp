@@ -14,7 +14,7 @@ namespace irc
 			return;
 		if (cmd.params.size() < 1){
 			std::cerr << RED << serv.getLog() << "PING: ERR_NEEDMOREPARAMS " << NC << std::endl;
-			user.sendCommand(ERR_NEEDMOREPARAMS());
+			user.sendCommand(ERR_NEEDMOREPARAMS("PING", ""));
 			return;
 		}
 		user.sendCommand(PONG(cmd.params[0]));

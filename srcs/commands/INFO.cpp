@@ -1,10 +1,9 @@
-
 #include "../../includes/includes.hpp"
 
 namespace irc
 {
 	/**
-	 * @brief apply command PING
+	 * @brief apply command INFO
 	 * 
 	 * @param serv server
 	 * @param user user who send request

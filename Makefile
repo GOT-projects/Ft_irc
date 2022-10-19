@@ -53,7 +53,11 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						INFO.cpp 			\
 						USER.cpp			\
 						PRIVMSG.cpp			\
+						HELP.cpp			\
+						VERSION.cpp			\
 						CAP.cpp				\
+						LUSERS.cpp			\
+						TIME.cpp			\
 						PING.cpp 			\
 						PONG.cpp 			\
 						JOIN.cpp 			

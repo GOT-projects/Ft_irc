@@ -27,8 +27,8 @@ namespace irc
 		//TODO RPL_AWAY (301)
 
 		if (cmd.params.size() < 1){
-			std::cerr << RED << serv.getLog() << "PING: ERR_NEEDMOREPARAMS " << NC << std::endl;
-			user.sendCommand(ERR_NEEDMOREPARAMS());
+			std::cerr << RED << serv.getLog() << "PRIVMSG: ERR_NEEDMOREPARAMS " << NC << std::endl;
+			user.sendCommand(ERR_NEEDMOREPARAMS("PRIVMSG", ""));
 			return;
 		}
         target = split_target(cmd.params[0]);
