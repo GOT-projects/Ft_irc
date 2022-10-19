@@ -36,8 +36,10 @@
 #define ERR_ALREADYREGISTERED()		(":You may not reregister") // 462
 
 #define ERR_TOOMANYCHANNELS()       ("405 :You have joined too many channels") //405
-                                                                               
+
 #define ERR_NOSUCHNICK(client, nickname)        (RPL_HOST(client) + "401 " + nickname + " :No such nick/channel")       //405
+
+#define ERR_NOPRIVILEGES(client)			(RPL_HOST(client) + "481 :Permission Denied- You're not an IRC operator")
 
 #define ERR_UNKNOWNCOMMAND(command)    (std::string(command) + " 421 :Unknown command")          //421
 
