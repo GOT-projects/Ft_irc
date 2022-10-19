@@ -75,42 +75,29 @@ void	Server::runServer(void) const {
 /**
  * @brief accept the connection of a new client
  * 
- * @param currentSocket list of all socket (fd) already open by to communicate
- * with the clients
- * @param max_fd the value of the fd open by the server which is higher
+ * @param _max_fd the value of the fd open by the server which is higher
  */
-void	Server::acceptNewConnection(fd_set&	currentSocket, int& max_fd) {
+void	Server::acceptNewConnection() {
 	socklen_t	lenS;
 	int newSocket = accept(_sockServ, (struct sockaddr*)&_sockAddr, &lenS);
 	std::cout << getLog() << "New client connection with socket " << newSocket << std::endl;
 	// Creation of a new connection
-	FD_SET(newSocket, &currentSocket);
+	FD_SET(newSocket, &_currentSocket);
 	_waitingUsers[newSocket] = User(newSocket);
-	if (newSocket >= max_fd)
-		max_fd = newSocket + 1;
+	if (newSocket >= _max_fd)
+		_max_fd = newSocket + 1;
 }
 
 /**
  * @brief Destroy the connection - end of connection with the client (user)
  * 
- * @param currentSocket set of socket contain all connected user
  * @param fd file descriptor of the client
- * @param max_fd the higher file descriptor reserved by the server for clients + 1
  */
-void	Server::killSocket(fd_set& currentSocket, const int fd, int& max_fd) {
-	FD_CLR(fd, &currentSocket);
+void	Server::killSocket(const int fd) {
+	FD_CLR(fd, &_currentSocket);
 	close(fd);
-	// RM user if user not create
-	if (_waitingUsers.find(fd) != _waitingUsers.end())
-		_waitingUsers.erase(fd);
-	else { // Disconnect user
-		listUserIterator	tmp = disconnectUserIn(fd, _onlineUsers);
-		if (tmp != _onlineUsers.end()) {
-			_onlineUsers.erase(tmp);
-		}
-	}
-	if (fd + 1 == max_fd)
-		max_fd = fd;
+	if (fd + 1 == _max_fd)
+		_max_fd = fd;
 	_Parse.erase(fd);
 	std::cout << getLog() << RED << "Disconnected client with socket " << fd << NC << std::endl;
 }
@@ -123,11 +110,9 @@ void Server::SendClient(int fd, const std::string &msg){
  * @brief Manage all clients interaction with the server, from post creation of
  * the connection to the end of connection
  * 
- * @param currentSocket set of socket contain all connected user
  * @param fd file descriptor of the client
- * @param max_fd the higher file descriptor reserved by the server for clients + 1
  */
-void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
+void	Server::handleClient(const int fd) {
 	// TODO Need working on CTRl-D
 	char    buff[1048];
 	ssize_t ret;
@@ -136,7 +121,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 	bzero(buff, sizeof(buff));
 	ret = recv(fd, &buff, sizeof(buff), O_NONBLOCK);
 	if (ret <= 0){
-		killSocket(currentSocket, fd, max_fd);
+		killClient(*getUser(fd));
 	} else {
 		// server receive
 		std::string tmp = buff;
@@ -148,7 +133,7 @@ void	Server::handleClient(fd_set& currentSocket, const int fd, int& max_fd) {
 		}
 		catch (std::runtime_error &e) { 
 			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
-			killSocket(currentSocket, fd, max_fd);
+			killSocket(fd);
 			return;
 		}
 		try {
@@ -201,15 +186,14 @@ void Server::ExecuteCmd(int fd){
  * Connection between the server and the clients
  */
 void	Server::connect(void) {
-	fd_set	currentSocket, readySocket;
-	int max_fd;
+	fd_set	readySocket;
 
 	createServer();
 	runServer();
 	display();
-	max_fd = _sockServ + 1;
-	FD_ZERO(&currentSocket);
-	FD_SET(_sockServ, &currentSocket);
+	_max_fd = _sockServ + 1;
+	FD_ZERO(&_currentSocket);
+	FD_SET(_sockServ, &_currentSocket);
 	std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
 		<< " In creation: " << _waitingUsers.size()
 		<< " | online: " << _onlineUsers.size()
@@ -218,16 +202,16 @@ void	Server::connect(void) {
 		<< "Open: " << this->getMapChannel().size() << NC << std::endl;	
 	while (true)
 	{
-		readySocket = currentSocket;
-		if (select(max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
+		readySocket = _currentSocket;
+		if (select(_max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
 			throw std::runtime_error(strerror(errno));
-		for (int fd = 0; fd <= max_fd; fd++) {
+		for (int fd = 0; fd <= _max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
 				if (fd == _sockServ) {
-					acceptNewConnection(currentSocket, max_fd);
+					acceptNewConnection();
 				}
 				else {
-					handleClient(currentSocket, fd, max_fd);
+					handleClient(fd);
 				}
 				std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
 					<< " In creation: " << _waitingUsers.size()
@@ -319,3 +303,32 @@ bool	Server::isInMapChannel(std::string chan) {
 	return (false);
 }
 
+void	Server::killClient(User& user) {
+	killSocket(user.getSocketFd());
+	// remove from channels
+	{
+		mapChannelIterator it = getMapChannel().begin();
+		while (it != getMapChannel().end())
+		{
+			if (it->second.kick(user) == 2) {
+				mapChannelIterator	tmp = it;
+				it++;
+				getMapChannel().erase(tmp);
+			} else
+				it++;
+		}
+	}
+	{ // remove from server
+		mapUserIterator		itWaiting = getUserIteratorInMap(user, getWaitingUsers(), &isSameSocket);
+		if (itWaiting != getWaitingUsers().end()) {
+			getWaitingUsers().erase(itWaiting);
+			return;
+		}
+		listUserIterator	itOnline = getUserIteratorInList(user, getOnlineUsers(), &isSameSocket);
+		if (itOnline != getOnlineUsers().end()) {
+			getOnlineUsers().erase(itOnline);
+			return;
+		}
+	}
+	std::cerr << getLog() << RED_ERR << "killClient" << RED << ": Error fatal - user not found" << NC << std::endl;
+}

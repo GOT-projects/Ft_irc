@@ -10,11 +10,13 @@
 #define END "\r\n"
 #define CHANNEL_MAX 100
 
-#define RPL_WELCOME(nickname)		("001 " + nickname + " :Welcome to the ft_irc_serv_42_Lyon, " + std::string(nickname))
-#define	PING(origin)				("PING " + origin)
-#define	PONG(origin)				(":" + origin + " PONG " + origin)
-#define	S_PRIVMSG(client, target, message)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " PRIVMSG " + target + " :" + message)
-#define	S_JOIN(client, target)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " JOIN " + target)
+#define RPL_PREFIX(client)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " ")
+
+#define RPL_WELCOME(nickname)				("001 " + nickname + " :Welcome to the ft_irc_serv_42_Lyon, " + std::string(nickname))
+#define	PING(origin)						("PING " + origin)
+#define	PONG(origin)						(":" + origin + " PONG " + origin)
+#define	S_PRIVMSG(client, target, message)	(RPL_PREFIX(client) + "PRIVMSG " + target + " :" + message)
+#define	S_JOIN(client, target)				(RPL_PREFIX(client) + "JOIN " + target)
 
 // PASS
 #define ERR_PASSWDMISMATCH()		("464 :Password incorrect") // 464
@@ -39,3 +41,6 @@
 
 #define RPL_INFO(text)                  ("371 INFO: " + std::string(text))
 #define RPL_ENDOFINFO()                 ("374 INFO: End of INFO list")  
+
+// channel
+#define ERR_CANNOTSENDTOCHAN(client, target)	(RPL_PREFIX(client) + target + " : Cannot send to channel")

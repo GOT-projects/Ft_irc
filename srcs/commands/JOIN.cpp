@@ -7,6 +7,8 @@ namespace irc
 		std::vector<std::string>                key;
 		std::vector<std::string>::iterator      itChan;
 		std::vector<std::string>::iterator      itKey;
+		if (!canExecute(user, cmd.command, serv))
+			return;
 		if (cmd.params.size() < 1){
 			std::cout << "ERR_NEEDMOREPARAMS\n"; 
 			return;
@@ -24,70 +26,100 @@ namespace irc
 		//              JOIN #foo,#bar fubar,foobar     ; join channel #foo using key "fubar".
 		//                                              and channel #bar using key "foobar".
 		//              
-		//              JOIN #foo,#bar                  ; join channels #foo and #bar.  @handle
+		//              JOIN #foo,#bar                  ; join channels #foo and #bar.
 
         //    ERR_INVITEONLYCHAN             
         //    ERR_CHANNELISFULL               ERR_BADCHANMASK
-        //    ERR_NOSUCHCHANNEL               ERR_TOOMANYCHANNELS
+        //      ERR_TOOMANYCHANNELS
         //    ERR_TOOMANYTARGETS              ERR_UNAVAILRESOURCE
         //    RPL_TOPIC
-		//              
+
 		channel = split_target(cmd.params[0]);
 		if (channel.size() > CHANNEL_MAX){
 			user.sendCommand(ERR_TOOMANYCHANNELS());
 			return;
 		}
+
 		if (cmd.params.size() == 1){
 			std::cout << "Channel: \n";
 			for (itChan = channel.begin(); itChan != channel.end(); ++itChan){
 				std::cout << "\n\t\t chan " << *itChan << std::endl;
-				if (serv.isInMapChannel(*itChan)){
-					mapChannelIterator it = serv.getMapChannel().find(*itChan);
-					if (!it->second.isInBanList(user.getNickname())){
+				if ((*itChan)[0] == '#' || (*itChan)[0] == '&'){
+					if (serv.isInMapChannel(*itChan)){
+						mapChannelIterator it = serv.getMapChannel().find(*itChan);
+						if (it->second.getPrivateBool())
+							std::cerr << "ERR_NEEDMOREPARAMS\n";
+						else if (!it->second.isInBanList(user.getNickname())){
+							it->second.joinChannel(user);
+							it->second.sendMessage(S_JOIN(user, *itChan));
+						}
+						else 
+							std::cout << "ERR_BANNEDFROMCHAN\n";
+					}else {
+						Channel chan = Channel(*itChan);
+						serv.getMapChannel().insert(std::pair<std::string, Channel>(*itChan, chan));
+						mapChannelIterator it = serv.getMapChannel().find(*itChan);
 						it->second.joinChannel(user);
+						it->second.addToOperatorList(user);
 						it->second.sendMessage(S_JOIN(user, *itChan));
 					}
-					else 
-						std::cout << "ERR_BANNEDFROMCHAN\n";
-				}else {
-					Channel chan = Channel(*itChan);
-					serv.getMapChannel().insert(std::pair<std::string, Channel>(*itChan, chan));
-					mapChannelIterator it = serv.getMapChannel().find(*itChan);
-					it->second.joinChannel(user);
-					it->second.sendMessage(S_JOIN(user, *itChan));
+
 				}
+				else
+					std::cout << "ERR_NOSUCHCHANNEL\n"; //pas de # ou &
 			}
-		}else if (cmd.params.size() == 2){
+		}
+		else if (cmd.params.size() == 2){
 			key = split_target(cmd.params[1]);
 			std::cout << "Channel: \n";
 			itKey = key.begin();
 			for (itChan = channel.begin(); itChan != channel.end(); ++itChan){
 				std::cout << "\n\t\t chan " << *itChan << std::endl;
-				if (serv.isInMapChannel(*itChan)){
-					mapChannelIterator it = serv.getMapChannel().find(*itChan);
-					if (it->second.getPrivateBool() && *itKey == it->second.getPassword()){
-						it->second.joinChannel(user);
-						it->second.sendMessage(S_JOIN(user, *itChan));
-						//message
-						itKey++;
+				if ((*itChan)[0] == '#' || (*itChan)[0] == '&'){
+					if (serv.isInMapChannel(*itChan)){
+						mapChannelIterator it = serv.getMapChannel().find(*itChan);
+						if (it->second.isInBanList(user.getNickname()))
+							std::cout << "ERR_BANNEDFROMCHAN\n";
+						else if (it->second.getPrivateBool() && *itKey == it->second.getPassword()){
+							it->second.joinChannel(user);
+							it->second.sendMessage(S_JOIN(user, *itChan));
+							//message
+							itKey++;
+						}
+						else if (it->second.getPrivateBool() && itKey == key.end())
+							std::cout << "ERR_NEEDMOREPARAMS\n";
+						else if (!it->second.getPrivateBool()){
+							if (itKey != key.end()){
+								//message avec key
+								itKey++;
+							}
+							it->second.joinChannel(user);
+							it->second.sendMessage(S_JOIN(user, *itChan));
+						}
+						else 
+							std::cout << "ERR_BADCHANNELKEY\n";
+					}else {
+						if (itKey != key.end()){
+							Channel chan = Channel(*itChan, true, *itKey);
+							serv.getMapChannel().insert(std::pair<std::string, Channel>(*itChan, chan));
+							mapChannelIterator it = serv.getMapChannel().find(*itChan);
+							it->second.joinChannel(user);
+							it->second.addToOperatorList(user);
+							it->second.sendMessage(S_JOIN(user, *itChan));
+							itKey++;
+						}
+						else {
+							Channel chan = Channel(*itChan);
+							serv.getMapChannel().insert(std::pair<std::string, Channel>(*itChan, chan));
+							mapChannelIterator it = serv.getMapChannel().find(*itChan);
+							it->second.joinChannel(user);
+							it->second.addToOperatorList(user);
+							it->second.sendMessage(S_JOIN(user, *itChan));
+						}
 					}
-					else if (it->second.getPrivateBool() && itKey == key.end())
-						std::cout << "ERR_NEEDMOREPARAMS\n";
-					else 
-						std::cout << "ERR_BADCHANNELKEY\n";
-					// else {
-					// 	// comment on gere les mdp . aucune precision sur internet -> si chan ouvert on marque quand mm la key meme si elle sert a rien. en gros on va faire un chan une key
-					// 	it->second.joinChannel(user);
-					// 	it->second.sendMessage(S_JOIN(user, *itChan));
-					// }
-				}else {
-					// est ce que si une key est precisé on ouvre direct le chan en mode private + mdp?
-					Channel chan = Channel(*itChan);
-					serv.getMapChannel().insert(std::pair<std::string, Channel>(*itChan, chan));
-					mapChannelIterator it = serv.getMapChannel().find(*itChan);
-					it->second.joinChannel(user);
-					it->second.sendMessage(S_JOIN(user, *itChan));
 				}
+				else
+					std::cout << "ERR_NOSUCHCHANNEL\n"; //pas de # ou &
 			}
 		}
 	}

@@ -31,6 +31,36 @@ void	Channel::changeChanName( std::string name ){
 }
 
 /**
+ * @brief Change user limit
+ * 
+ * @param nb new value
+ */
+void	Channel::changeUserLimit( int nb ){
+	_userLimit = nb;
+}
+
+/**
+ * @brief Change topic flag
+ */
+void		Channel::changeChanTopicFlag( void ){
+	if (_topicFlag == true)
+		_topicFlag = false;
+	else if (_topicFlag == false)
+		_topicFlag = true;
+}
+
+/**
+ * @brief Change priv flag
+ */
+void		Channel::changePrivFlag( void ){
+	if (_private == true)
+		_private = false;
+	else if (_private == false)
+		_private = true;
+}
+
+
+/**
  * @brief Permit to add operator mode (in channel) at guest
  * if host has the good rights.
  * 
@@ -39,9 +69,15 @@ void	Channel::changeChanName( std::string name ){
  * @param host the user that give the operator mode
  * @param guest the user that receive the operator mode
  */
-void	Channel::giveRights( User& host, User& guest){
-	if (this->isInOperatorList(host.getNickname()) && !this->isInBanList(guest.getNickname()))
+void	Channel::giveRights(User& guest){
+	if (this->isInOperatorList(guest.getNickname()))
+		std::cout << "ALREADYIN\n";
+	if (this->isInOperatorList(guest.getNickname())){
+		if (this->isInBanList(guest.getNickname()))
+			this->delFromBansList(guest);
 		this->addToOperatorList(guest);
+	}
+	// voir avec + - et voir 
 }
 
 /**
@@ -87,20 +123,34 @@ void	Channel::sendMessage( std::string message , User& user){
 }
 
 /**
+ * @brief Send message to all users of the channel, original thrower expected
+ * 
+ * @param message message to send
+ */
+void	Channel::sendMessageToOper( std::string message , User& user){
+	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++){
+		if ((*it)->getNickname() != user.getNickname())
+			(*it)->sendCommand(message.c_str());
+	}
+}
+
+/**
  * @brief kick user of a channel
  * 
  * @param user the user
  */
-void	Channel::kick( User& user ){
+int	Channel::kick( User& user ){
 	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
 		if ((*it)->getNickname() == user.getNickname())
 		{
 			_users.erase(it); // add to ban list?
-			return ;
-		}	
+			if (!_users.size())
+				return (2);
+			return (1);
+		}
 	}
-	return ;
+return (0);
 }
 
 /**
@@ -173,14 +223,14 @@ void	Channel::addToBanList( User& user ){
 /**
  * @brief Check if a user is in the channel
  * 
- * @param username the username
+ * @param nickname the username
  * @return true user is in
  * @return false user is not in
  */
-bool	Channel::isInChannel( std::string username ){
+bool	Channel::isInChannel( std::string nickname ){
 	for (ListUserChannelIterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if ((*it)->getNickname() == username )
+		if ((*it)->getNickname() == nickname )
 			return (true);
 	}
 	return (false);
@@ -189,14 +239,14 @@ bool	Channel::isInChannel( std::string username ){
 /**
  * @brief Check if a user is in the channel ban users
  * 
- * @param username the username
+ * @param nickname the username
  * @return true user is in
  * @return false user is not in
  */
-bool		Channel::isInBanList( std::string username ){
+bool		Channel::isInBanList( std::string nickname ){
 	for (ListUserChannelIterator it = _bans.begin(); it != _bans.end(); it++)
 	{
-		if ((*it)->getNickname() == username )
+		if ((*it)->getNickname() == nickname )
 			return (true);
 	}
 	return (false);
@@ -209,10 +259,10 @@ bool		Channel::isInBanList( std::string username ){
  * @return true user is in
  * @return false user is not in
  */
-bool		Channel::isInOperatorList( std::string username ){
+bool		Channel::isInOperatorList( std::string nickname ){
 	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++)
 	{
-		if ((*it)->getNickname() == username )
+		if ((*it)->getNickname() == nickname )
 			return (true);
 	}
 	return (false);
@@ -230,12 +280,30 @@ std::string	Channel::getChannelName(){
 }
 
 /**
+ * @brief Get the channel name
+ * 
+ * @return std::string the name of the channel
+ */
+std::string	Channel::getChannelTopic(){
+	return (_topic);
+}
+
+/**
  * @brief Get the channel password
  * 
  * @return std::string the password of the channel
  */
 std::string	Channel::getPassword(){
 	return (_password);
+}
+
+/**
+ * @brief Get the channel mods
+ * 
+ * @return mods
+ */
+Mods	Channel::getMods( void ){
+	return (_chanMods);
 }
 
 /**
@@ -257,6 +325,8 @@ bool	Channel::getPrivateBool(){
  */
 Channel::Channel( std::string name, bool privatebool, std::string password ) :
 				_channelName(name), _private(privatebool), _password(password){   // ajouter pointeur sur user ou user ou ref de user (voir aartiges san)
+	_userLimit = 0;
+	_topicFlag = false;
 	std::cout << name << "(channel) private construcor called\n";
 };
 
@@ -266,6 +336,9 @@ Channel::Channel( std::string name, bool privatebool, std::string password ) :
  * @param name name of the channel
  */
 Channel::Channel( std::string name ) : _channelName(name){   // ajouter pointeur sur user ou user ou ref de user (voir aartiges san)
+	_userLimit = 0;
+	_topicFlag = false;
+	_private = false;
 	std::cout << name << "(channel) construcor called\n";
 };
 
