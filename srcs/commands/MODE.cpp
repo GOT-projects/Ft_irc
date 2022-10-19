@@ -17,7 +17,7 @@ namespace irc
 		}
 		if (cmd.params[0][0] == '#' || cmd.params[0][0] == '&'){
 			mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-			if(it->second.isInOperatorList(user.getNickname())){
+			if(!it->second.isInOperatorList(user.getNickname())){
 				std::cerr << "ERR_NOTINOPERLIST\n";
 			}
 			else {

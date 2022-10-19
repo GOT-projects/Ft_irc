@@ -46,7 +46,7 @@ void		Channel::changeChanTopicFlag( void ){
 	if (_topicFlag == true)
 		_topicFlag = false;
 	else if (_topicFlag == false)
-		_topicFlag = false;
+		_topicFlag = true;
 }
 
 /**
@@ -56,7 +56,7 @@ void		Channel::changePrivFlag( void ){
 	if (_private == true)
 		_private = false;
 	else if (_private == false)
-		_private = false;
+		_private = true;
 }
 
 
@@ -259,10 +259,10 @@ bool		Channel::isInBanList( std::string nickname ){
  * @return true user is in
  * @return false user is not in
  */
-bool		Channel::isInOperatorList( std::string username ){
+bool		Channel::isInOperatorList( std::string nickname ){
 	for (ListUserChannelIterator it = _operators.begin(); it != _operators.end(); it++)
 	{
-		if ((*it)->getNickname() == username )
+		if ((*it)->getNickname() == nickname )
 			return (true);
 	}
 	return (false);
