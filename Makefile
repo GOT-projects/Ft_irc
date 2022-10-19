@@ -60,6 +60,8 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						TOPIC.cpp 			\
 						NAMES.cpp 			\
 						MODE.cpp 			\
+						NOTICE.cpp 			\
+						KILL.cpp 			\
 						JOIN.cpp 			
 
 ################################################################################

@@ -23,6 +23,8 @@ namespace irc
 		ret["CAP"] = &CAP;
 	    ret["INFO"] = &INFO;
 	    ret["QUIT"] = &QUIT;
+	    ret["NOTICE"] = &NOTICE;
+	    ret["KILL"] = &KILL;
 		return ret;
 	}
 
