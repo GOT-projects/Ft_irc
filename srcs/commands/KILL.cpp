@@ -3,7 +3,7 @@
 namespace irc
 {
 	/**
-	 * @brief apply command COPA
+	 * @brief apply command KILL
 	 * 
 	 * @param serv server
 	 * @param user user who send request
