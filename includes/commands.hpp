@@ -16,6 +16,7 @@ namespace irc
 	void	JOIN(Server& serv, User& user, Command& cmd);
 	void	TOPIC(Server& serv, User& user, Command& cmd);
 	void	MODE(Server& serv, User& user, Command& cmd);
+	void	NAMES(Server& serv, User& user, Command& cmd);
 	void	PASS(Server& serv, User& user, Command& cmd);
 	void	NICK(Server& serv, User& user, Command& cmd);
 	void	USER(Server& serv, User& user, Command& cmd);

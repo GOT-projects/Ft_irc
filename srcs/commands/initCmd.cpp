@@ -18,6 +18,7 @@ namespace irc
 		ret["JOIN"] = &JOIN;
 		ret["MODE"] = &MODE;
 		ret["TOPIC"] = &TOPIC;
+		ret["NAMES"] = &NAMES;
 		ret["USER"] = &USER;
 		ret["CAP"] = &CAP;
 	    ret["INFO"] = &INFO;
