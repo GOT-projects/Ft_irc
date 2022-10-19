@@ -8,22 +8,19 @@ namespace irc {
 	 */
 	class Mods {
 		public:
-			bool	_secretChannel;
-			bool	_privateChannel;
+			bool	_topicFlag;
+			bool	_secretFlag;
 			bool	_inviteOnly;
-			bool	_nameTopicByOper;
-			int		_maxUsers;
+		//	int		_maxUsers;
 
-
-			//o - give/take channel operator privileges;
-			//k - set a channel key (password).
+			void	changeTopicFlag( void );
+			void	changeSecretFlag( void );
+			void	changeInviteFlag( void );
 
 			Mods( void ){
-				_secretChannel = false;
-				_privateChannel = false;
+				_secretFlag = false;
 				_inviteOnly = false;
-				_nameTopicByOper = false;
-				_maxUsers = 0;
+				_topicFlag = false;
 			};
 			~Mods(){};
 	};

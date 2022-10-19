@@ -35,8 +35,13 @@ namespace irc {
 
 			std::string		_channelName;//Channels names are strings (beginning with a '&' or '#' character) of length up to 200 characters. pas de ' ' , ',' ou ascii 7 (ctrl g)
 			std::string		_topic;
+
+			bool			_topicFlag;
+
 			bool			_private;
 			std::string		_password;
+
+			int				_userLimit;
 
 
 			ListUserChannel		_users;		
@@ -58,7 +63,10 @@ namespace irc {
 
 		public:
 			void		changeChanName( std::string name );
+			void		changeUserLimit( int nb );
 			void		changeChanTopic( std::string name );
+			void		changeChanTopicFlag( void );
+			void		changePrivFlag( void );
 			void		changeChanPassword( std::string password );
 			void		sendMessage( std::string message );
 			void		sendMessage( std::string message , User& user);
@@ -73,7 +81,7 @@ namespace irc {
 
 
 
-			void		giveRights( User& host, User& guest );
+			void		giveRights( User& guest );
 			// comment gerer le fait de leave le channel : check si tjrs connecté? ou appel d une fct de deconnection
 			void		joinChannel( User& user);
 			void		addToOperatorList( User& user );
@@ -83,7 +91,9 @@ namespace irc {
 			void		delFromBansList( User& user );
 
 			std::string 	getChannelName();  //
+			std::string 	getChannelTopic();  //
 			std::string 	getPassword(); //
+			Mods		 	getMods(); //
 			bool		getPrivateBool(); //
 			bool		isInChannel( std::string nickname );
 			bool		isInBanList( std::string nickname );
