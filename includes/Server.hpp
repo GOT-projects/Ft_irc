@@ -100,6 +100,7 @@ namespace irc
 			mapUser&	getWaitingUsers();
 			Log&		getLog();
 			std::string	getPassword() const;
+
 			void		connect(void);
 			void		SendClient(int fd, const std::string &msg);
 			void		display(void);

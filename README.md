@@ -17,7 +17,7 @@ Sur weechat:
 [X] USER
 [X] NICK
 [X] VERSION
-[S] LUSERS
+[X] LUSERS
 [X] INFO
 [ ] MODE
 [ ] PRIVMSG
@@ -25,10 +25,10 @@ Sur weechat:
 [X] PING
 [X] PONG
 [ ] JOIN
-[ ] QUIT
+[S] QUIT
 [ ] OPER
 [ ] PART
-[ ] TOPIC
+[S] TOPIC
 [ ] NAMES
 [ ] LIST
 [X] TIME

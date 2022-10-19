@@ -230,6 +230,16 @@ std::string	Channel::getChannelName(){
 }
 
 /**
+ * @brief Get the channel topic
+ * 
+ * @return std::string the topic of the channel
+ */
+std::string 	Channel::getTopic(){
+    return (_topic);
+}
+
+
+/**
  * @brief Get the channel password
  * 
  * @return std::string the password of the channel

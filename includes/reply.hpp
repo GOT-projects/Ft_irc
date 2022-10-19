@@ -53,3 +53,12 @@
 
 //TIME
 #define RPL_TIME(server, time)   ("391 " + std::string(server) + " :" + std::string(time))
+
+//LUSERS
+#define RPL_LUSERCLIENT(users, invi, server)            ("251 :There are " + std::string(users) + " users and " + std::string(invi) + " invisible on " + std::string(server) + " servers")
+#define RPL_LUSEROP(oper)                               ("252 " + std::string(oper) + " :operators online")
+
+//TOPIC
+#define RPL_TOPIC(channel, topic)    ("332 " + std::string(channel) + " :" + std::string(topic)) 
+#define RPL_NOTOPIC(channel)    ("331 " + std::string(channel) + " :No topic is set") 
+#define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + std::string(channel) + " " + std::string(nick) + " " + std::string(time))

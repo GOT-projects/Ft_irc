@@ -19,6 +19,7 @@ std::tm *Log::getTm(){
 }
 
 std::string Log::getTime(){
+	initLog();
     std::string ret = std::to_string(1900 + _ltm->tm_year);
     ret.append("/");
     ret.append(std::to_string(1 + _ltm->tm_mon));

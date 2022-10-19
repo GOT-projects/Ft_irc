@@ -56,10 +56,10 @@ namespace irc {
 
 			bool		checkPassword( std::string str );
 			void		changeChanName( std::string name );
-			void		changeChanTopic( std::string name );
 			void		changeChanPassword( std::string name );
 
 		public:
+			void		changeChanTopic( std::string name );
 			void		sendMessage( std::string message );
 			void		sendMessage( std::string message , User& user);
 			//surement a remettre en privé (check puis utiliser la fction)
@@ -83,6 +83,7 @@ namespace irc {
 
 			std::string 	getChannelName();  //
 			std::string 	getPassword(); //
+			std::string 	getTopic(); //
 			bool		getPrivateBool(); //
 			bool		isInChannel( std::string username );
 			bool		isInBanList( std::string username );
