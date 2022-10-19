@@ -10,7 +10,7 @@ namespace irc
 	 * @param user user who send request
 	 * @param cmd command
 	 */
-	void	TOPIC(Server& serv, User& user, Command&) {
+	void	TOPIC(Server& serv, User& user, Command& cmd) {
 		if (cmd.params.size() < 1) {
 			std::cout << RED << serv.getLog() << "PASS: ERR_NEEDMOREPARAMS " << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS("PASS"));
@@ -23,7 +23,7 @@ namespace irc
 		}
 		if (cmd.params[0][0] == '#' || cmd.params[0][0] == '&'){
 			mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-			if (!cmd.params[1]){
+			if (cmd.params.size() == 2){
                 std::cout << "envoyer de topic : " << it->second.getChannelTopic() << std::endl;
             }
             else {

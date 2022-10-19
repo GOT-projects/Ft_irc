@@ -48,12 +48,12 @@ namespace irc
 				if (cmd.params[1][0] == 's'){
 					it->second.getMods().changeSecretFlag();
 				}
-				if (cmd.params[1][0] == '+o'){
+				if (cmd.params[1] == "+o"){
 					User op;
 					op.setNickname(cmd.params[2]);
 					it->second.giveRights(op);
 				}
-				if (cmd.params[1][0] == '-o'){
+				if (cmd.params[1] == "-o"){
 					User op;
 					op.setNickname(cmd.params[2]);
 					it->second.delFromOperatorList(op);

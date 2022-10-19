@@ -57,6 +57,8 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						PING.cpp 			\
 						PONG.cpp 			\
 						QUIT.cpp 			\
+						TOPIC.cpp 			\
+						MODE.cpp 			\
 						JOIN.cpp 			
 
 ################################################################################
