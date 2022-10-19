@@ -16,6 +16,8 @@ namespace irc
 		ret["PING"] = &ping;
 		ret["PONG"] = &pong;
 		ret["JOIN"] = &JOIN;
+		ret["MODE"] = &MODE;
+		ret["TOPIC"] = &TOPIC;
 		ret["USER"] = &USER;
 		ret["CAP"] = &CAP;
 	    ret["INFO"] = &INFO;

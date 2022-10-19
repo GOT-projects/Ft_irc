@@ -31,6 +31,36 @@ void	Channel::changeChanName( std::string name ){
 }
 
 /**
+ * @brief Change user limit
+ * 
+ * @param nb new value
+ */
+void	Channel::changeUserLimit( int nb ){
+	_userLimit = nb;
+}
+
+/**
+ * @brief Change topic flag
+ */
+void		Channel::changeChanTopicFlag( void ){
+	if (_topicFlag == true)
+		_topicFlag = false;
+	else if (_topicFlag == false)
+		_topicFlag = false;
+}
+
+/**
+ * @brief Change priv flag
+ */
+void		Channel::changePrivFlag( void ){
+	if (_private == true)
+		_private = false;
+	else if (_private == false)
+		_private = false;
+}
+
+
+/**
  * @brief Permit to add operator mode (in channel) at guest
  * if host has the good rights.
  * 
@@ -39,9 +69,15 @@ void	Channel::changeChanName( std::string name ){
  * @param host the user that give the operator mode
  * @param guest the user that receive the operator mode
  */
-void	Channel::giveRights( User& host, User& guest){
-	if (this->isInOperatorList(host.getNickname()) && !this->isInBanList(guest.getNickname()))
+void	Channel::giveRights(User& guest){
+	if (this->isInOperatorList(guest.getNickname()))
+		std::cout << "ALREADYIN\n";
+	if (this->isInOperatorList(guest.getNickname())){
+		if (this->isInBanList(guest.getNickname()))
+			this->delFromBansList(guest);
 		this->addToOperatorList(guest);
+	}
+	// voir avec + - et voir 
 }
 
 /**
@@ -244,12 +280,30 @@ std::string	Channel::getChannelName(){
 }
 
 /**
+ * @brief Get the channel name
+ * 
+ * @return std::string the name of the channel
+ */
+std::string	Channel::getChannelTopic(){
+	return (_topic);
+}
+
+/**
  * @brief Get the channel password
  * 
  * @return std::string the password of the channel
  */
 std::string	Channel::getPassword(){
 	return (_password);
+}
+
+/**
+ * @brief Get the channel mods
+ * 
+ * @return mods
+ */
+Mods	Channel::getMods( void ){
+	return (_chanMods);
 }
 
 /**
@@ -271,6 +325,8 @@ bool	Channel::getPrivateBool(){
  */
 Channel::Channel( std::string name, bool privatebool, std::string password ) :
 				_channelName(name), _private(privatebool), _password(password){   // ajouter pointeur sur user ou user ou ref de user (voir aartiges san)
+	_userLimit = 0;
+	_topicFlag = false;
 	std::cout << name << "(channel) private construcor called\n";
 };
 
@@ -280,6 +336,9 @@ Channel::Channel( std::string name, bool privatebool, std::string password ) :
  * @param name name of the channel
  */
 Channel::Channel( std::string name ) : _channelName(name){   // ajouter pointeur sur user ou user ou ref de user (voir aartiges san)
+	_userLimit = 0;
+	_topicFlag = false;
+	_private = false;
 	std::cout << name << "(channel) construcor called\n";
 };
 
