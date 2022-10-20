@@ -1,7 +1,5 @@
 #pragma once
 
-static int	runtimeServer = 1;
-
 // c++
 #include <iostream>
 #include <string>
@@ -32,6 +30,7 @@ static int	runtimeServer = 1;
 #include <ctime>
 
 // Error
+#include <signal.h>
 #include <errno.h>
 #include <string.h>
 

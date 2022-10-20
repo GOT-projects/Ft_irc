@@ -15,6 +15,7 @@ MK = Makefile
 DIR_HDS				=	includes
 
 RELATIVE_HDS		=	includes.hpp			\
+						runtime.hpp			\
 						Server.hpp			\
 						commands.hpp			\
 						channel/ChannelMode.hpp	\

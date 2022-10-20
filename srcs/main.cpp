@@ -1,4 +1,6 @@
 #include "../includes/includes.hpp"
+#include "../includes/runtime.hpp"
+#include <typeinfo>
 
 void	ctrlc(int sig) {
 	if (sig == SIGINT) {
@@ -17,18 +19,18 @@ int main(int argc, char const *argv[])
 {
     irc::Log log;
 	errno = 0;
-	signal(SIGINT, &ctrlc);
 	if (argc != 3) {
 		std::cerr << log << RED << "Error: usage: ./ircserv port password" << NC << std::endl;
 		return (EXIT_FAILURE);
 	}
 	try {
+		signal(SIGINT, &ctrlc);
 		irc::Server serv(argv[1], argv[2], "pass");
 		serv.connect();
 	}
+	//catch (const std::runtime_error& e) {}
 	catch(const std::exception& e) {
 		std::cerr << log << RED_ERR << "Exception: " << NC << RED << e.what() << NC << std::endl;
 	}
-	
 	return 0;
 }

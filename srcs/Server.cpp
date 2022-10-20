@@ -1,5 +1,5 @@
 #include "../includes/includes.hpp"
-#include <iostream>
+#include "../includes/runtime.hpp"
 
 using namespace irc;
 
@@ -10,7 +10,7 @@ using namespace irc;
  * @param pwd the password of the server
  */
 Server::Server(const std::string& port, const std::string& pwd, const std::string& operPassword)
-: _operPassword(operPassword), _commands(Server::initCmd())
+: _operPassword(operPassword), _max_fd(0), _commands(Server::initCmd())
 {
 	if (!is_number(port))
 		throw std::out_of_range("port: not a number");
@@ -35,10 +35,13 @@ Log& Server::getLog(){
  * 
  */
 Server::~Server(void) {
-	for (listUserIterator it = _onlineUsers.begin(); it != _onlineUsers.end(); it++)
-		close(it->getSocketFd());
-	for (mapUserIterator it = _waitingUsers.begin(); it != _waitingUsers.end(); it++)
-		close(it->second.getSocketFd());
+	for (int i = _sockServ + 1; i < _max_fd; i++)
+	{
+		if (FD_ISSET(i, &_currentSocket)) {
+			killSocket(i);
+		}
+	}
+	FD_CLR(_sockServ, &_currentSocket);
 	close(_sockServ);
 	std::cout << getLog() << GREEN << "Server shutdown" << NC << std::endl;
 }
@@ -54,6 +57,8 @@ void	Server::createServer(void) {
 	// Create the socket
 	if ((_sockServ = socket(AF_INET, SOCK_STREAM, FT_TCP_PROTOCOL)) < 0)
 		throw std::runtime_error("error create socket server");
+	int option = 1;
+	setsockopt(_sockServ, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
 	// Change socket control
 	std::cout << getLog() << GREEN << "Server configured" << NC << std::endl;
 }
@@ -84,9 +89,12 @@ void	Server::runServer(void) const {
  * @param _max_fd the value of the fd open by the server which is higher
  */
 void	Server::acceptNewConnection() {
-	socklen_t	lenS;
+	socklen_t	lenS = sizeof(_sockAddr);
 	int newSocket = accept(_sockServ, (struct sockaddr*)&_sockAddr, &lenS);
-	std::cout << getLog() << "New client connection with socket " << newSocket << std::endl;
+	if (newSocket == -1)
+		std::cerr << RED << "Accept: " << strerror(errno) << NC << std::endl;
+	else
+		std::cout << getLog() << "New client connection with socket " << newSocket << std::endl;
 	// Creation of a new connection
 	FD_SET(newSocket, &_currentSocket);
 	_waitingUsers[newSocket] = User(newSocket);
@@ -101,8 +109,8 @@ void	Server::acceptNewConnection() {
  */
 void	Server::killSocket(const int fd) {
 	FD_CLR(fd, &_currentSocket);
-	if (close(fd) == -1)
-		std::cerr << strerror(errno);
+	shutdown(fd, SHUT_RDWR);
+	close(fd);
 	if (fd + 1 == _max_fd)
 		_max_fd = fd;
 	_Parse.erase(fd);
@@ -194,6 +202,10 @@ void Server::ExecuteCmd(int fd){
  */
 void	Server::connect(void) {
 	fd_set	readySocket;
+	struct timeval	tv;
+
+	tv.tv_usec = 50;
+	tv.tv_sec = 50;
 
 	createServer();
 	runServer();
@@ -206,11 +218,12 @@ void	Server::connect(void) {
 		<< " | online: " << _onlineUsers.size()
 		<< NC << std::endl;
 	std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
-		<< "Open: " << this->getMapChannel().size() << NC << std::endl;
+		<< " Open: " << this->getMapChannel().size() << NC << std::endl;
+	runtimeServer = 1;
 	while (runtimeServer)
 	{
 		readySocket = _currentSocket;
-		if (select(_max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
+		if (select(_max_fd + 1, &readySocket, NULL, NULL, &tv) < 0)
 			throw std::runtime_error(strerror(errno));
 		for (int fd = 0; fd <= _max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
@@ -225,7 +238,7 @@ void	Server::connect(void) {
 					<< " | online: " << _onlineUsers.size()
 					<< NC << std::endl;
 				std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
-					<< "Open: " << this->getMapChannel().size() << NC << std::endl;	
+					<< " Open: " << this->getMapChannel().size() << NC << std::endl;	
 			}
 		}
 	}
