@@ -9,6 +9,10 @@ void		Mods::changeTopicFlag( void ){
 		_topicFlag = false;
 }
 
+void		Mods::changeTopicFlag(bool status){
+	_topicFlag = status;
+}
+
 void		Mods::changeSecretFlag( void ){
 	if (_secretFlag == true)
 		_secretFlag = false;
@@ -16,9 +20,17 @@ void		Mods::changeSecretFlag( void ){
 		_secretFlag = false;
 }
 
+void		Mods::changeSecretFlag(bool status){
+	_secretFlag = status;
+}
+
 void		Mods::changeInviteFlag( void ){
 	if (_inviteOnly == true)
 		_inviteOnly = false;
 	else if (_inviteOnly == false)
 		_inviteOnly = false;
+}
+
+void		Mods::changeInviteFlag(bool status){
+	_inviteOnly = status;
 }

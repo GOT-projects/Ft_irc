@@ -14,8 +14,11 @@ namespace irc {
 		//	int		_maxUsers;
 
 			void	changeTopicFlag( void );
+			void	changeTopicFlag(bool status);
 			void	changeSecretFlag( void );
+			void	changeSecretFlag(bool status);
 			void	changeInviteFlag( void );
+			void	changeInviteFlag(bool status);
 
 			Mods( void ){
 				_secretFlag = false;

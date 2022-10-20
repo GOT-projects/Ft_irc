@@ -70,3 +70,6 @@
 #define RPL_TOPIC(channel, topic)    ("332 " + std::string(channel) + " :" + std::string(topic)) 
 #define RPL_NOTOPIC(channel)    ("331 " + std::string(channel) + " :No topic is set") 
 #define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + std::string(channel) + " " + std::string(nick) + " " + std::string(time))
+
+//MODE
+#define ERR_UMODEUNKNOWNFLAG(target) ("501" + std::string(target) =  " :Unknown MODE flag")

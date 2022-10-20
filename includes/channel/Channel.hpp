@@ -66,7 +66,9 @@ namespace irc {
 			void		changeUserLimit( int nb );
 			void		changeChanTopic( std::string name );
 			void		changeChanTopicFlag( void );
-			void		changePrivFlag( void );
+			void		changeChanTopicFlag(bool status);
+			void		changePrivFlag(bool status );
+			void		changePrivFlag(void);
 			void		changeChanPassword( std::string password );
 			void		sendMessage( std::string message );
 			void		sendMessage( std::string message , User& user);

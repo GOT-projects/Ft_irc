@@ -50,6 +50,13 @@ void		Channel::changeChanTopicFlag( void ){
 }
 
 /**
+ * @brief Change topic flag
+ */
+void		Channel::changeChanTopicFlag(bool status){
+	_topicFlag = status;
+}
+
+/**
  * @brief Change priv flag
  */
 void		Channel::changePrivFlag( void ){
@@ -59,6 +66,9 @@ void		Channel::changePrivFlag( void ){
 		_private = true;
 }
 
+void		Channel::changePrivFlag(bool status){
+	_private = status;
+}
 
 /**
  * @brief Permit to add operator mode (in channel) at guest
