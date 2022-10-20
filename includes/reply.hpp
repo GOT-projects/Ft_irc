@@ -75,4 +75,10 @@
 #define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + std::string(channel) + " " + std::string(nick) + " " + std::string(time))
 
 //MODE
-#define ERR_UMODEUNKNOWNFLAG(target) ("501" + std::string(target) =  " :Unknown MODE flag")
+#define ERR_UMODEUNKNOWNFLAG(target) ("501 " + std::string(target) =  " :Unknown MODE flag")
+
+//JOIN	
+#define ERR_NOSUCHCHANNEL(channel)  	("403 " + std::string(channel) + " :No such channel") 
+#define ERR_BANNEDFROMCHAN(channel) 	("474 " + std::string(channel) + " :Cannot join channel (+b)")
+#define ERR_BADCHANNELKEY(channel)  	("475 " + std::string(channel) + " :Cannot join channel (+k)")
+
