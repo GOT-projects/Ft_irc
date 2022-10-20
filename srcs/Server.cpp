@@ -10,7 +10,7 @@ using namespace irc;
  * @param pwd the password of the server
  */
 Server::Server(const std::string& port, const std::string& pwd, const std::string& operPassword)
-: _operPassword(operPassword), _max_fd(0), _commands(Server::initCmd())
+: _operPassword(operPassword), _max_fd(0), _commands(Server::initCmd()), _bot()
 {
 	if (!is_number(port))
 		throw std::out_of_range("port: not a number");
@@ -27,6 +27,15 @@ Server::Server(const std::string& port, const std::string& pwd, const std::strin
 
 Log& Server::getLog(){
 	return _log;
+}
+
+/**
+ * @brief return bot
+ * 
+ * @return bot
+ */
+Bot& Server::getBot(){
+	return _bot;
 }
 
 
