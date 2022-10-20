@@ -9,7 +9,8 @@ using namespace irc;
  * @param port the number of the port
  * @param pwd the password of the server
  */
-Server::Server(const std::string& port, const std::string& pwd) : _commands(Server::initCmd())
+Server::Server(const std::string& port, const std::string& pwd, const std::string& operPassword)
+: _operPassword(operPassword), _commands(Server::initCmd())
 {
 	if (!is_number(port))
 		throw std::out_of_range("port: not a number");
@@ -34,6 +35,11 @@ Log& Server::getLog(){
  * 
  */
 Server::~Server(void) {
+	for (listUserIterator it = _onlineUsers.begin(); it != _onlineUsers.end(); it++)
+		close(it->getSocketFd());
+	for (mapUserIterator it = _waitingUsers.begin(); it != _waitingUsers.end(); it++)
+		close(it->second.getSocketFd());
+	close(_sockServ);
 	std::cout << getLog() << GREEN << "Server shutdown" << NC << std::endl;
 }
 
@@ -95,7 +101,8 @@ void	Server::acceptNewConnection() {
  */
 void	Server::killSocket(const int fd) {
 	FD_CLR(fd, &_currentSocket);
-	close(fd);
+	if (close(fd) == -1)
+		std::cerr << strerror(errno);
 	if (fd + 1 == _max_fd)
 		_max_fd = fd;
 	_Parse.erase(fd);
@@ -199,8 +206,8 @@ void	Server::connect(void) {
 		<< " | online: " << _onlineUsers.size()
 		<< NC << std::endl;
 	std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
-		<< "Open: " << this->getMapChannel().size() << NC << std::endl;	
-	while (true)
+		<< "Open: " << this->getMapChannel().size() << NC << std::endl;
+	while (runtimeServer)
 	{
 		readySocket = _currentSocket;
 		if (select(_max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
@@ -333,4 +340,8 @@ void	Server::killClient(User& user) {
 		}
 	}
 	std::cerr << getLog() << RED_ERR << "killClient" << RED << ": Error fatal - user not found" << NC << std::endl;
+}
+
+std::string	Server::getOperPassword() const {
+	return _operPassword;
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+static int	runtimeServer = 1;
+
 // c++
 #include <iostream>
 #include <string>

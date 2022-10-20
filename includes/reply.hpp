@@ -11,7 +11,7 @@
 #define CHANNEL_MAX 100
 
 #define RPL_PREFIX(client)	(":" + client.getNickname() + "!" + client.getUsername() + "@" + user.getServername() + " ")
-#define RPL_HOST(client)	(":" + user.getServername() + " ")
+#define RPL_HOST(client)	(":" + client.getServername() + " ")
 
 #define RPL_WELCOME(nickname)				("001 " + nickname + " :Welcome to the ft_irc_serv_42_Lyon, " + std::string(nickname))
 #define	PING(origin)						("PING " + origin)
@@ -19,6 +19,9 @@
 #define	S_PRIVMSG(client, target, message)	(RPL_PREFIX(client) + "PRIVMSG " + target + " :" + message)
 #define	S_NOTICE(client, target, message)	(RPL_PREFIX(client) + "NOTICE " + target + " :" + message)
 #define	S_JOIN(client, target)				(RPL_PREFIX(client) + "JOIN " + target)
+
+#define RPL_YOUREOPER()						("381 :You are now an IRC operator")
+#define ERR_NOOPERHOST(nick)					("491 " + nick + " :No O-lines for your host")
 
 // PASS
 #define ERR_PASSWDMISMATCH()		("464 :Password incorrect") // 464
@@ -33,7 +36,7 @@
 #define ERR_NICKNAMEINUSE(nick)		(nick + " :Nickname is already in use") //433 
  
 //Error User
-#define ERR_ALREADYREGISTERED()		(":You may not reregister") // 462
+#define ERR_ALREADYREGISTERED()		("432 :You may not reregister") // 462
 
 #define ERR_TOOMANYCHANNELS()       ("405 :You have joined too many channels") //405
 
@@ -41,7 +44,7 @@
 
 #define ERR_NOPRIVILEGES(client)			(RPL_HOST(client) + "481 :Permission Denied- You're not an IRC operator")
 
-#define ERR_UNKNOWNCOMMAND(command)    (std::string(command) + " 421 :Unknown command")          //421
+#define ERR_UNKNOWNCOMMAND(command)    ("421 " + std::string(command) + " :Unknown command")          //421
 
 //INFO
 #define RPL_INFO(text)                  ("371 INFO: " + std::string(text))

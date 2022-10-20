@@ -1,5 +1,11 @@
 #include "../includes/includes.hpp"
 
+void	ctrlc(int sig) {
+	if (sig == SIGINT) {
+		runtimeServer = 0;
+	}
+}
+
 /**
  * @brief The main program (entry)
  * 
@@ -11,12 +17,13 @@ int main(int argc, char const *argv[])
 {
     irc::Log log;
 	errno = 0;
+	signal(SIGINT, &ctrlc);
 	if (argc != 3) {
 		std::cerr << log << RED << "Error: usage: ./ircserv port password" << NC << std::endl;
 		return (EXIT_FAILURE);
 	}
 	try {
-		irc::Server serv(argv[1], argv[2]);
+		irc::Server serv(argv[1], argv[2], "pass");
 		serv.connect();
 	}
 	catch(const std::exception& e) {
