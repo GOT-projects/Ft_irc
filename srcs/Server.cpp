@@ -202,10 +202,6 @@ void Server::ExecuteCmd(int fd){
  */
 void	Server::connect(void) {
 	fd_set	readySocket;
-	struct timeval	tv;
-
-	tv.tv_usec = 50;
-	tv.tv_sec = 50;
 
 	createServer();
 	runServer();
@@ -223,7 +219,7 @@ void	Server::connect(void) {
 	while (runtimeServer)
 	{
 		readySocket = _currentSocket;
-		if (select(_max_fd + 1, &readySocket, NULL, NULL, &tv) < 0)
+		if (select(_max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
 			throw std::runtime_error(strerror(errno));
 		for (int fd = 0; fd <= _max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
