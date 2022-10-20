@@ -11,6 +11,7 @@ namespace irc
 			return;
 		if (cmd.params.size() < 1){
 			std::cout << "ERR_NEEDMOREPARAMS\n"; 
+			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 			return;
 		}
 		//split params[0] if have ',' for open multi channel
@@ -39,7 +40,6 @@ namespace irc
 			user.sendCommand(ERR_TOOMANYCHANNELS());
 			return;
 		}
-
 		if (cmd.params.size() == 1){
 			std::cout << "Channel: \n";
 			for (itChan = channel.begin(); itChan != channel.end(); ++itChan){
@@ -47,8 +47,10 @@ namespace irc
 				if ((*itChan)[0] == '#' || (*itChan)[0] == '&'){
 					if (serv.isInMapChannel(*itChan)){
 						mapChannelIterator it = serv.getMapChannel().find(*itChan);
-						if (it->second.getPrivateBool())
+						if (it->second.getPrivateBool()){
 							std::cerr << "ERR_NEEDMOREPARAMS\n";
+							user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
+						}
 						else if (!it->second.isInBanList(user.getNickname())){
 							it->second.joinChannel(user);
 							it->second.sendMessage(S_JOIN(user, *itChan));
@@ -65,8 +67,10 @@ namespace irc
 					}
 
 				}
-				else
+				else{
 					std::cout << "ERR_NOSUCHCHANNEL\n"; //pas de # ou &
+					user.sendCommand(ERR_NOSUCHCHANNEL(cmd.params[0]));	
+				}
 			}
 		}
 		else if (cmd.params.size() == 2){
@@ -78,16 +82,20 @@ namespace irc
 				if ((*itChan)[0] == '#' || (*itChan)[0] == '&'){
 					if (serv.isInMapChannel(*itChan)){
 						mapChannelIterator it = serv.getMapChannel().find(*itChan);
-						if (it->second.isInBanList(user.getNickname()))
+						if (it->second.isInBanList(user.getNickname())){
 							std::cout << "ERR_BANNEDFROMCHAN\n";
+							user.sendCommand(ERR_BANNEDFROMCHAN(cmd.params[0]));
+						}
 						else if (it->second.getPrivateBool() && *itKey == it->second.getPassword()){
 							it->second.joinChannel(user);
 							it->second.sendMessage(S_JOIN(user, *itChan));
 							//message
 							itKey++;
 						}
-						else if (it->second.getPrivateBool() && itKey == key.end())
+						else if (it->second.getPrivateBool() && itKey == key.end()){
 							std::cout << "ERR_NEEDMOREPARAMS\n";
+							user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
+						}
 						else if (!it->second.getPrivateBool()){
 							if (itKey != key.end()){
 								//message avec key
@@ -96,8 +104,10 @@ namespace irc
 							it->second.joinChannel(user);
 							it->second.sendMessage(S_JOIN(user, *itChan));
 						}
-						else 
+						else{
 							std::cout << "ERR_BADCHANNELKEY\n";
+							user.sendCommand(ERR_BADCHANNELKEY(cmd.params[0]));
+						} 
 					}else {
 						if (itKey != key.end()){
 							Channel chan = Channel(*itChan, true, *itKey);
@@ -118,32 +128,11 @@ namespace irc
 						}
 					}
 				}
-				else
+				else{
 					std::cout << "ERR_NOSUCHCHANNEL\n"; //pas de # ou &
+					user.sendCommand(ERR_NOSUCHCHANNEL(cmd.params[0]));	
+				}
 			}
 		}
 	}
-
-	// void	QUIT(Server& serv, User& user, Command& cmd) {
-	//     if (cmd.params.size() < 1){
-	//         std::cout << "ERR_NEEDMOREPARAMS\n"; 
-	//         return;
-	//     }
-	//     // check des channel dans le tableau de channel
-	//     if (serv.isInMapChannel(cmd.params[0]))
-	//     {
-	//         mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-	//         it->second.joinChannel(user);
-	//         it->second.sendMessage(S_JOIN(user, cmd.params[0]));
-	//     }
-	//     else {
-	//         Channel chan = Channel(cmd.params[0]);
-	//         serv.getMapChannel().insert(std::pair<std::string, Channel>(cmd.params[0], chan));
-	//         mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-	//         it->second.joinChannel(user);
-	//         it->second.sendMessage(S_JOIN(user, cmd.params[0]));
-			
-	//         //message a renvoyé
-	//     }
-	// }
 }
