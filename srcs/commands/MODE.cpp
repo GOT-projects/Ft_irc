@@ -2,9 +2,8 @@
 
 namespace irc
 {
-	static void mode(Server& serv, User &user, Command& cmd, mapChannelIterator id, char c, MODE_FLAG flag){
+	static void mode(Server& serv, User &user, Command& cmd, mapChannelIterator &id, char c, MODE_FLAG flag){
 		c = ::tolower(c);
-		mapChannel channel = serv.getMapChannel();
 		switch (c) {
 			case 'k':
 				changePassword(cmd, id->second, flag);
@@ -20,19 +19,19 @@ namespace irc
 				changePrivateFlag(id->second, flag);
 				break;
 			case 'b':
-				changeBanList(cmd, id->second, flag);
+				changeBanList(serv, cmd, id->second, flag);std::cerr << "youpy\n";
 				break;
 			case 't':
-				changeTopic(id->second, flag);
+				changeTopic(id->second, flag);std::cerr << id->second.getMods()._topicFlag << "\n";
 				break;
 			case 'i':
-				changeInvite(id->second, flag);
+				changeInvite(id->second, flag);std::cerr << "youpy\n";
 				break;
 			case 's':
-				changeSecret(id->second, flag);
+				changeSecret(id->second, flag);std::cerr << "youpy\n";
 				break;
 			case 'o':
-				changeOps(cmd, id->second, flag);
+				changeOps(serv, cmd, id->second, flag);std::cerr << "youpy\n";
 				break;
 			default:
 				std::cout << "Error flag not found" << std::endl;
@@ -66,7 +65,7 @@ namespace irc
 			}else if (cmd.params[1].size() > 1 && cmd.params[1][0] == '-'){
 				mode(serv, user, cmd, id, cmd.params[1][1],  LESS);
 			}else if (cmd.params[1].size() == 1){
-				mode(serv, user, cmd, id, cmd.params[1][1],  NORM);
+				mode(serv, user, cmd, id, cmd.params[1][0],  NORM);
 			}
 		}
 	}

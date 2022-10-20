@@ -354,7 +354,7 @@ std::string	Channel::getPassword(){
  * 
  * @return mods
  */
-Mods	Channel::getMods( void ){
+Mods&	Channel::getMods( void ){
 	return (_chanMods);
 }
 

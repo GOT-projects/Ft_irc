@@ -61,7 +61,7 @@ namespace irc {
 			std::string 	getChannelTopic();  //
 			std::string 	getPassword(); //
 			std::string		channelList( void );
-			Mods		 	getMods(); //
+			Mods		 	&getMods(); //
 			bool		getPrivateBool(); //
 			bool		isInChannel( std::string nickname );
 			bool		isInBanList( std::string nickname );

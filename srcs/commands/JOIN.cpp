@@ -46,6 +46,7 @@ namespace irc
 				std::cout << "\n\t\t chan " << *itChan << std::endl;
 				if ((*itChan)[0] == '#' || (*itChan)[0] == '&'){
 					if (serv.isInMapChannel(*itChan)){
+						std::cerr << "CXGrtxwetcgerg\n";
 						mapChannelIterator it = serv.getMapChannel().find(*itChan);
 						if (it->second.getPrivateBool())
 							std::cerr << "ERR_NEEDMOREPARAMS\n";
@@ -77,6 +78,7 @@ namespace irc
 				std::cout << "\n\t\t chan " << *itChan << std::endl;
 				if ((*itChan)[0] == '#' || (*itChan)[0] == '&'){
 					if (serv.isInMapChannel(*itChan)){
+						std::cerr << "CXGrtxwetcgerg\n";
 						mapChannelIterator it = serv.getMapChannel().find(*itChan);
 						if (it->second.isInBanList(user.getNickname()))
 							std::cout << "ERR_BANNEDFROMCHAN\n";
@@ -99,7 +101,7 @@ namespace irc
 						else 
 							std::cout << "ERR_BADCHANNELKEY\n";
 					}else {
-						if (itKey != key.end()){
+						if (itKey != key.end() && key.size() > 0){
 							Channel chan = Channel(*itChan, true, *itKey);
 							serv.getMapChannel().insert(std::pair<std::string, Channel>(*itChan, chan));
 							mapChannelIterator it = serv.getMapChannel().find(*itChan);
