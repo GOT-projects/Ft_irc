@@ -15,6 +15,7 @@ MK = Makefile
 DIR_HDS				=	includes
 
 RELATIVE_HDS		=	includes.hpp			\
+						runtime.hpp			\
 						Server.hpp			\
 						commands.hpp			\
 						channel/ChannelMode.hpp	\
@@ -70,6 +71,7 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						MODE.cpp 			\
 						NOTICE.cpp 			\
 						KILL.cpp 			\
+						OPER.cpp 			\
 						JOIN.cpp 			
 
 ################################################################################

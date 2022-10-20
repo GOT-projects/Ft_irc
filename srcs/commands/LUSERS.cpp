@@ -1,4 +1,5 @@
 #include "../../includes/includes.hpp"
+#include <sstream>
 
 namespace irc
 {
@@ -10,11 +11,13 @@ namespace irc
 	 */
     static std::string getOperator(listUser user){
         int i(0);
+		std::stringstream ss;
         for (listUserIterator it = user.begin(); it != user.end(); ++it){
             if (it->isOperatorServer())
                 i++;
         }
-        return std::to_string(i);
+        ss << i;
+		return ss.str();
     }
 
 	/**
@@ -25,6 +28,7 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	LUSERS(Server& serv, User& user, Command& ) {
+		std::stringstream ss;
 		if (!user.getCap()) {
 			std::cerr << RED << serv.getLog() << "LUSERS: Cap error" << NC << std::endl;
 			user.sendCommand(":please set cap to 302");
@@ -35,7 +39,8 @@ namespace irc
 			return;
         }else{
             /* serv.getOnlineUsers().size() */
-            user.sendCommand(RPL_LUSERCLIENT(std::to_string(serv.getOnlineUsers().size()), "0", "ft_irc"));
+			ss << serv.getOnlineUsers().size();
+            user.sendCommand(RPL_LUSERCLIENT(ss.str(), "0", "ft_irc"));
             user.sendCommand(RPL_LUSEROP(getOperator(serv.getOnlineUsers())));
         }
     };

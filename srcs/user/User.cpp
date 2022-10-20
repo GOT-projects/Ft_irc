@@ -240,7 +240,6 @@ int	User::sendCommand(const std::string& command) const {
 
 namespace irc
 {
-
 /**
  * @brief check if user have requirements to register as user online
  * 
@@ -252,5 +251,4 @@ bool	isRegister(const User& user) {
 		return true;
 	return false;
 }
-	
 } // namespace irc

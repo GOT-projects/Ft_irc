@@ -10,7 +10,6 @@
 #include <list>
 #include <vector>
 #include <cctype>
-#include <regex>
 #include <sstream>
 
 
@@ -30,6 +29,7 @@
 #include <ctime>
 
 // Error
+#include <signal.h>
 #include <errno.h>
 #include <string.h>
 
