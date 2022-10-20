@@ -23,7 +23,7 @@ namespace irc
             }
         // }
         // if (cmd.params.size() == 1) {
-        //     channel = split_target(cmd.params[0]);
+        //     channel = split_target(cmd.params[0], ',', true);
         //     for (itChan = channel.begin(); itChan != channel.end(); itChan++){
         //         for (mapChannelIterator it = serv.getMapChannel().begin(); it != serv.getMapChannel().begin(); it++){
         //             if (!it->second.getMods()._secretFlag && !it->second.getPrivateBool() 

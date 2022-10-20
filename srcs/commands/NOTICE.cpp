@@ -20,7 +20,7 @@ namespace irc
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 			return;
 		}
-		target = split_target(cmd.params[0]);
+		target = split_target(cmd.params[0], ',', true);
 		for (it = target.begin(); it != target.end(); ++it){
 			//std::cout << "target " << *it <<std::endl;
 			// user
