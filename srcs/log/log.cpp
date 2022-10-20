@@ -20,18 +20,19 @@ std::tm *Log::getTm(){
 
 std::string Log::getTime(){
 	initLog();
-    std::string ret = std::to_string(1900 + _ltm->tm_year);
-    ret.append("/");
-    ret.append(std::to_string(1 + _ltm->tm_mon));
-    ret.append("/");
-    ret.append(std::to_string(_ltm->tm_mday));
-    ret.append(" ");
-    ret.append(std::to_string(_ltm->tm_hour));
-    ret.append(":");
-    ret.append(std::to_string(1 + _ltm->tm_min));
-    ret.append(":");
-    ret.append(std::to_string(1 + _ltm->tm_sec));
-    return ret;
+	std::stringstream ss;
+    ss <<  1900 + _ltm->tm_year;
+    ss << '/';
+    ss << 1 + _ltm->tm_mon;
+    ss << "/";
+    ss << _ltm->tm_mday;
+    ss << " ";
+    ss << _ltm->tm_hour;
+    ss << ":";
+    ss << 1 + _ltm->tm_min;
+    ss << ":";
+    ss << 1 + _ltm->tm_sec;
+    return ss.str();
 }
 
 std::ostream & operator<< (std::ostream &o, Log &log) {
