@@ -19,18 +19,17 @@ Sur weechat:
 [X] VERSION
 [X] LUSERS
 [X] INFO
-[ ] MODE
+[ ] MODE  //progress need make test
 [X] PRIVMSG
 [X] NOTICE
 [X] PING
 [X] PONG
-[ ] JOIN
+[ ] JOIN //work in error
 [X] QUIT
-[ ] OPER
+[X] OPER //need test
 [ ] PART
 [S] TOPIC
-[ ] NAMES
-[ ] LIST
+[ ] NAMES // in progress
 [X] TIME
 [ ] INVITE
 [X] KICK
