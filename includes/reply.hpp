@@ -75,3 +75,6 @@
 //NAMES
 #define RPL_NAMREPLY(channel, names)    ("353 " + channel  " :" + names)
 #define RPL_ENDOFNAMES(channel)    ("366 " + channel + " :End of /NAMES list")
+
+//MODE
+#define ERR_UMODEUNKNOWNFLAG(target) ("501" + std::string(target) =  " :Unknown MODE flag")

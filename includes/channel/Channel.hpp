@@ -28,31 +28,44 @@ namespace irc {
 			bool			checkPassword( std::string str );
 
 		public:
-			void			changeChanName( std::string name );
-			void			changeUserLimit( int nb );
-			void			changeChanTopic( std::string name );
-			void			changeChanTopicFlag( void );
-			void			changePrivFlag( void );
-			void			changeChanPassword( std::string password );
-			void			sendMessage( std::string message );
-			void			sendMessage( std::string message , User& user);
-			void			sendMessageToOper( std::string message , User& user);
-			void			giveRights( User& guest );
-			void			joinChannel( User& user);
-			void			addToOperatorList( User& user );
-			void			addToBanList( User& user );  // if in channel => kik (fonction?)
-			void			delFromOperatorList( User& user );
-			void			delFromBansList( User& user );
-			std::string 	getChannelName();
-			std::string 	getChannelTopic();
-			std::string 	getPassword();
+			void		changeChanName( std::string name );
+			void		changeUserLimit( int nb );
+			void		changeChanTopic( std::string name );
+			void		changeChanTopicFlag( void );
+			void		changeChanTopicFlag(bool status);
+			void		changePrivFlag(bool status );
+			void		changePrivFlag(void);
+			void		changeChanPassword( std::string password );
+			void		sendMessage( std::string message );
+			void		sendMessage( std::string message , User& user);
+			void		sendMessageToOper( std::string message , User& user);
+			//surement a remettre en privé (check puis utiliser la fction)
+
+
+		//	Mods			*getMods();
+			void		applyNewMods();
+			void		inviteToChannel();
+			// liste d invité?
+
+
+			void		giveRights( User& guest );
+			// comment gerer le fait de leave le channel : check si tjrs connecté? ou appel d une fct de deconnection
+			void		joinChannel( User& user);
+			void		addToOperatorList( User& user );
+			void		addToBanList( User& user );  // if in channel => kik (fonction?)
+			int			kick( User& user );
+			void		delFromOperatorList( User& user );
+			void		delFromBansList( User& user );
+
+			std::string 	getChannelName();  //
+			std::string 	getChannelTopic();  //
+			std::string 	getPassword(); //
 			std::string		channelList( void );
-			Mods		 	getMods();
-			bool			getPrivateBool();
-			bool			isInChannel( std::string nickname );
-			bool			isInBanList( std::string nickname );
-			bool			isInOperatorList( std::string nickname );
-			int				kick( User& user );
+			Mods		 	getMods(); //
+			bool		getPrivateBool(); //
+			bool		isInChannel( std::string nickname );
+			bool		isInBanList( std::string nickname );
+			bool		isInOperatorList( std::string nickname );
 
 			Channel( std::string name, bool privatebool, std::string password );
 			Channel( std::string name );
