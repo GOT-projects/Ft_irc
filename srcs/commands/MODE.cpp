@@ -66,9 +66,24 @@ namespace irc
 			}else if (cmd.params[1].size() > 1 && cmd.params[1][0] == '-'){
 				mode(serv, user, cmd, id, cmd.params[1][1],  LESS);
 			}else if (cmd.params[1].size() == 1){
-				mode(serv, user, cmd, id, cmd.params[1][1],  NORM);
+				mode(serv, user, cmd, id, cmd.params[1][0],  NORM);
+			}
+		} else if (user.isOperatorServer()) {
+			User	tmpUser;
+			tmpUser.setNickname(cmd.params[0]);
+			if (cmd.params[0][0] == '@')
+				tmpUser.setNickname(cmd.params[0].substr(1));
+			User	*target = getUserInList(tmpUser, serv.getOnlineUsers(), &isSameNickname);
+			if (!target) {
+				user.sendCommand(ERR_NOSUCHNICK(user, tmpUser.getNickname()));
+				return;
+			} else if (user.getNickname() == tmpUser.getNickname()
+				&& cmd.params[1].size() > 1 && cmd.params[1][0] == '-' && cmd.params[1][1] == 'o'){
+					user.beOperatorServer(false);
+					return;
 			}
 		}
+		user.sendCommand(ERR_UMODEUNKNOWNFLAG(cmd.params[0]));
 	}
 }
 		/* if (cmd.params[0][0] == '#' || cmd.params[0][0] == '&'){ mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]); if(!it->second.isInOperatorList(user.getNickname())){ */

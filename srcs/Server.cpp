@@ -29,7 +29,6 @@ Log& Server::getLog(){
 	return _log;
 }
 
-
 /**
  * @brief Destroy the Server:: Server object
  * 
@@ -321,6 +320,11 @@ bool	Server::isInMapChannel(std::string chan) {
 	return (false);
 }
 
+/**
+ * @brief kill a user from server
+ * 
+ * @param user the user
+ */
 void	Server::killClient(User& user) {
 	killSocket(user.getSocketFd());
 	// remove from channels
@@ -351,6 +355,11 @@ void	Server::killClient(User& user) {
 	std::cerr << getLog() << RED_ERR << "killClient" << RED << ": Error fatal - user not found" << NC << std::endl;
 }
 
+/**
+ * @brief get the password to become operator
+ * 
+ * @return std::string the password
+ */
 std::string	Server::getOperPassword() const {
 	return _operPassword;
 }
