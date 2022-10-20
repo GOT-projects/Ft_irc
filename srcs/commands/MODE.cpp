@@ -58,7 +58,7 @@ namespace irc
 			return;
 		}
 		mapChannelIterator id = serv.getMapChannel().find(cmd.params[0]);
-		if ((cmd.params[0].size() > 0 && serv.isInMapChannel(cmd.params[0]) && id->second.isInOperatorList(user.getNickname())) || 
+		if ((cmd.params[0].size() > 0 && serv.isInMapChannel(cmd.params[0]) && id->second.isInOperatorList(user.getNickname())) &&
 				(cmd.params[0][0] == '#' || cmd.params[0][0] == '&')){
 			if (cmd.params[1].size() > 1 && cmd.params[1][0] == '+'){
 				mode(serv, user, cmd, id, cmd.params[1][1],  MORE);
@@ -68,6 +68,8 @@ namespace irc
 				mode(serv, user, cmd, id, cmd.params[1][0],  NORM);
 			}
 		}
+		else
+			std::cout << RED << serv.getLog() << "PASS: ERR_NOTOPER " << NC << std::endl;
 	}
 }
 		/* if (cmd.params[0][0] == '#' || cmd.params[0][0] == '&'){ mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]); if(!it->second.isInOperatorList(user.getNickname())){ */
