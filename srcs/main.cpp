@@ -1,4 +1,12 @@
 #include "../includes/includes.hpp"
+#include "../includes/runtime.hpp"
+#include <typeinfo>
+
+void	ctrlc(int sig) {
+	if (sig == SIGINT) {
+		runtimeServer = 0;
+	}
+}
 
 /**
  * @brief The main program (entry)
@@ -16,12 +24,13 @@ int main(int argc, char const *argv[])
 		return (EXIT_FAILURE);
 	}
 	try {
-		irc::Server serv(argv[1], argv[2]);
+		signal(SIGINT, &ctrlc);
+		irc::Server serv(argv[1], argv[2], "pass");
 		serv.connect();
 	}
+	//catch (const std::runtime_error& e) {}
 	catch(const std::exception& e) {
 		std::cerr << log << RED_ERR << "Exception: " << NC << RED << e.what() << NC << std::endl;
 	}
-	
 	return 0;
 }

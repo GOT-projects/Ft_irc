@@ -29,6 +29,7 @@ namespace irc
 	    ret["LUSERS"] = &LUSERS;
 	    ret["TIME"] = &TIME;
 	    ret["QUIT"] = &QUIT;
+	    ret["OPER"] = &OPER;
 		return ret;
 	}
 

@@ -2,7 +2,6 @@
 
 #include "includes.hpp"
 
-
 // ** User
 
 // type of a list of User class
@@ -57,6 +56,8 @@ namespace irc
 		private:
 			// Server infos
 			
+			// Operator password
+			const std::string	_operPassword;
 			// Server port
 			u_int32_t			_port;
 			// Server port
@@ -98,8 +99,9 @@ namespace irc
 
 			static mapCommand	initCmd(void);
 		public:
-			Server(const std::string& port, const std::string& pwd);
+			Server(const std::string& port, const std::string& pwd, const std::string& operPassword);
 			~Server(void);
+			std::string	getOperPassword() const;
 			listUser&	getOnlineUsers();
 			mapUser&	getWaitingUsers();
 			Log&		getLog();

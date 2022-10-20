@@ -29,6 +29,7 @@
 #include <ctime>
 
 // Error
+#include <signal.h>
 #include <errno.h>
 #include <string.h>
 
