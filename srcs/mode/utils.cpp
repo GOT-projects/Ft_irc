@@ -3,7 +3,7 @@
 
 namespace irc{
 	void changeUserLimitMode(Command &cmd, Channel& channel,  MODE_FLAG flag){
-		int limit(std::stoi(cmd.params[2]));
+		int limit(atoi(cmd.params[2].c_str()));
 	
 		if (limit < 0){
 			throw;
