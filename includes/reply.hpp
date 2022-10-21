@@ -52,6 +52,7 @@
 
 // channel
 #define ERR_CANNOTSENDTOCHAN(client, target)	(RPL_PREFIX(client) + target + " : Cannot send to channel")
+#define ERR_CHANOPRIVSNEEDED(target)	(target + " :You're not channel operator")
 //HELP
 #define ERR_HELPNOTFOUND(suject)        ("524 " + std::string(suject) + " :No help available on this topic")
 #define RPL_HELPSTART(text)             ("704 :" + std::string(text))
@@ -70,9 +71,13 @@
 #define RPL_LUSEROP(oper)                               ("252 " + std::string(oper) + " :operators online")
 
 //TOPIC
-#define RPL_TOPIC(channel, topic)    ("332 " + std::string(channel) + " :" + std::string(topic)) 
-#define RPL_NOTOPIC(channel)    ("331 " + std::string(channel) + " :No topic is set") 
-#define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + std::string(channel) + " " + std::string(nick) + " " + std::string(time))
+#define RPL_NOTOPIC(channel)    ("331 " + channel + " :" + channel) 
+#define RPL_TOPIC(channel, topic)    ("332 " + topic + " " + channel + " :" + topic ) 
+#define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + channel + " " + channel + " " + nick + " " + std::string(time))
+
+//NAMES
+#define RPL_NAMREPLY(channel, symbol, names, username)    (":irc 353 " + username + " " + symbol + " " + channel + " :" + names)
+#define RPL_ENDOFNAMES(channel, username)    (":irc 366 " + username + " " + channel + " :End of /NAMES list")
 
 //MODE
 #define ERR_UMODEUNKNOWNFLAG(target) ("501 " + std::string(target) =  " :Unknown MODE flag")

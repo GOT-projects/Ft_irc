@@ -2,9 +2,8 @@
 
 namespace irc
 {
-	static void mode(Server& serv, User &user, Command& cmd, mapChannelIterator id, char c, MODE_FLAG flag){
+	static void mode(Server& serv, User &user, Command& cmd, mapChannelIterator &id, char c, MODE_FLAG flag){
 		c = ::tolower(c);
-		mapChannel channel = serv.getMapChannel();
 		switch (c) {
 			case 'k':
 				changePassword(cmd, id->second, flag);
@@ -20,7 +19,7 @@ namespace irc
 				changePrivateFlag(id->second, flag);
 				break;
 			case 'b':
-				changeBanList(cmd, id->second, flag);
+				changeBanList(serv, cmd, id->second, flag);
 				break;
 			case 't':
 				changeTopic(id->second, flag);
@@ -32,10 +31,10 @@ namespace irc
 				changeSecret(id->second, flag);
 				break;
 			case 'o':
-				changeOps(cmd, id->second, flag);
+				changeOps(serv, cmd, id->second, flag);
 				break;
 			default:
-				std::cout << "Error flag not found" << std::endl;
+				user.sendCommand(ERR_UMODEUNKNOWNFLAG(cmd.params[0]));
 			
 		}
 	}
@@ -49,7 +48,7 @@ namespace irc
 	void	MODE(Server& serv, User& user, Command& cmd) {
 		std::vector<std::string>                target;
 		std::vector<std::string>::iterator      it;
-		if (cmd.params.size() < 1) {
+		if (cmd.params.size() < 2) {
 			std::cout << RED << serv.getLog() << "PASS: ERR_NEEDMOREPARAMS " << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS("PASS", ""));
 			return;
@@ -59,14 +58,17 @@ namespace irc
 			return;
 		}
 		mapChannelIterator id = serv.getMapChannel().find(cmd.params[0]);
-		if ((cmd.params[0].size() > 0 && serv.isInMapChannel(cmd.params[0]) && id->second.isInOperatorList(user.getNickname())) || 
+		if ((cmd.params[0].size() > 0 && serv.isInMapChannel(cmd.params[0]) && id->second.isInOperatorList(user.getNickname())) &&
 				(cmd.params[0][0] == '#' || cmd.params[0][0] == '&')){
 			if (cmd.params[1].size() > 1 && cmd.params[1][0] == '+'){
 				mode(serv, user, cmd, id, cmd.params[1][1],  MORE);
+				return;
 			}else if (cmd.params[1].size() > 1 && cmd.params[1][0] == '-'){
 				mode(serv, user, cmd, id, cmd.params[1][1],  LESS);
+				return;
 			}else if (cmd.params[1].size() == 1){
 				mode(serv, user, cmd, id, cmd.params[1][0],  NORM);
+				return;
 			}
 		} else if (user.isOperatorServer()) {
 			User	tmpUser;

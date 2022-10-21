@@ -16,21 +16,11 @@ namespace irc
 			std::cerr << RED << serv.getLog() << "NAMES: ERR_toomuchPARAMS " << NC << std::endl;
 			return;
 		}
-        // if (cmd.params.size() == 0) {
-            for (mapChannelIterator it = serv.getMapChannel().begin(); it != serv.getMapChannel().end(); it++){
-                if (!it->second.getMods()._secretFlag && !it->second.getPrivateBool() && !it->second.isInBanList(user.getNickname()))
-                    std::cerr << "voici la liste des users du channel\n"; // printf list;   RPL_NAMREPLY       RPL_ENDOFNAMES
+        for (mapChannelIterator it = serv.getMapChannel().begin(); it != serv.getMapChannel().end(); it++){
+            if (!it->second.getMods()._secretFlag && !it->second.getPrivateBool() && !it->second.isInBanList(user.getNickname())){
+                user.sendCommand(RPL_NAMREPLY(it->second.getChannelName(), "=", it->second.channelList(), user.getNickname()));
             }
-        // }
-        // if (cmd.params.size() == 1) {
-        //     channel = split_target(cmd.params[0], ',', true);
-        //     for (itChan = channel.begin(); itChan != channel.end(); itChan++){
-        //         for (mapChannelIterator it = serv.getMapChannel().begin(); it != serv.getMapChannel().begin(); it++){
-        //             if (!it->second.getMods()._secretFlag && !it->second.getPrivateBool() 
-        //             && !it->second.isInBanList(user.getNickname()))
-        //                 std::cout << "voici la liste des users du channel\n"; // printf list;   RPL_NAMREPLY       RPL_ENDOFNAMES
-        //         }
-        //     }
-        // }
+            user.sendCommand(RPL_ENDOFNAMES(it->second.getChannelName(), user.getNickname()));
+        }
 	}
 }

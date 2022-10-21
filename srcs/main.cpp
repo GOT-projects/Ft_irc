@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
 		irc::Server serv(argv[1], argv[2], "pass");
 		serv.connect();
 	}
-	//catch (const std::runtime_error& e) {}
+	catch (const std::runtime_error& e) {}
 	catch(const std::exception& e) {
 		std::cerr << log << RED_ERR << "Exception: " << NC << RED << e.what() << NC << std::endl;
 	}

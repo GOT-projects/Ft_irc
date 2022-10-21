@@ -55,12 +55,12 @@ namespace irc{
 	enum MODE_FLAG{
 		MORE, LESS, NORM
 	};
-	void changePassword(irc::Command &cmd, irc::Channel channel,  MODE_FLAG flag);
-	void changePrivateFlag(irc::Channel channel,  MODE_FLAG flag);
-	void changeBanList(irc::Command &cmd, irc::Channel channel,  MODE_FLAG flag);
-	void changeTopic(irc::Channel channel,  MODE_FLAG flag);
-	void changeInvite(irc::Channel channel,  MODE_FLAG flag);
-	void changeSecret(irc::Channel channel,  MODE_FLAG flag);
-	void changeOps(irc::Command &cmd, irc::Channel channel,  MODE_FLAG flag);
+	void changePassword(irc::Command &cmd, irc::Channel &channel,  MODE_FLAG flag);
+	void changePrivateFlag(irc::Channel &channel,  MODE_FLAG flag);
+	void changeBanList(irc::Server &serv, irc::Command &cmd, irc::Channel &channel,  MODE_FLAG flag);
+	void changeTopic(irc::Channel &channel,  MODE_FLAG flag);
+	void changeInvite(irc::Channel &channel,  MODE_FLAG flag);
+	void changeSecret(irc::Channel &channel,  MODE_FLAG flag);
+	void changeOps(irc::Server &serv, irc::Command &cmd, irc::Channel &channel,  MODE_FLAG flag);
 	void changeUserLimitMode(irc::Command &cmd, irc::Channel &channel,  MODE_FLAG flag);
 }

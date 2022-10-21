@@ -19,7 +19,7 @@ namespace irc{
 		}
 	}
 	
-	void changePassword(Command &cmd, Channel channel,  MODE_FLAG flag){
+	void changePassword(Command &cmd, Channel &channel,  MODE_FLAG flag){
 	
 		if (flag == MORE){
 			if (!channel.getPrivateBool())
@@ -44,7 +44,7 @@ namespace irc{
 		}
 	}
 	
-	void changePrivateFlag(Channel channel,  MODE_FLAG flag){
+	void changePrivateFlag(Channel &channel,  MODE_FLAG flag){
 		if (flag == MORE){
 			if (!channel.getPrivateBool())
 				channel.changePrivFlag(true);
@@ -56,33 +56,37 @@ namespace irc{
 		}
 	}
 	
-	void changeBanList(Command &cmd, Channel channel,  MODE_FLAG flag){
+	void changeBanList(Server& serv, Command &cmd, Channel &channel,  MODE_FLAG flag){
 		if (flag == MORE){
 			if (!channel.isInBanList(cmd.params[2])){
-				User ban;
-				ban.setNickname(cmd.params[2]);
-				channel.addToBanList(ban);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.addToBanList(*userSend);
 			}
 		}else if (flag == LESS){
 			if (channel.isInBanList(cmd.params[2])){
-				User ban;
-				ban.setNickname(cmd.params[2]);
-				channel.delFromBansList(ban);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.delFromBansList(*userSend);
 			}
 		}else if (flag == NORM){
 			if (!channel.isInBanList(cmd.params[2])){
-				User ban;
-				ban.setNickname(cmd.params[2]);
-				channel.addToBanList(ban);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.addToBanList(*userSend);
 			}else{
-				User ban;
-				ban.setNickname(cmd.params[2]);
-				channel.delFromBansList(ban);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.delFromBansList(*userSend);
 			}
 		}
 	}
 	
-	void changeTopic(Channel channel,  MODE_FLAG flag){
+	void changeTopic(Channel &channel,  MODE_FLAG flag){
 		if (flag == MORE){
 			channel.getMods().changeTopicFlag(true);
 		}else if (flag == LESS){
@@ -92,7 +96,7 @@ namespace irc{
 		}
 	}
 	
-	void changeInvite(Channel channel,  MODE_FLAG flag){
+	void changeInvite(Channel &channel,  MODE_FLAG flag){
 		if (flag == MORE){
 			channel.getMods().changeInviteFlag(true);
 		}else if (flag == LESS){
@@ -102,7 +106,7 @@ namespace irc{
 		}
 	}
 	
-	void changeSecret(Channel channel,  MODE_FLAG flag){
+	void changeSecret(Channel &channel,  MODE_FLAG flag){
 		if (flag == MORE){
 			channel.getMods().changeSecretFlag(true);
 		}else if (flag == LESS){
@@ -112,28 +116,32 @@ namespace irc{
 		}
 	}
 	
-	void changeOps(Command &cmd, Channel channel,  MODE_FLAG flag){
+	void changeOps(Server &serv, Command &cmd, Channel &channel,  MODE_FLAG flag){
 		if (flag == MORE){
 			if (!channel.isInOperatorList(cmd.params[2])){
-				User op;
-				op.setNickname(cmd.params[2]);
-				channel.addToOperatorList(op);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.addToOperatorList(*userSend);
 			}
 		}else if (flag == LESS){
 			if (channel.isInOperatorList(cmd.params[2])){
-				User op;
-				op.setNickname(cmd.params[2]);
-				channel.delFromOperatorList(op);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.delFromOperatorList(*userSend);
 			}
 		}else if (flag == NORM){
 			if (!channel.isInOperatorList(cmd.params[2])){
-				User op;
-				op.setNickname(cmd.params[2]);
-				channel.addToOperatorList(op);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.addToOperatorList(*userSend);
 			}else{
-				User op;
-				op.setNickname(cmd.params[2]);
-				channel.delFromOperatorList(op);
+				User tmp;
+				tmp.setNickname(cmd.params[2]);
+				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
+				channel.delFromOperatorList(*userSend);
 			}
 		}
 	}
