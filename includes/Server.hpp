@@ -87,8 +87,7 @@ namespace irc
 			mapParse			_Parse;
 			// Debug
 			Log					_log;
-
-
+			Bot					_bot;
 
 			void		createServer(void);
 			void		runServer(void) const;
@@ -105,6 +104,7 @@ namespace irc
 			listUser&	getOnlineUsers();
 			mapUser&	getWaitingUsers();
 			Log&		getLog();
+			Bot&		getBot();
 			std::string	getPassword() const;
 
 			void		connect(void);

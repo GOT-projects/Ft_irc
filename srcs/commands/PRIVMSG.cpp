@@ -20,7 +20,8 @@ namespace irc
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 			return;
 		}
-		target = split_target(cmd.params[0]);
+		target = split_target(cmd.params[0], ',', true);
+		cmd.params[1] = serv.getBot().blacklistMsg(cmd.params[1]);
 		for (it = target.begin(); it != target.end(); ++it){
 			//std::cout << "target " << *it <<std::endl;
 			// user

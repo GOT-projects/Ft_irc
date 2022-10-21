@@ -24,6 +24,7 @@ RELATIVE_HDS		=	includes.hpp			\
 						user/UserMode.hpp	\
 						user/User.hpp \
 						log/log.hpp \
+						bot/bot.hpp \
 						Parsing.hpp			\
 						reply.hpp			\
 						utils/string.hpp	\
@@ -38,6 +39,9 @@ SRC_GLOBAL						=	main.cpp				\
 
 DIR_USER		=	$(DIR_GLOBAL)/user
 SRC_USER		=	UserMode.cpp User.cpp
+
+DIR_BOT		=	$(DIR_GLOBAL)/bot
+SRC_BOT		=	bot.cpp
 
 DIR_LOG			=	$(DIR_GLOBAL)/log
 SRC_LOG			=	log.cpp
@@ -84,7 +88,7 @@ CFLAGS	=	-Wall -Werror -Wextra -std=c++98 -g3 -ggdb -fsanitize=address
 # Sources
 
 # All dirs
-DIRS_SRC			=	 $(DIR_MOD) $(DIR_COMMANDS) $(DIR_UTILS) $(DIR_USER) $(DIR_LOG) $(DIR_CHANNEL) $(DIR_GLOBAL)  
+DIRS_SRC			=	 ${DIR_BOT} $(DIR_MOD) $(DIR_COMMANDS) $(DIR_UTILS) $(DIR_USER) $(DIR_LOG) $(DIR_CHANNEL) $(DIR_GLOBAL)  
 
 
 DIR_OBJ				=	obj
@@ -92,6 +96,7 @@ DIR_OBJ				=	obj
 # All srcs
 SRCS		=	$(addprefix $(DIR_GLOBAL)/, $(SRC_GLOBAL))	\
 				$(addprefix $(DIR_USER)/, $(SRC_USER))	\
+				$(addprefix $(DIR_BOT)/, $(SRC_BOT))	\
 				$(addprefix $(DIR_MOD)/, $(SRC_MOD))	\
 				$(addprefix $(DIR_UTILS)/, $(SRC_UTILS))	\
 				$(addprefix $(DIR_LOG)/, $(SRC_LOG))	\

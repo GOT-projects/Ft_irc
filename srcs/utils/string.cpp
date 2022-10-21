@@ -23,17 +23,17 @@ namespace irc
 	 * @param s string to slipt
 	 * @return vector of target	 
      */
-    std::vector<std::string>split_target(const std::string &s){
+    std::vector<std::string>split_target(const std::string &s, char sep, bool lower){
         std::vector<std::string> ret;
         std::string tmp;
         std::istringstream stream(s);
-        std::cout << "target split \n";
-        if (s.find(',') == std::string::npos){
+        if (s.find(sep) == std::string::npos){
             ret.push_back(s);
             return ret;
         }
-        while (std::getline(stream, tmp, ',')){
-            std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+        while (std::getline(stream, tmp, sep)){
+			if (lower)
+            	std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
             ret.push_back(tmp);
         }
         return ret;

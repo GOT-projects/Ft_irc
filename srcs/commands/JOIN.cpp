@@ -35,7 +35,7 @@ namespace irc
         //    ERR_TOOMANYTARGETS              ERR_UNAVAILRESOURCE
         //    RPL_TOPIC
 
-		channel = split_target(cmd.params[0]);
+		channel = split_target(cmd.params[0], ',', true);
 		if (channel.size() > CHANNEL_MAX){
 			user.sendCommand(ERR_TOOMANYCHANNELS());
 			return;
@@ -76,7 +76,7 @@ namespace irc
 			}
 		}
 		else if (cmd.params.size() == 2){
-			key = split_target(cmd.params[1]);
+			key = split_target(cmd.params[1], ',' , true);
 			std::cout << "Channel: \n";
 			itKey = key.begin();
 			for (itChan = channel.begin(); itChan != channel.end(); ++itChan){

@@ -11,6 +11,7 @@
 #include <vector>
 #include <cctype>
 #include <sstream>
+#include <fstream>
 
 
 // Réseau
@@ -42,6 +43,7 @@
 #include "user/UserMode.hpp"
 #include "user/User.hpp"
 #include "channel/ChannelMode.hpp"
+#include "bot/bot.hpp"
 #include "channel/Channel.hpp"
 #include "Server.hpp"
 #include "utils/compare.hpp"
