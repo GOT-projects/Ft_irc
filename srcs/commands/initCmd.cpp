@@ -10,21 +10,23 @@ namespace irc
 	 */
 	mapCommand	Server::initCmd(void){
 		mapCommand	ret;
+		ret["MODE"] = &MODE;
 		ret["PRIVMSG"] = &PRIVMSG;
 		ret["NICK"] = &NICK;
 		ret["PASS"] = &PASS;
 		ret["PING"] = &ping;
 		ret["PONG"] = &pong;
 		ret["JOIN"] = &JOIN;
-		ret["MODE"] = &MODE;
 		ret["TOPIC"] = &TOPIC;
 		ret["NAMES"] = &NAMES;
 		ret["USER"] = &USER;
 		ret["CAP"] = &CAP;
+		ret["KICK"] = &KICK;
 	    ret["INFO"] = &INFO;
 	    ret["NOTICE"] = &NOTICE;
 	    ret["KILL"] = &KILL;
 	    ret["HELP"] = &HELP;
+	    ret["PART"] = &PART;
 	    ret["VERSION"] = &VERSION;
 	    ret["LUSERS"] = &LUSERS;
 	    ret["TIME"] = &TIME;

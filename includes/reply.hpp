@@ -19,6 +19,8 @@
 #define	S_PRIVMSG(client, target, message)	(RPL_PREFIX(client) + "PRIVMSG " + target + " :" + message)
 #define	S_NOTICE(client, target, message)	(RPL_PREFIX(client) + "NOTICE " + target + " :" + message)
 #define	S_JOIN(client, target)				(RPL_PREFIX(client) + "JOIN " + target)
+#define	S_KICK(user, channel, target)		(":" + user + " KICK " + channel + " " + target)
+#define	S_PART(user, channel)			    (":" + user + " PART " + channel)
 
 #define RPL_YOUREOPER()						("381 :You are now an IRC operator")
 #define ERR_NOOPERHOST(nick)					("491 " + nick + " :No O-lines for your host")

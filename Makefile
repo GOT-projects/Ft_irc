@@ -65,6 +65,8 @@ SRC_COMMANDS		=	initCmd.cpp			\
 						HELP.cpp			\
 						VERSION.cpp			\
 						CAP.cpp				\
+						KICK.cpp			\
+						PART.cpp			\
 						LUSERS.cpp			\
 						TIME.cpp			\
 						QUIT.cpp			\

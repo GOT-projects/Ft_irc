@@ -175,16 +175,16 @@ int	Channel::kick( User& user ){
 			it++;
 	}
 	it = _bans.begin();
-	while (it != _bans.end())
-	{
-		if ((*it)->getNickname() == user.getNickname()) {
-			tmp = it;
-			it++;
-			_bans.erase(tmp); // add to ban list?
-			ret = 1;
-		} else
-			it++;
-	}
+	// while (it != _bans.end())
+	// {
+	// 	if ((*it)->getNickname() == user.getNickname()) {
+	// 		tmp = it;
+	// 		it++;
+	// 		_bans.erase(tmp); // add to ban list?
+	// 		ret = 1;
+	// 	} else
+	// 		it++;
+	// }
 	if (_users.empty())
 		return 2;
 	return (ret);
@@ -265,6 +265,8 @@ std::string	Channel::channelList( void ){
 	{
 		if (it != _users.begin())
 			final += " ";
+		if (this->isInOperatorList((*it)->getNickname()))
+			final += "@";
 		final += (*it)->getNickname();
 	}
 	return (final);

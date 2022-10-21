@@ -14,6 +14,8 @@ namespace irc
 	bool	canExecute(const User& user, const std::string& cmd, Server& serv);
 
 	void	JOIN(Server& serv, User& user, Command& cmd);
+	void	KICK(Server& serv, User& user, Command& cmd);
+	void	PART(Server& serv, User& user, Command& cmd);
 	void	TOPIC(Server& serv, User& user, Command& cmd);
 	void	MODE(Server& serv, User& user, Command& cmd);
 	void	NAMES(Server& serv, User& user, Command& cmd);
