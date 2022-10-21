@@ -19,22 +19,22 @@ namespace irc
 				changePrivateFlag(id->second, flag);
 				break;
 			case 'b':
-				changeBanList(serv, cmd, id->second, flag);std::cerr << "youpy\n";
+				changeBanList(serv, cmd, id->second, flag);
 				break;
 			case 't':
-				changeTopic(id->second, flag);std::cerr << id->second.getMods()._topicFlag << "\n";
+				changeTopic(id->second, flag);
 				break;
 			case 'i':
-				changeInvite(id->second, flag);std::cerr << "youpy\n";
+				changeInvite(id->second, flag);
 				break;
 			case 's':
-				changeSecret(id->second, flag);std::cerr << "youpy\n";
+				changeSecret(id->second, flag);
 				break;
 			case 'o':
-				changeOps(serv, cmd, id->second, flag);std::cerr << "youpy\n";
+				changeOps(serv, cmd, id->second, flag);
 				break;
 			default:
-				std::cout << "Error flag not found" << std::endl;
+				user.sendCommand(ERR_UMODEUNKNOWNFLAG(cmd.params[0]));
 			
 		}
 	}
@@ -48,7 +48,7 @@ namespace irc
 	void	MODE(Server& serv, User& user, Command& cmd) {
 		std::vector<std::string>                target;
 		std::vector<std::string>::iterator      it;
-		if (cmd.params.size() < 1) {
+		if (cmd.params.size() < 2) {
 			std::cout << RED << serv.getLog() << "PASS: ERR_NEEDMOREPARAMS " << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS("PASS", ""));
 			return;
@@ -62,10 +62,13 @@ namespace irc
 				(cmd.params[0][0] == '#' || cmd.params[0][0] == '&')){
 			if (cmd.params[1].size() > 1 && cmd.params[1][0] == '+'){
 				mode(serv, user, cmd, id, cmd.params[1][1],  MORE);
+				return;
 			}else if (cmd.params[1].size() > 1 && cmd.params[1][0] == '-'){
 				mode(serv, user, cmd, id, cmd.params[1][1],  LESS);
+				return;
 			}else if (cmd.params[1].size() == 1){
 				mode(serv, user, cmd, id, cmd.params[1][0],  NORM);
+				return;
 			}
 		} else if (user.isOperatorServer()) {
 			User	tmpUser;

@@ -76,8 +76,8 @@
 #define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + channel + " " + channel + " " + nick + " " + std::string(time))
 
 //NAMES
-#define RPL_NAMREPLY(channel, names)    ("353 " + channel  " :" + names)
-#define RPL_ENDOFNAMES(channel)    ("366 " + channel + " :End of /NAMES list")
+#define RPL_NAMREPLY(channel, symbol, names, username)    (":irc 353 " + username + " " + symbol + " " + channel + " :" + names)
+#define RPL_ENDOFNAMES(channel, username)    (":irc 366 " + username + " " + channel + " :End of /NAMES list")
 
 //MODE
 #define ERR_UMODEUNKNOWNFLAG(target) ("501 " + std::string(target) =  " :Unknown MODE flag")

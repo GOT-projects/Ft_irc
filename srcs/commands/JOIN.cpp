@@ -58,6 +58,7 @@ namespace irc
 						}
 						else 
 							std::cout << "ERR_BANNEDFROMCHAN\n";
+							user.sendCommand(ERR_BANNEDFROMCHAN(cmd.params[0]));
 					}else {
 						Channel chan = Channel(*itChan);
 						serv.getMapChannel().insert(std::pair<std::string, Channel>(*itChan, chan));
