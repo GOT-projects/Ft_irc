@@ -9,7 +9,7 @@ using namespace irc;
  */
 User::User(int fd)
 : _socketFd(fd), _username(""), _nickname(""), _realname(""), _hostname("irc"),
-_servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
+_servername("irc"), _mode(UserMode()), _pass(false), _cap(true)
 {}
 
 /**
@@ -17,7 +17,7 @@ _servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
  */
 User::User(void)
 : _socketFd(-1), _username(""), _nickname(""), _realname(""), _hostname("irc"),
-_servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
+_servername("irc"), _mode(UserMode()), _pass(false), _cap(true)
 {}
 
 User::User(const User& ref)

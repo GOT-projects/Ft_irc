@@ -13,6 +13,7 @@ namespace irc
 		if (cmd.params.size() < 2 || cmd.params[0] != "LS" || cmd.params[1] != "302") {
 			std::cerr << RED << serv.getLog() << "CAP: error" << NC << std::endl;
 			user.sendCommand(":Please change your client \n go to hell");
+			user.setCap(false);
 			return;
 		}
 		user.setCap(true);

@@ -11,8 +11,6 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	NOTICE(Server& serv, User& user, Command& cmd) {
-		if (!canExecute(user, cmd.command, serv))
-			return;
 		std::vector<std::string>			target;
 		std::vector<std::string>::iterator	it;
 		if (cmd.params.size() < 2){
@@ -28,8 +26,10 @@ namespace irc
 				User tmp;
 				tmp.setNickname(*it);
 				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
-				if (userSend != NULL)
-					userSend->sendCommand(S_NOTICE(user, *it, cmd.params[1]));
+				if (userSend != NULL) {
+					userSend->sendCommand(S_PRIVMSG(user, *it, cmd.params[1]));
+					user.sendCommand(ERR_NOSUCHNICK(user, user.getNickname()));
+				}
 				else
 					user.sendCommand(ERR_NOSUCHNICK(user, *it));
 			} else { // channel

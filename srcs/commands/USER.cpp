@@ -10,8 +10,6 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	USER(Server& serv, User& user, Command& cmd) {
-		if (!canRegister(user, cmd.command, serv))
-			return;
 		if (cmd.params.size() < 4) {
 			std::cerr << RED << serv.getLog() << "USER: ERR_NEEDMOREPARAMS" << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
@@ -36,6 +34,10 @@ namespace irc
 				// Welcome
 				User*	newUser = getUserInList(user, serv.getOnlineUsers(), &isSameUser);
 				newUser->sendCommand(RPL_WELCOME(user.getNickname()));
+				std::cout << serv.getLog() << BLUE_BK << "Users" << NC << BLUE
+					<< " In creation: " << serv.getWaitingUsers().size()
+					<< " | online: " << serv.getOnlineUsers().size()
+					<< NC << std::endl;
 			}
 		}
 	}

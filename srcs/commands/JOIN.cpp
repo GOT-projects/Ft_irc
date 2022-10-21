@@ -7,34 +7,11 @@ namespace irc
 		std::vector<std::string>                key;
 		std::vector<std::string>::iterator      itChan;
 		std::vector<std::string>::iterator      itKey;
-		if (!canExecute(user, cmd.command, serv))
-			return;
 		if (cmd.params.size() < 1){
 			std::cout << "ERR_NEEDMOREPARAMS\n"; 
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 			return;
 		}
-		//split params[0] if have ',' for open multi channel
-		//TODO need use target for go or home new channel 
-		//and need check target[0] = '#' || '&' || '@' for change the oper of the channel
-		//TODO for test use cmd:   \join #test,#tes1,#tes2,&test3
-		//Example list
-		//              JOIN #foobar                    ; join channel #foobar.  @Handle
-		//              JOIN &foo fubar                 ; join channel &foo using key "fubar".
-		//              JOIN #foo,&bar fubar            ; join channel #foo using key "fubar"
-		//                                              and &bar using no key.
-		//              
-		//              JOIN #foo,#bar fubar,foobar     ; join channel #foo using key "fubar".
-		//                                              and channel #bar using key "foobar".
-		//              
-		//              JOIN #foo,#bar                  ; join channels #foo and #bar.
-
-        //    ERR_INVITEONLYCHAN             
-        //    ERR_CHANNELISFULL               ERR_BADCHANMASK
-        //      ERR_TOOMANYCHANNELS
-        //    ERR_TOOMANYTARGETS              ERR_UNAVAILRESOURCE
-        //    RPL_TOPIC
-
 		channel = split_target(cmd.params[0], ',', true);
 		if (channel.size() > CHANNEL_MAX){
 			user.sendCommand(ERR_TOOMANYCHANNELS());

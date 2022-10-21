@@ -10,8 +10,6 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	KILL(Server& serv, User& user, Command& cmd) {
-		if (!canExecute(user, cmd.command, serv))
-			return;
 		if (!user.isOperatorServer()) {
 			std::cerr << RED << serv.getLog() << "KILL: ERR_NOPRIVILEGES " << NC << std::endl;
 			user.sendCommand(ERR_NOPRIVILEGES(user));

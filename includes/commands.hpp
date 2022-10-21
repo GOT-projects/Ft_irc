@@ -11,7 +11,7 @@ namespace irc
 	 */
 
 	bool	canRegister(const User& user, const std::string& cmd, Server& serv);
-	bool	canExecute(const User& user, const std::string& cmd, Server& serv);
+	bool	canExecute(Server& serv, const User& user, const std::string& cmd);
 
 	void	JOIN(Server& serv, User& user, Command& cmd);
 	void	TOPIC(Server& serv, User& user, Command& cmd);

@@ -76,7 +76,7 @@ void	Server::createServer(void) {
  * @brief Start the server, socket ready to recieve requests
  */
 void	Server::runServer(void) const {
-    Log log;
+	Log log;
 	if (
 		// Change socket control
 		fcntl(_sockServ, F_SETFL, O_NONBLOCK) == -1
@@ -113,8 +113,6 @@ void	Server::acceptNewConnection() {
 		<< " In creation: " << _waitingUsers.size()
 		<< " | online: " << _onlineUsers.size()
 		<< NC << std::endl;
-	std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
-		<< " Open: " << this->getMapChannel().size() << NC << std::endl;
 }
 
 /**
@@ -172,9 +170,9 @@ void	Server::handleClient(const int fd) {
 		}
 		//_Parse[fd].displayCommands();
 		if (_Parse[fd].getCompleted()){
-            //std::cout << getLog() << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-            //std::cout << getLog() << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
-            this->ExecuteCmd(fd);
+			//std::cout << getLog() << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
+			//std::cout << getLog() << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
+			this->ExecuteCmd(fd);
 		}
 	}
 }
@@ -200,10 +198,11 @@ void Server::ExecuteCmd(int fd){
 			//std::cerr << getLog() <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
 			cmd = _commands.find(itcmd->command);
 			executeCmd = cmd->second;
-			executeCmd(*this, *user, *itcmd);
+			if (canExecute(*this, *user, itcmd->command))
+				executeCmd(*this, *user, *itcmd);
 		}else{
 			std::cerr << getLog() << RED << "COMMAND " << (*itcmd).command << " NOT FOUND"<< NC << std::endl;
-            user->sendCommand(ERR_UNKNOWNCOMMAND((*itcmd).command));
+			user->sendCommand(ERR_UNKNOWNCOMMAND((*itcmd).command));
 		}
 	}
 	_Parse[fd].ClearCommand();
@@ -216,10 +215,7 @@ void Server::ExecuteCmd(int fd){
  */
 void	Server::connect(void) {
 	fd_set	readySocket;
-	struct timeval	tv;
 
-	tv.tv_sec = 0;
-	tv.tv_usec = 1;
 	createServer();
 	runServer();
 	display();
@@ -230,7 +226,7 @@ void	Server::connect(void) {
 	while (runtimeServer)
 	{
 		readySocket = _currentSocket;
-		if (select(_max_fd + 1, &readySocket, NULL, NULL, &tv) < 0)
+		if (select(_max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
 			throw std::runtime_error(strerror(errno));
 		for (int fd = 0; fd <= _max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
@@ -256,7 +252,7 @@ void Server::display(void){
 	std::cout << "│ " << std::setw(14) << std::right << "(host " << ipLan << " " << "port: " << _portString << ")" << std::setw(27 - _portString.length() - ipLan.length()) <<  "│" << std::endl;
 	std::cout << "│                                               │" << std::endl;
 	std::cout << "│ " << "Bind " << std::setfill('.') << std::setw(10)<< _sockServ << std::setfill(' ') 
-		          << std::setw(20) << std::right << "Processes " << std::setfill('.') << std::setw(10)<< '1' << std::setfill(' ') << " │" << std::endl;
+				  << std::setw(20) << std::right << "Processes " << std::setfill('.') << std::setw(10)<< '1' << std::setfill(' ') << " │" << std::endl;
 	std::cout << "│ " << "Pid " << std::setfill('.') << std::setw(15)<< getpid() << std::setfill(' ') << std::setw(30) << " │" << std::endl;
 	std::cout << "│                                               │" << std::endl;
 	std::cout << "└───────────────────────────────────────────────┘" << std::endl;

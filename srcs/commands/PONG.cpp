@@ -10,9 +10,6 @@ namespace irc
 	 * @param user user who send request
 	 * @param cmd command
 	 */
-	void	pong(Server& serv, User& user, Command& cmd) {
-		if (!canExecute(user, cmd.command, serv))
-			return;
-	};
+	void	pong(Server&, User&, Command&) {}
 
 }//namespace irc
