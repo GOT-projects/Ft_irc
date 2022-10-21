@@ -49,11 +49,11 @@ namespace irc
 		std::vector<std::string>                target;
 		std::vector<std::string>::iterator      it;
 		if (cmd.params.size() < 2) {
-			std::cout << RED << serv.getLog() << "PASS: ERR_NEEDMOREPARAMS " << NC << std::endl;
-			user.sendCommand(ERR_NEEDMOREPARAMS("PASS", ""));
+			//std::cout << RED << serv.getLog() << "MODE: ERR_NEEDMOREPARAMS " << NC << std::endl;
+			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 			return;
 		}else if (cmd.params[1].size() == 0 || cmd.params[1].size() > 2){
-			std::cout << RED << serv.getLog() << "MODE: ERROR flag " << NC << std::endl;
+			//std::cout << RED << serv.getLog() << "MODE: ERROR flag " << NC << std::endl;
 			user.sendCommand(ERR_UMODEUNKNOWNFLAG(cmd.params[0]));
 			return;
 		}

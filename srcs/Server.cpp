@@ -109,6 +109,12 @@ void	Server::acceptNewConnection() {
 	_waitingUsers[newSocket] = User(newSocket);
 	if (newSocket >= _max_fd)
 		_max_fd = newSocket + 1;
+	std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
+		<< " In creation: " << _waitingUsers.size()
+		<< " | online: " << _onlineUsers.size()
+		<< NC << std::endl;
+	std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
+		<< " Open: " << this->getMapChannel().size() << NC << std::endl;
 }
 
 /**
@@ -149,7 +155,6 @@ void	Server::handleClient(const int fd) {
 	} else {
 		// server receive
 		std::string tmp = buff;
-        std::cout << "tmp string: " << tmp << std::endl;
 		if (_Parse.find(fd) == _Parse.end())
 			_Parse[fd] = Parsing(fd);
 		try{
@@ -165,10 +170,10 @@ void	Server::handleClient(const int fd) {
 		}catch (std::runtime_error &e) { 
 			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
 		}
-		_Parse[fd].displayCommands();
+		//_Parse[fd].displayCommands();
 		if (_Parse[fd].getCompleted()){
-            std::cout << getLog() << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
-            std::cout << getLog() << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
+            //std::cout << getLog() << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
+            //std::cout << getLog() << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
             this->ExecuteCmd(fd);
 		}
 	}
@@ -192,7 +197,7 @@ void Server::ExecuteCmd(int fd){
 
 	for (; itcmd != itcmdEnd; itcmd++){
 		if (_commands.find((*itcmd).command) != _commands.end()){
-			std::cerr << getLog() <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
+			//std::cerr << getLog() <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
 			cmd = _commands.find(itcmd->command);
 			executeCmd = cmd->second;
 			executeCmd(*this, *user, *itcmd);
@@ -211,24 +216,21 @@ void Server::ExecuteCmd(int fd){
  */
 void	Server::connect(void) {
 	fd_set	readySocket;
+	struct timeval	tv;
 
+	tv.tv_sec = 0;
+	tv.tv_usec = 1;
 	createServer();
 	runServer();
 	display();
 	_max_fd = _sockServ + 1;
 	FD_ZERO(&_currentSocket);
 	FD_SET(_sockServ, &_currentSocket);
-	std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
-		<< " In creation: " << _waitingUsers.size()
-		<< " | online: " << _onlineUsers.size()
-		<< NC << std::endl;
-	std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
-		<< " Open: " << this->getMapChannel().size() << NC << std::endl;
 	runtimeServer = 1;
 	while (runtimeServer)
 	{
 		readySocket = _currentSocket;
-		if (select(_max_fd + 1, &readySocket, NULL, NULL, NULL) < 0)
+		if (select(_max_fd + 1, &readySocket, NULL, NULL, &tv) < 0)
 			throw std::runtime_error(strerror(errno));
 		for (int fd = 0; fd <= _max_fd; fd++) {
 			if (FD_ISSET(fd, &readySocket)) {
@@ -237,13 +239,7 @@ void	Server::connect(void) {
 				}
 				else {
 					handleClient(fd);
-				}
-				std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
-					<< " In creation: " << _waitingUsers.size()
-					<< " | online: " << _onlineUsers.size()
-					<< NC << std::endl;
-				std::cout << getLog() << BLUE_BK << "Channels" << NC << BLUE
-					<< " Open: " << this->getMapChannel().size() << NC << std::endl;	
+				}	
 			}
 		}
 	}
@@ -337,6 +333,7 @@ bool	Server::isInMapChannel(std::string chan) {
  */
 void	Server::killClient(User& user) {
 	killSocket(user.getSocketFd());
+	int err = 1;
 	// remove from channels
 	{
 		mapChannelIterator it = getMapChannel().begin();
@@ -354,15 +351,23 @@ void	Server::killClient(User& user) {
 		mapUserIterator		itWaiting = getUserIteratorInMap(user, getWaitingUsers(), &isSameSocket);
 		if (itWaiting != getWaitingUsers().end()) {
 			getWaitingUsers().erase(itWaiting);
-			return;
-		}
-		listUserIterator	itOnline = getUserIteratorInList(user, getOnlineUsers(), &isSameSocket);
-		if (itOnline != getOnlineUsers().end()) {
-			getOnlineUsers().erase(itOnline);
-			return;
+			err = 0;
+		} else { 
+			listUserIterator	itOnline = getUserIteratorInList(user, getOnlineUsers(), &isSameSocket);
+			if (itOnline != getOnlineUsers().end()) {
+				getOnlineUsers().erase(itOnline);
+				err = 0;
+			}
 		}
 	}
-	std::cerr << getLog() << RED_ERR << "killClient" << RED << ": Error fatal - user not found" << NC << std::endl;
+	if (err)
+		std::cerr << getLog() << RED_ERR << "killClient" << RED << ": Error fatal - user not found" << NC << std::endl;
+	else {
+		std::cout << getLog() << BLUE_BK << "Users" << NC << BLUE
+			<< " In creation: " << _waitingUsers.size()
+			<< " | online: " << _onlineUsers.size()
+			<< NC << std::endl;
+	}
 }
 
 /**

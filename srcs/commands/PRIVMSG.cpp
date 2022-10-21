@@ -33,7 +33,6 @@ namespace irc
 					userSend->sendCommand(S_PRIVMSG(user, *it, cmd.params[1]));
 				else {
 					user.sendCommand(ERR_NOSUCHNICK(user, *it));
-					std::cout << "msg fail" << std::endl;
 				}
 			} else { // channel
 				std::string::size_type	pos = it->find("@");

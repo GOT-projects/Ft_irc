@@ -379,7 +379,6 @@ Channel::Channel( std::string name, bool privatebool, std::string password ) :
 				_channelName(name), _private(privatebool), _password(password){   // ajouter pointeur sur user ou user ou ref de user (voir aartiges san)
 	_userLimit = 0;
 	_topicFlag = false;
-	std::cout << name << "(channel) private construcor called\n";
 };
 
 /**
@@ -391,7 +390,6 @@ Channel::Channel( std::string name ) : _channelName(name){   // ajouter pointeur
 	_userLimit = 0;
 	_topicFlag = false;
 	_private = false;
-	std::cout << name << "(channel) construcor called\n";
 };
 
 /**

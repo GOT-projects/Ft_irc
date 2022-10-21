@@ -56,36 +56,3 @@ namespace irc
 		}
 	};
 }
-
-
-//namespace irc
-
-/* TODO rcuminal
-if (cmd.params.size() < 1) {
-	std::cout << RED << serv.getLog() << "PASS: ERR_NEEDMOREPARAMS " << NC << std::endl;
-	user.sendCommand(ERR_NEEDMOREPARAMS("PASS"));
-	return;
-}
-if (cmd.params.size() > 2) {
-	std::cout << RED << serv.getLog() << "PASS: TOOMANYPARAMS " << NC << std::endl
-	return;
-}
-if (cmd.params[0][0] == '#' || cmd.params[0][0] == '&'){
-	mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-	if (cmd.params.size() == 2){
-		std::cout << "envoyer de topic : " << it->second.getChannelTopic() << std::endl;
-	}
-	else {
-		if (it->second.getMods()._topicFlag){
-			if (it->second.isInOperatorList(user.getNickname()))
-				it->second.changeChanTopic(cmd.params[1]);
-			else {
-				std::cerr << "ERR_NOTOPERATOR\n";
-			}
-		}
-		else {
-			it->second.changeChanTopic(cmd.params[1]);
-		}
-	}
-}
-*/

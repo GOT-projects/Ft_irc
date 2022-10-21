@@ -22,11 +22,7 @@ Bot::Bot(){
 		}
 		file.close();
 	}else{
-		std::cout << "Unable to open file"; 
-	}
-	std::cout << _blacklist.size() << std::endl;
-	for (std::map<std::string, int>::iterator it = _blacklist.begin(); it != _blacklist.end(); ++it){
-		std::cout << it->first << std::endl;
+		std::cout << RED << "Unable to open file" << NC << std::endl; 
 	}
 }
 
@@ -38,16 +34,12 @@ std::string Bot::blacklistMsg(std::string &msg)const{
 	std::vector<std::string> split;
 
 	 split = split_target(msg, ' ', false);
-	 std::cout << "size of map " << _blacklist.size() << std::endl;
 	 for (std::vector<std::string>::iterator it = split.begin(); it != split.end(); ++it){
-		 std::cout << *it << "#" << std::endl;
 		 if (_blacklist.find(*it) != _blacklist.end()){
-			 std::cout << "blacklist found" << std::endl;
 			 for (size_t i = 0; i < it->size(); ++i){
 			 	ret.append("*");
 			 }
 		 }else{
-			std::cout << *it << " blacklist not found" << std::endl;
 			ret.append(*it);
 		 }
 		ret.append(" ");
