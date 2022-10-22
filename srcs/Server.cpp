@@ -69,8 +69,8 @@ void	Server::createServer(void) {
 	int option = 1;
 	if (setsockopt(_sockServ, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option)) == -1)
 		throw std::runtime_error(strerror(errno));
-	if (setsockopt(_sockServ, IPPROTO_TCP, TCP_NODELAY, &option, sizeof(option)) == -1)
-		throw std::runtime_error(strerror(errno));
+	/*if (setsockopt(_sockServ, IPPROTO_TCP, TCP_NODELAY, &option, sizeof(option)) == -1)
+		throw std::runtime_error(strerror(errno));*/
 	// Change socket control
 	std::cout << getLog() << GREEN << "Server configured" << NC << std::endl;
 }
@@ -238,7 +238,7 @@ void	Server::connect(void) {
 				}
 				else {
 					handleClient(fd);
-				}	
+				}
 			}
 		}
 	}

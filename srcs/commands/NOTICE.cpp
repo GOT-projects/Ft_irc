@@ -28,7 +28,6 @@ namespace irc
 				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
 				if (userSend != NULL) {
 					userSend->sendCommand(S_PRIVMSG(user, *it, cmd.params[1]));
-					user.sendCommand(ERR_NOSUCHNICK(user, user.getNickname()));
 				}
 				else
 					user.sendCommand(ERR_NOSUCHNICK(user, *it));
