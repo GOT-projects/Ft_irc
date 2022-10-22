@@ -67,7 +67,10 @@ void	Server::createServer(void) {
 	if ((_sockServ = socket(AF_INET, SOCK_STREAM, FT_TCP_PROTOCOL)) < 0)
 		throw std::runtime_error("error create socket server");
 	int option = 1;
-	setsockopt(_sockServ, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
+	if (setsockopt(_sockServ, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option)) == -1)
+		throw std::runtime_error(strerror(errno));
+	if (setsockopt(_sockServ, IPPROTO_TCP, TCP_NODELAY, &option, sizeof(option)) == -1)
+		throw std::runtime_error(strerror(errno));
 	// Change socket control
 	std::cout << getLog() << GREEN << "Server configured" << NC << std::endl;
 }
@@ -195,7 +198,7 @@ void Server::ExecuteCmd(int fd){
 
 	for (; itcmd != itcmdEnd; itcmd++){
 		if (_commands.find((*itcmd).command) != _commands.end()){
-			//std::cerr << getLog() <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
+			std::cerr << getLog() <<GREEN << "COMMAND " << (*itcmd).command << " FOUND" << NC << std::endl;
 			cmd = _commands.find(itcmd->command);
 			executeCmd = cmd->second;
 			if (canExecute(*this, *user, itcmd->command))
@@ -339,6 +342,8 @@ void	Server::killClient(User& user) {
 				mapChannelIterator	tmp = it;
 				it++;
 				getMapChannel().erase(tmp);
+				std::cout << _log << BLUE_BK << "Channels" << NC << BLUE << " Open: " << _channels.size() << NC << std::endl;
+
 			} else
 				it++;
 		}

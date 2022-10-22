@@ -17,6 +17,7 @@ DIR_HDS				=	includes
 RELATIVE_HDS		=	includes.hpp			\
 						runtime.hpp			\
 						Server.hpp			\
+						define.hpp			\
 						commands.hpp			\
 						channel/ChannelMode.hpp	\
 						channel/Channel.hpp	\

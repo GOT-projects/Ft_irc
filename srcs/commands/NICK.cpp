@@ -49,11 +49,11 @@ namespace irc
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
 				// ADD user to online user
 				serv.getOnlineUsers().push_back(user);
-				// RM from anonym users
-				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
 				// Welcome
 				User*	newUser = getUserInList(user, serv.getOnlineUsers(), &isSameUser);
-				newUser->sendCommand(RPL_WELCOME(user.getNickname()));
+				// RM from anonym users
+				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
+				newUser->sendCommand(RPL_WELCOME(newUser->getNickname()));
 				std::cout << serv.getLog() << BLUE_BK << "Users" << NC << BLUE
 					<< " In creation: " << serv.getWaitingUsers().size()
 					<< " | online: " << serv.getOnlineUsers().size()
