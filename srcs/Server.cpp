@@ -171,7 +171,7 @@ void	Server::handleClient(const int fd) {
 		}catch (std::runtime_error &e) { 
 			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
 		}
-		//_Parse[fd].displayCommands();
+		_Parse[fd].displayCommands();
 		if (_Parse[fd].getCompleted()){
 			//std::cout << getLog() << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
 			//std::cout << getLog() << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
