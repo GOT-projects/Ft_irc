@@ -35,8 +35,5 @@ namespace irc
 	void	TIME(Server& serv, User& user, Command& cmd);
 	void	QUIT(Server& serv, User& user, Command& cmd);
 	void	OPER(Server& serv, User& user, Command& cmd);
-	/*
-	void JOIN(Server& serv, User& user, Command& cmd);
-	void PRIVMSG(Server& serv, User& user, Command& cmd);
-	*/
+	void	INVITE(Server& serv, User& user, Command& cmd);
 } // namespace irc

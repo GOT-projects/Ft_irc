@@ -32,6 +32,7 @@ namespace irc
 	    ret["TIME"] = &TIME;
 	    ret["QUIT"] = &QUIT;
 	    ret["OPER"] = &OPER;
+	    ret["INVITE"] = &INVITE;
 		return ret;
 	}
 
