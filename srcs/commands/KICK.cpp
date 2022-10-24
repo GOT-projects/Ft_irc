@@ -17,8 +17,19 @@ namespace irc
 		}
         if (cmd.params.size() == 2) {
             mapChannelIterator it = serv.getMapChannel().find(cmd.params[0]);
-            if (it->second.isInChannel(cmd.params[1]) && it->second.isInOperatorList(user.getNickname()))
-                user.sendCommand(S_KICK(user.getNickname(), it->second.getChannelName(), cmd.params[1]));
+            if (it != serv.getMapChannel().end() && it->second.isInChannel(cmd.params[1]) && it->second.isInOperatorList(user.getNickname())){
+				User jean;
+				jean.setNickname(cmd.params[1]);
+				User* eude = getUserInList(jean, serv.getOnlineUsers(), &isSameNickname);
+				if (eude){
+                	user.sendCommand(S_KICK(user.getNickname(), it->second.getChannelName(), cmd.params[1]));
+					int i = it->second.kick(jean);
+					if (i == 0)
+						std::cout << "not in chan\n";
+					if (i == 2)
+						serv.getMapChannel().erase(it);
+				}
+			}
 		}
 	};
 }

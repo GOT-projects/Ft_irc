@@ -20,7 +20,7 @@
 #define	S_NOTICE(client, target, message)	(RPL_PREFIX(client) + "NOTICE " + target + " :" + message)
 #define	S_JOIN(client, target)				(RPL_PREFIX(client) + "JOIN " + target)
 #define	S_KICK(user, channel, target)		(":" + user + " KICK " + channel + " " + target)
-#define	S_PART(user, channel)			    (":" + user + " PART " + channel)
+#define	S_PART(user, channel)			    (RPL_PREFIX(user) + " PART " + channel)
 
 #define RPL_YOUREOPER()						("381 :You are now an IRC operator")
 #define ERR_NOOPERHOST(nick)					("491 " + nick + " :No O-lines for your host")
@@ -89,6 +89,7 @@
 
 //JOIN	
 #define ERR_NOSUCHCHANNEL(channel)  	("403 " + std::string(channel) + " :No such channel") 
+#define ERR_NOTONCHANNEL(user, channel) ("451 " + user + " " + channel + " :You're not on that channel") 
 #define ERR_BANNEDFROMCHAN(channel) 	("474 " + std::string(channel) + " :Cannot join channel (+b)")
 #define ERR_BADCHANNELKEY(channel)  	("475 " + std::string(channel) + " :Cannot join channel (+k)")
 
