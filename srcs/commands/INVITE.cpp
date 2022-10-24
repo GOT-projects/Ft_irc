@@ -13,7 +13,7 @@ namespace irc
 			return;
 		}
 		if (!(it->second.isInChannel(user.getNickname()))) {
-			user.sendCommand(ERR_NOTONCHANNEL(cmd.params[1]));
+			user.sendCommand(ERR_NOTONCHANNEL(user.getNickname(), cmd.params[1]));
 			return;
 		}
 		if (it->second.getMods()._inviteOnly && !(it->second.isInOperatorList(user.getNickname()))) {
