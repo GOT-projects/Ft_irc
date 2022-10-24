@@ -25,7 +25,8 @@ namespace irc
 						if (it != serv.getMapChannel().end() && it->second.getPrivateBool()){
 							user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 						}
-						else if (it != serv.getMapChannel().end() && !it->second.isInBanList(user.getNickname())){
+						else if (it != serv.getMapChannel().end() && !it->second.isInBanList(user.getNickname())
+							&& !it->second.isInChannel(user.getNickname())&& !it->second.getMods()._inviteOnly){
 							it->second.joinChannel(user);
 							it->second.sendMessage(S_JOIN(user, *itChan));
 						}
@@ -57,16 +58,19 @@ namespace irc
 						if (it != serv.getMapChannel().end() && it->second.isInBanList(user.getNickname())){
 							user.sendCommand(ERR_BANNEDFROMCHAN(cmd.params[0]));
 						}
-						else if (it != serv.getMapChannel().end() && it->second.getPrivateBool() && *itKey == it->second.getPassword()){
+						else if (it != serv.getMapChannel().end() && it->second.getPrivateBool() && *itKey == it->second.getPassword()
+							&& !it->second.isInChannel(user.getNickname()) && !it->second.getMods()._inviteOnly){
 							it->second.joinChannel(user);
 							it->second.sendMessage(S_JOIN(user, *itChan));
 							//message
 							itKey++;
 						}
+					//	else if (it->second.getMods()._inviteOnly)
+					//		ERR inviteon;u
 						else if (it != serv.getMapChannel().end() && it->second.getPrivateBool() && itKey == key.end()){
 							user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
 						}
-						else if (it != serv.getMapChannel().end() && !it->second.getPrivateBool()){
+						else if (it != serv.getMapChannel().end() && !it->second.getPrivateBool()&& !it->second.getMods()._inviteOnly){
 							if (itKey != key.end()){
 								//message avec key
 								itKey++;

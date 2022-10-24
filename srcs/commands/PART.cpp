@@ -25,7 +25,7 @@ namespace irc
 				if (it == serv.getMapChannel().end())
 					user.sendCommand(ERR_NOSUCHCHANNEL(*itChan));
         		else if (it->second.isInChannel(user.getNickname())){
-        		    user.sendCommand(S_PART(user, it->second.getChannelName()));
+        		    it->second.sendMessage(S_PART(user, it->second.getChannelName()));
         		    if (it->second.kick(user) == 2)
 						serv.getMapChannel().erase(it);
         		}

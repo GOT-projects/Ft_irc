@@ -58,7 +58,8 @@
 //HELP
 #define ERR_HELPNOTFOUND(suject)        ("524 " + std::string(suject) + " :No help available on this topic")
 #define RPL_HELPSTART(text)             ("704 :" + std::string(text))
-#define RPL_INVITING(nick, channel)     ("341 :" + std::string(nick) + " " + std::string(channel))
+#define RPL_INVITING(user, nick, channel)     ("341 " + user + " " + std::string(nick) + " " + std::string(channel))
+#define S_INVITE(user, cible, channel)  (":" + user + " INVITE " + cible + " " + channel)
 #define ERR_USERONCHANNEL(nick, channel) ("443 " + std::string(nick) + " " + std::string(channel) + " :is already on channel")
 #define RPL_HELPTXT(text)               ("705 :" + std::string(text))
 #define RPL_ENDOFHELP(text)             ("706 :" + std::string(text))

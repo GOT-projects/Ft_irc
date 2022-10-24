@@ -29,7 +29,9 @@ namespace irc
 		User*	newUser = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
 		if (newUser) {
 			it->second.joinChannel(*newUser);
-			user.sendCommand(RPL_INVITING(cmd.params[0], cmd.params[1]));
+			newUser->sendCommand(S_INVITE(user.getNickname(), cmd.params[0], cmd.params[1]));
+			it->second.sendMessage(RPL_INVITING(user.getNickname(), cmd.params[0], cmd.params[1]));
+			it->second.sendMessage(S_JOIN((*newUser), cmd.params[1]));
 		}
 	}
 } // namespace irc

@@ -22,7 +22,7 @@ namespace irc
 				jean.setNickname(cmd.params[1]);
 				User* eude = getUserInList(jean, serv.getOnlineUsers(), &isSameNickname);
 				if (eude){
-                	user.sendCommand(S_KICK(user.getNickname(), it->second.getChannelName(), cmd.params[1]));
+                	it->second.sendMessage(S_KICK(user.getNickname(), it->second.getChannelName(), cmd.params[1]));
 					int i = it->second.kick(jean);
 					if (i == 0)
 						std::cout << "not in chan\n";
