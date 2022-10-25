@@ -20,11 +20,10 @@ namespace irc
 			user.sendCommand(ERR_ALREADYREGISTERED());
 			return;
 		}
-		// TODO check is used [unique] quelle erreur
 		user.setUsername(cmd.params[0]);
 		user.setRealname(cmd.params[3]);
 		// Can register
-		if (isRegister(user)) {
+		if (user.isRegister()) {
 			// Not already register
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
 				// ADD user to online user

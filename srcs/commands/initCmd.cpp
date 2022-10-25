@@ -22,17 +22,17 @@ namespace irc
 		ret["USER"] = &USER;
 		ret["CAP"] = &CAP;
 		ret["KICK"] = &KICK;
-	    ret["INFO"] = &INFO;
-	    ret["NOTICE"] = &NOTICE;
-	    ret["KILL"] = &KILL;
-	    ret["HELP"] = &HELP;
-	    ret["PART"] = &PART;
-	    ret["VERSION"] = &VERSION;
-	    ret["LUSERS"] = &LUSERS;
-	    ret["TIME"] = &TIME;
-	    ret["QUIT"] = &QUIT;
-	    ret["OPER"] = &OPER;
-	    ret["INVITE"] = &INVITE;
+		ret["INFO"] = &INFO;
+		ret["NOTICE"] = &NOTICE;
+		ret["KILL"] = &KILL;
+		ret["HELP"] = &HELP;
+		ret["PART"] = &PART;
+		ret["VERSION"] = &VERSION;
+		ret["LUSERS"] = &LUSERS;
+		ret["TIME"] = &TIME;
+		ret["QUIT"] = &QUIT;
+		ret["OPER"] = &OPER;
+		ret["INVITE"] = &INVITE;
 		return ret;
 	}
 
@@ -78,7 +78,7 @@ namespace irc
 				}
 				// if not command not need registration
 				if (cmd != "USER" && cmd != "NICK" && cmd != "HELP" && cmd != "INFO" && cmd != "QUIT" && cmd != "TIME") {
-					if (!isRegister(user)) {
+					if (!user.isRegister()) {
 						std::cerr << RED << serv.getLog() << cmd << ": need to be register"
 							<< NC << std::endl;
 						user.sendCommand(":please register USER / NICK");

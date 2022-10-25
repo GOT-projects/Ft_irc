@@ -18,7 +18,7 @@ Server::Server(const std::string& port, const std::string& pwd, const std::strin
 	if (tmp < 0 || tmp > 65535)
 		throw std::out_of_range("port: out of range 0-65535");
 	_port = static_cast<uint32_t>(tmp);
-	_pwd = pwd; // TODO politic
+	_pwd = pwd;
 	_portString = port;
 	bzero(&_sockAddr, sizeof(_sockAddr));
 	_sockServ = 0;
@@ -83,7 +83,6 @@ void	Server::runServer(void) const {
 	if (
 		// Change socket control
 		fcntl(_sockServ, F_SETFL, O_NONBLOCK) == -1
-		// TODO doc F_SETFL
 		||
 		// Link information of the socket with the socket
 		bind(_sockServ, (struct sockaddr*)&_sockAddr, sizeof(_sockAddr)) == -1
@@ -144,13 +143,12 @@ void Server::SendClient(int fd, const std::string &msg){
  * @param fd file descriptor of the client
  */
 void	Server::handleClient(const int fd) {
-	// TODO Need working on CTRl-D
 	char    buff[1048];
 	ssize_t ret;
 	std::vector< std::string > cmd_string;
 
 	bzero(buff, sizeof(buff));
-	ret = recv(fd, &buff, sizeof(buff), O_NONBLOCK);
+	ret = recv(fd, &buff, sizeof(buff), MSG_DONTWAIT);
 	if (ret <= 0){
 		killClient(*getUser(fd));
 	} else {

@@ -33,17 +33,17 @@ std::string Bot::blacklistMsg(std::string &msg)const{
 	std::string ret;
 	std::vector<std::string> split;
 
-	 split = split_target(msg, ' ', false);
-	 for (std::vector<std::string>::iterator it = split.begin(); it != split.end(); ++it){
-		 if (_blacklist.find(*it) != _blacklist.end()){
-			 for (size_t i = 0; i < it->size(); ++i){
-			 	ret.append("*");
-			 }
-		 }else{
+	split = split_target(msg, ' ', false);
+	for (std::vector<std::string>::iterator it = split.begin(); it != split.end(); ++it){
+		if (_blacklist.find(*it) != _blacklist.end()){
+			for (size_t i = 0; i < it->size(); ++i){
+				ret.append("*");
+			}
+		}else{
 			ret.append(*it);
-		 }
+		}
 		ret.append(" ");
-	 }
+	}
 	return ret;
 }
 

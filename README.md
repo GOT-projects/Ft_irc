@@ -1,4 +1,4 @@
-# Ft_irc  
+# Ft_irc
 
 ### Notes
 
@@ -27,11 +27,11 @@ Sur weechat:
 [X] JOIN //work in error
 [X] QUIT
 [X] OPER //need test
-[ ] PART
+[X] PART
 [X] TOPIC
 [X] NAMES // in progress
 [X] TIME
-[ ] INVITE
+[X] INVITE
 [X] KICK
 [X] HELP
 ```

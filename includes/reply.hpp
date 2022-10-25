@@ -29,13 +29,13 @@
 #define ERR_PASSWDMISMATCH()		("464 :Password incorrect") // 464
 
 //Error general
-#define ERR_NOORIGIN()				(":No origin specified") //409
-#define ERR_NEEDMOREPARAMS(command, param)	(std::string(command) + " :Not enough parameters " + std::string(param)) //461 
+#define ERR_NOORIGIN()				("409 :No origin specified") //409
+#define ERR_NEEDMOREPARAMS(command, param)	("463 " + std::string(command) + " :Not enough parameters " + std::string(param)) //461 
 
 //Error Nick
-#define ERR_NONICKNAMEGIVEN()		(":No nickname given") // 321
-#define ERR_ERRONEUSNICKNAME(nick)	(nick + " :Erroneus nickname") // 432 nickname not valid
-#define ERR_NICKNAMEINUSE(nick)		(nick + " :Nickname is already in use") //433 
+#define ERR_NONICKNAMEGIVEN()		("321 :No nickname given") // 321
+#define ERR_ERRONEUSNICKNAME(nick)	("432 " + nick + " :Erroneus nickname") // 432 nickname not valid
+#define ERR_NICKNAMEINUSE(nick)		("433 " + nick + " :Nickname is already in use") //433 
  
 //Error User
 #define ERR_ALREADYREGISTERED()		("432 :You may not reregister") // 462
@@ -53,8 +53,8 @@
 #define RPL_ENDOFINFO()                 ("374 INFO: End of INFO list")  
 
 // channel
-#define ERR_CANNOTSENDTOCHAN(client, target)	(RPL_PREFIX(client) + target + " : Cannot send to channel")
-#define ERR_CHANOPRIVSNEEDED(target)	(target + " :You're not channel operator")
+#define ERR_CANNOTSENDTOCHAN(client, target)	(RPL_PREFIX(client) + "404 " + target + " :Cannot send to channel")
+#define ERR_CHANOPRIVSNEEDED(target)	("482 " + target + " :You're not channel operator")
 //HELP
 #define ERR_HELPNOTFOUND(suject)        ("524 " + std::string(suject) + " :No help available on this topic")
 #define RPL_HELPSTART(text)             ("704 :" + std::string(text))

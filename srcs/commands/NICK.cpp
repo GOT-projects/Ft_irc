@@ -44,7 +44,7 @@ namespace irc
 		}
 		user.setNickname(cmd.params[0]);
 		// Can register
-		if (isRegister(user)) {
+		if (user.isRegister()) {
 			// Not already register
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
 				// ADD user to online user

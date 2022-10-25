@@ -10,7 +10,7 @@ namespace irc {
 	class Channel {
 		private:
 			typedef std::list<User*>			ListUserChannel;
-			typedef ListUserChannel::iterator		ListUserChannelIterator;
+			typedef ListUserChannel::iterator	ListUserChannelIterator;
 
 
 			std::string			_channelName;

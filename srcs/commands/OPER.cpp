@@ -19,7 +19,6 @@ namespace irc
 		tmp.setNickname(cmd.params[0]);
 		User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
 		if (userSend != NULL) {
-			// TODO msg to send
 			if (cmd.params[1] == serv.getOperPassword()) {
 				userSend->beOperatorServer(true);
 				userSend->sendCommand(RPL_YOUREOPER());

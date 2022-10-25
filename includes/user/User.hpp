@@ -15,9 +15,9 @@ class User
 {
 	private:
 		int			_socketFd;
-		std::string	_username; // unique
-		std::string	_nickname; // pseudo
-		std::string	_realname; // visual
+		std::string	_username;
+		std::string	_nickname;
+		std::string	_realname;
 		std::string	_hostname;
 		std::string	_servername;
 		UserMode	_mode;
@@ -66,15 +66,8 @@ class User
 		// utility
 
 		int		sendCommand(const std::string& command) const;
+		bool	isRegister() const;
 }; // class User
-
-/**
- * @brief Checck the respect requirements of the registration
- * 
- * @param user the user
- * @return true if user respect requirements of the registration, else false
- */
-bool	isRegister(const User& user);
 
 } // namespace irc
 
