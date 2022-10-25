@@ -149,7 +149,7 @@ void	Channel::sendMessageToOper( std::string message , User& user){
  * 
  * @param user the user
  */
-int	Channel::kick( User& user ){
+int	Channel::kick( User& user, bool rmBan ){
 	ListUserChannelIterator	it = _users.begin();
 	ListUserChannelIterator	tmp;
 	int						ret = 0;
@@ -174,19 +174,23 @@ int	Channel::kick( User& user ){
 		} else
 			it++;
 	}
-	it = _bans.begin();
-	while (it != _bans.end())
-	{
-		if ((*it)->getNickname() == user.getNickname()) {
-			tmp = it;
-			it++;
-			_bans.erase(tmp); // add to ban list?
-			ret = 1;
-		} else
-			it++;
+	if (rmBan) {
+		it = _bans.begin();
+		while (it != _bans.end())
+		{
+			if ((*it)->getNickname() == user.getNickname()) {
+				tmp = it;
+				it++;
+				_bans.erase(tmp); // add to ban list?
+				ret = 1;
+			} else
+				it++;
+		}
 	}
 	if (_users.empty())
 		return 2;
+	if (_operators.empty())
+		addToOperatorList(*(*(_users.begin())));
 	return (ret);
 }
 
@@ -265,6 +269,8 @@ std::string	Channel::channelList( void ){
 	{
 		if (it != _users.begin())
 			final += " ";
+		if (this->isInOperatorList((*it)->getNickname()))
+			final += "@";
 		final += (*it)->getNickname();
 	}
 	return (final);

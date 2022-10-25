@@ -10,8 +10,6 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	ping(Server& serv, User& user, Command& cmd) {
-		if (!canExecute(user, cmd.command, serv))
-			return;
 		if (cmd.params.size() < 1){
 			std::cerr << RED << serv.getLog() << "PING: ERR_NEEDMOREPARAMS " << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS("PING", ""));

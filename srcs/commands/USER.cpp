@@ -10,8 +10,6 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	USER(Server& serv, User& user, Command& cmd) {
-		if (!canRegister(user, cmd.command, serv))
-			return;
 		if (cmd.params.size() < 4) {
 			std::cerr << RED << serv.getLog() << "USER: ERR_NEEDMOREPARAMS" << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
@@ -22,20 +20,23 @@ namespace irc
 			user.sendCommand(ERR_ALREADYREGISTERED());
 			return;
 		}
-		// TODO check is used [unique] quelle erreur
 		user.setUsername(cmd.params[0]);
 		user.setRealname(cmd.params[3]);
 		// Can register
-		if (isRegister(user)) {
+		if (user.isRegister()) {
 			// Not already register
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
 				// ADD user to online user
 				serv.getOnlineUsers().push_back(user);
-				// RM from anonym users
-				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
 				// Welcome
 				User*	newUser = getUserInList(user, serv.getOnlineUsers(), &isSameUser);
-				newUser->sendCommand(RPL_WELCOME(user.getNickname()));
+				// RM from anonym users
+				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
+				newUser->sendCommand(RPL_WELCOME(newUser->getNickname()));
+				std::cout << serv.getLog() << BLUE_BK << "Users" << NC << BLUE
+					<< " In creation: " << serv.getWaitingUsers().size()
+					<< " | online: " << serv.getOnlineUsers().size()
+					<< NC << std::endl;
 			}
 		}
 	}

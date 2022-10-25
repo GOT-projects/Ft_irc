@@ -19,8 +19,6 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	NICK(Server& serv, User& user, Command& cmd) {
-		if (!canRegister(user, cmd.command, serv))
-			return;
 		if (cmd.params.size() < 1) {
 			std::cerr << RED << serv.getLog() << "NICK: ERR_NONICKNAMEGIVEN" << NC << std::endl;
 			user.sendCommand(ERR_NONICKNAMEGIVEN());
@@ -46,16 +44,20 @@ namespace irc
 		}
 		user.setNickname(cmd.params[0]);
 		// Can register
-		if (isRegister(user)) {
+		if (user.isRegister()) {
 			// Not already register
 			if (isInMap(user, serv.getWaitingUsers(), &isSameUser) == EXIST_IN) {
 				// ADD user to online user
 				serv.getOnlineUsers().push_back(user);
-				// RM from anonym users
-				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
 				// Welcome
 				User*	newUser = getUserInList(user, serv.getOnlineUsers(), &isSameUser);
-				newUser->sendCommand(RPL_WELCOME(user.getNickname()));
+				// RM from anonym users
+				serv.getWaitingUsers().erase(getUserIteratorInMap(user, serv.getWaitingUsers(), &isSameUser));
+				newUser->sendCommand(RPL_WELCOME(newUser->getNickname()));
+				std::cout << serv.getLog() << BLUE_BK << "Users" << NC << BLUE
+					<< " In creation: " << serv.getWaitingUsers().size()
+					<< " | online: " << serv.getOnlineUsers().size()
+					<< NC << std::endl;
 			}
 		}
 	}

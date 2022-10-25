@@ -10,8 +10,6 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	OPER(Server& serv, User& user, Command& cmd) {
-		if (!canExecute(user, cmd.command, serv))
-			return;
 		if (cmd.params.size() < 2){
 			std::cerr << RED << serv.getLog() << "OPER: ERR_NEEDMOREPARAMS " << NC << std::endl;
 			user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, ""));
@@ -21,9 +19,10 @@ namespace irc
 		tmp.setNickname(cmd.params[0]);
 		User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
 		if (userSend != NULL) {
-			// TODO msg to send
-			if (cmd.params[1] == serv.getOperPassword())
+			if (cmd.params[1] == serv.getOperPassword()) {
+				userSend->beOperatorServer(true);
 				userSend->sendCommand(RPL_YOUREOPER());
+			}
 			else
 				userSend->sendCommand(ERR_PASSWDMISMATCH());
 		}

@@ -9,7 +9,7 @@ using namespace irc;
  */
 User::User(int fd)
 : _socketFd(fd), _username(""), _nickname(""), _realname(""), _hostname("irc"),
-_servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
+_servername("irc"), _mode(UserMode()), _pass(false), _cap(true)
 {}
 
 /**
@@ -17,7 +17,7 @@ _servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
  */
 User::User(void)
 : _socketFd(-1), _username(""), _nickname(""), _realname(""), _hostname("irc"),
-_servername("irc"), _mode(UserMode()), _pass(false), _cap(false)
+_servername("irc"), _mode(UserMode()), _pass(false), _cap(true)
 {}
 
 User::User(const User& ref)
@@ -231,24 +231,21 @@ int	User::sendCommand(const std::string& command) const {
 		return 1;
 	}
 	std::string	tmp = command + END;
-	if (send(_socketFd, tmp.c_str(), tmp.size(), O_NONBLOCK) == -1) {
+	if (send(_socketFd, tmp.c_str(), tmp.size(), MSG_DONTWAIT) == -1) {
 		std::cout << RED << "Send to user fail " << strerror(errno) << NC << std::endl;;
 		return 2;
 	}
 	return 0;
 }
 
-namespace irc
-{
 /**
  * @brief check if user have requirements to register as user online
  * 
  * @param user the user
  * @return true if the user can be register, else false
  */
-bool	isRegister(const User& user) {
-	if (user.getNickname().size() && user.getUsername().size())
+bool	User::isRegister() const {
+	if (_nickname.size() && _username.size())
 		return true;
 	return false;
 }
-} // namespace irc

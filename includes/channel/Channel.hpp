@@ -10,7 +10,7 @@ namespace irc {
 	class Channel {
 		private:
 			typedef std::list<User*>			ListUserChannel;
-			typedef ListUserChannel::iterator		ListUserChannelIterator;
+			typedef ListUserChannel::iterator	ListUserChannelIterator;
 
 
 			std::string			_channelName;
@@ -53,7 +53,7 @@ namespace irc {
 			void		joinChannel( User& user);
 			void		addToOperatorList( User& user );
 			void		addToBanList( User& user );  // if in channel => kik (fonction?)
-			int			kick( User& user );
+			int			kick( User& user, bool rmBan = 0 );
 			void		delFromOperatorList( User& user );
 			void		delFromBansList( User& user );
 

@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <sys/select.h>
 #include <unistd.h>
+#include <netinet/tcp.h>
 #include <iomanip>
 
 // Utils

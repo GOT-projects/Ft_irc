@@ -19,6 +19,8 @@
 #define	S_PRIVMSG(client, target, message)	(RPL_PREFIX(client) + "PRIVMSG " + target + " :" + message)
 #define	S_NOTICE(client, target, message)	(RPL_PREFIX(client) + "NOTICE " + target + " :" + message)
 #define	S_JOIN(client, target)				(RPL_PREFIX(client) + "JOIN " + target)
+#define	S_KICK(user, channel, target)		(":" + user + " KICK " + channel + " " + target)
+#define	S_PART(user, channel)			    (RPL_PREFIX(user) + " PART " + channel)
 
 #define RPL_YOUREOPER()						("381 :You are now an IRC operator")
 #define ERR_NOOPERHOST(nick)					("491 " + nick + " :No O-lines for your host")
@@ -27,13 +29,13 @@
 #define ERR_PASSWDMISMATCH()		("464 :Password incorrect") // 464
 
 //Error general
-#define ERR_NOORIGIN()				(":No origin specified") //409
-#define ERR_NEEDMOREPARAMS(command, param)	(std::string(command) + " :Not enough parameters " + std::string(param)) //461 
+#define ERR_NOORIGIN()				("409 :No origin specified") //409
+#define ERR_NEEDMOREPARAMS(command, param)	("463 " + std::string(command) + " :Not enough parameters " + std::string(param)) //461 
 
 //Error Nick
-#define ERR_NONICKNAMEGIVEN()		(":No nickname given") // 321
-#define ERR_ERRONEUSNICKNAME(nick)	(nick + " :Erroneus nickname") // 432 nickname not valid
-#define ERR_NICKNAMEINUSE(nick)		(nick + " :Nickname is already in use") //433 
+#define ERR_NONICKNAMEGIVEN()		("321 :No nickname given") // 321
+#define ERR_ERRONEUSNICKNAME(nick)	("432 " + nick + " :Erroneus nickname") // 432 nickname not valid
+#define ERR_NICKNAMEINUSE(nick)		("433 " + nick + " :Nickname is already in use") //433 
  
 //Error User
 #define ERR_ALREADYREGISTERED()		("432 :You may not reregister") // 462
@@ -51,11 +53,14 @@
 #define RPL_ENDOFINFO()                 ("374 INFO: End of INFO list")  
 
 // channel
-#define ERR_CANNOTSENDTOCHAN(client, target)	(RPL_PREFIX(client) + target + " : Cannot send to channel")
-#define ERR_CHANOPRIVSNEEDED(target)	(target + " :You're not channel operator")
+#define ERR_CANNOTSENDTOCHAN(client, target)	(RPL_PREFIX(client) + "404 " + target + " :Cannot send to channel")
+#define ERR_CHANOPRIVSNEEDED(target)	("482 " + target + " :You're not channel operator")
 //HELP
 #define ERR_HELPNOTFOUND(suject)        ("524 " + std::string(suject) + " :No help available on this topic")
 #define RPL_HELPSTART(text)             ("704 :" + std::string(text))
+#define RPL_INVITING(user, nick, channel)     ("341 " + user + " " + std::string(nick) + " " + std::string(channel))
+#define S_INVITE(user, cible, channel)  (":" + user + " INVITE " + cible + " " + channel)
+#define ERR_USERONCHANNEL(nick, channel) ("443 " + std::string(nick) + " " + std::string(channel) + " :is already on channel")
 #define RPL_HELPTXT(text)               ("705 :" + std::string(text))
 #define RPL_ENDOFHELP(text)             ("706 :" + std::string(text))
 
@@ -72,7 +77,7 @@
 
 //TOPIC
 #define RPL_NOTOPIC(channel)    ("331 " + channel + " :" + channel) 
-#define RPL_TOPIC(channel, topic)    ("332 " + topic + " " + channel + " :" + topic ) 
+#define RPL_TOPIC(channel, topic)    ("332 TOPIC " + channel + " " + topic ) 
 #define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + channel + " " + channel + " " + nick + " " + std::string(time))
 
 //NAMES
@@ -84,6 +89,7 @@
 
 //JOIN	
 #define ERR_NOSUCHCHANNEL(channel)  	("403 " + std::string(channel) + " :No such channel") 
+#define ERR_NOTONCHANNEL(user, channel) ("451 " + user + " " + channel + " :You're not on that channel") 
 #define ERR_BANNEDFROMCHAN(channel) 	("474 " + std::string(channel) + " :Cannot join channel (+b)")
 #define ERR_BADCHANNELKEY(channel)  	("475 " + std::string(channel) + " :Cannot join channel (+k)")
 

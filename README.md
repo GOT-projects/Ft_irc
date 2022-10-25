@@ -1,4 +1,4 @@
-# Ft_irc  
+# Ft_irc
 
 ### Notes
 
@@ -19,19 +19,19 @@ Sur weechat:
 [X] VERSION
 [X] LUSERS
 [X] INFO
-[ ] MODE  //progress need make test
+[X] MODE  //progress need make test
 [X] PRIVMSG
 [X] NOTICE
 [X] PING
 [X] PONG
-[ ] JOIN //work in error
+[X] JOIN //work in error
 [X] QUIT
 [X] OPER //need test
-[ ] PART
-[S] TOPIC
-[ ] NAMES // in progress
+[X] PART
+[X] TOPIC
+[X] NAMES // in progress
 [X] TIME
-[ ] INVITE
+[X] INVITE
 [X] KICK
 [X] HELP
 ```

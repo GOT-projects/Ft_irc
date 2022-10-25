@@ -10,17 +10,8 @@ namespace irc
 	 * @param cmd command
 	 */
 	void	TOPIC(Server& serv, User& user, Command& cmd) {
-		if (!user.getCap()) {
-			std::cerr << RED << serv.getLog() << "TOPIC: Cap error" << NC << std::endl;
-			user.sendCommand(":please set cap to 302");
-			return;
-		}
 		if (cmd.params[0][0] == '#' || cmd.params[0][0] == '&'){
-			if (!user.getPass() || !isRegister(user)) {
-				std::cerr << RED << serv.getLog() << "TOPIC: password required / register need" << NC << std::endl;
-				user.sendCommand(":register need / password");
-				return;
-			}else if (cmd.params.size() < 1){
+			if (cmd.params.size() < 1){
 				user.sendCommand(ERR_NEEDMOREPARAMS(cmd.command, "add channel"));
 			}else if (cmd.params.size() == 1){
 				mapChannelIterator it = serv.getMapChannel().begin();
