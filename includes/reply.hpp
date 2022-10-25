@@ -77,7 +77,7 @@
 
 //TOPIC
 #define RPL_NOTOPIC(channel)    ("331 " + channel + " :" + channel) 
-#define RPL_TOPIC(channel, topic)    ("332 " + topic + " " + channel + " :" + topic ) 
+#define RPL_TOPIC(channel, topic)    ("332 TOPIC " + channel + " " + topic ) 
 #define RPL_TOPICWHOTIME(channel, nick, time)     ("333 " + channel + " " + channel + " " + nick + " " + std::string(time))
 
 //NAMES

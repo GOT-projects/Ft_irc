@@ -13,9 +13,9 @@ namespace irc
 		user.sendCommand(RPL_INFO("Irc Server:"));
 		user.sendCommand(RPL_INFO("Project 42"));
 		user.sendCommand(RPL_INFO("Create by:"));
-		user.sendCommand(RPL_INFO("          Aartiges"));
-		user.sendCommand(RPL_INFO("          Rcuminal"));
-		user.sendCommand(RPL_INFO("          Jmilhas"));
+		user.sendCommand(RPL_INFO(":          Aartiges"));
+		user.sendCommand(RPL_INFO(":          Rcuminal"));
+		user.sendCommand(RPL_INFO(":          Jmilhas"));
 		user.sendCommand(RPL_ENDOFINFO());
 	};
 }//namespace irc
