@@ -169,7 +169,7 @@ void	Server::handleClient(const int fd) {
 		}catch (std::runtime_error &e) { 
 			SendClient(fd, "ERROR : :" + std::string(e.what()) + "\r\n");
 		}
-		_Parse[fd].displayCommands();
+		//_Parse[fd].displayCommands();
 		if (_Parse[fd].getCompleted()){
 			//std::cout << getLog() << tmp << YELLOW_BK << "END OF RECEPTION" << NC << std::endl;
 			//std::cout << getLog() << YELLOW << "Client with the socket " << fd << " receive :" << NC << std::endl;
@@ -246,7 +246,7 @@ void	Server::connect(void) {
  * @brief Display at the start of the server
  */
 void Server::display(void){
-	std::string ipLan = runUnixCommandAndCaptureOutput("ifconfig  | grep -e 'inet .*broadcast ' | awk '{ print $2 }'");
+	std::string ipLan = runUnixCommandAndCaptureOutput("ifconfig  | grep -e 'inet .*broadcast ' | awk '{ print $2 }' | head -n1");
 	std::cout << "┌───────────────────────────────────────────────┐" << std::endl;
 	std::cout << "│                                               │" << std::endl;
 	std::cout << "│ " << std::setw(25) << std::right << "ft_irc v1" << std::setw(24) << "│" << std::endl;
