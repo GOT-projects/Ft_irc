@@ -254,7 +254,7 @@ void Server::display(void){
 	std::cout << "│                                               │" << std::endl;
 	std::cout << "│ " << "Bind " << std::setfill('.') << std::setw(10)<< _sockServ << std::setfill(' ') 
 				  << std::setw(20) << std::right << "Processes " << std::setfill('.') << std::setw(10)<< '1' << std::setfill(' ') << " │" << std::endl;
-	std::cout << "│ " << "Pid " << std::setfill('.') << std::setw(15)<< getpid() << std::setfill(' ') << std::setw(30) << " │" << std::endl;
+	std::cout << "│ " << "Pid " << std::setfill('.') << std::setw(14)<< getpid() << std::setfill(' ') << std::setw(31) << " │" << std::endl;
 	std::cout << "│                                               │" << std::endl;
 	std::cout << "└───────────────────────────────────────────────┘" << std::endl;
 }
