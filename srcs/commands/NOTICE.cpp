@@ -27,7 +27,7 @@ namespace irc
 				tmp.setNickname(*it);
 				User *userSend = getUserInList(tmp, serv.getOnlineUsers(), &isSameNickname);
 				if (userSend != NULL) {
-					userSend->sendCommand(S_PRIVMSG(user, *it, cmd.params[1]));
+					userSend->sendCommand(S_NOTICE(user, *it, cmd.params[1]));
 				}
 				else
 					user.sendCommand(ERR_NOSUCHNICK(user, *it));
@@ -40,7 +40,7 @@ namespace irc
 					chan->second.sendMessageToOper(S_NOTICE(user, *it, cmd.params[1]), user);
 				else if (pos == std::string::npos && (it->find("#") == 0 || it->find("&") == 0) && (chan = serv.getMapChannel().find(*it)) != end
 					&& chan->second.isInChannel(user.getNickname())) // all users
-					chan->second.sendMessage(S_NOTICE(user, *it, cmd.params[1]), user);
+					chan->second.sendMessage(S_NOTICE(user, *it, cmd.params[1]));
 				else
 					user.sendCommand(ERR_CANNOTSENDTOCHAN(user, *it));
 			}
